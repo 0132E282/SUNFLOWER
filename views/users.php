@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    đây là view <?php echo $users ?>
+    đây là view <?php print_r($user) ?>
 </body>
 
 </html>

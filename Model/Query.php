@@ -3,7 +3,7 @@ require_once 'PDO.php';
 
 class Query extends PDOConnect
 {
-    protected $query = '';
+    protected $sql = '';
     // select input ['id', 'name' => 'name1' , 'description] => elector id , name1 , description form database,
     // cớ thể dùng chuổi để select
     // default lấy tất cả 
@@ -24,28 +24,33 @@ class Query extends PDOConnect
         } else {
             $columnName = $column;
         }
-        $this->query .= 'SELECT ' .  $columnName;
+        $this->sql .= 'SELECT ' .  $columnName;
         return $this;
     }
     // tên column name
     function from($rowName)
     {
-        $this->query .= ' FROM ' . $rowName;
+        $this->sql .= ' FROM ' . $rowName;
+        return $this;
+    }
+    function where($value1, $condition, $value2)
+    {
+        $this->sql .= " WHERE $value1 $condition $value2";
         return $this;
     }
     // lấy tất cả dữ liệu
     function all()
     {
-        return parent::query($this->query)->fetchAll();
+        return parent::query($this->sql)->fetchAll();
     }
     // lấy một dữ liệu
     function first()
     {
-        return parent::query($this->query)->fetch(PDO::FETCH_ASSOC);
+        return parent::query($this->sql)->fetch(PDO::FETCH_ASSOC);
     }
     // check cơ sở dữ liệu
     function execute()
     {
-        return parent::query($this->query);
+        return parent::query($this->sql);
     }
 }
