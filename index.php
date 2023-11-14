@@ -8,7 +8,8 @@ if (!empty($_GET['controller'])) {
     $controller = Ucwords(strtolower(trim($_GET['controller'])));
     // tiến hành cộng biến với chuổi controller.php;
     // ví dụ controller = user => UserController.php
-    // mặt định nó siteController
+    // mặt định nó siteController chỏ tới trang home php
 }
 // và require_one file UserController.php trông đường dẫn Controller/UserController.php
-require_once "Controller/$controller" . "Controller.php";
+$url = "Controller/$controller" . "Controller.php";
+file_exists($url) ? require_once $url : View('error/404');
