@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 13, 2023 lúc 02:44 AM
+-- Thời gian đã tạo: Th10 15, 2023 lúc 12:17 PM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.1.17
 
@@ -195,6 +195,48 @@ CREATE TABLE `product_reviews` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `role`
+--
+
+CREATE TABLE `role` (
+  `id` bigint(11) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `role`
+--
+
+INSERT INTO `role` (`id`, `name`, `description`) VALUES
+(1, 'khách hàng thường', ''),
+(2, 'khách hàng vip', ''),
+(3, 'nhân viên', NULL),
+(4, 'quản lý', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `role_user`
+--
+
+CREATE TABLE `role_user` (
+  `id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `role_user`
+--
+
+INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
+(55, 2, 55),
+(56, 3, 56);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `status`
 --
 
@@ -213,7 +255,7 @@ CREATE TABLE `status` (
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL,
   `name` varchar(40) NOT NULL,
-  `usename` varchar(40) NOT NULL,
+  `username` varchar(40) NOT NULL,
   `password` varchar(40) NOT NULL,
   `photo_url` varchar(255) DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
@@ -221,9 +263,17 @@ CREATE TABLE `users` (
   `google_id` varchar(250) DEFAULT NULL,
   `facebook_id` varchar(255) DEFAULT NULL,
   `logged_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `username`, `password`, `photo_url`, `is_admin`, `email_vaildate`, `google_id`, `facebook_id`, `logged_at`, `created_at`, `updated_at`) VALUES
+(55, 'Phúc Nuyễn Hoàng', 'admin01', '$2y$10$KM/95JK5mEnu.N5jQaDKC.xI0SXVzURI1', 'store/avatar/1938af91e8eee9f9defa90530a76e005.png', 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(56, 'Phúc Nuyễn Hoàng', 'admin011', '$2y$10$DaTCahJctaQ3XnJAUvcSfebkdyHDaAwcM', 'store/avatar/d15923bf299dbc6f56d99c63e263128e.png', 0, NULL, NULL, NULL, NULL, '2023-11-15 10:43:14', '2023-11-15 10:43:14');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -304,6 +354,20 @@ ALTER TABLE `product_reviews`
   ADD KEY `id_order` (`id_order`);
 
 --
+-- Chỉ mục cho bảng `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `role_user`
+--
+ALTER TABLE `role_user`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
 -- Chỉ mục cho bảng `status`
 --
 ALTER TABLE `status`
@@ -380,6 +444,18 @@ ALTER TABLE `product_reviews`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `role_user`
+--
+ALTER TABLE `role_user`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
 -- AUTO_INCREMENT cho bảng `status`
 --
 ALTER TABLE `status`
@@ -389,7 +465,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -448,6 +524,13 @@ ALTER TABLE `products`
 ALTER TABLE `product_reviews`
   ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`);
+
+--
+-- Các ràng buộc cho bảng `role_user`
+--
+ALTER TABLE `role_user`
+  ADD CONSTRAINT `role_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `role_user_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

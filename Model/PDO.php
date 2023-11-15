@@ -18,15 +18,16 @@ class PDOConnect
             echo "Connection failed: " . $e->getMessage();
         }
     }
-    function query($slq)
+    function query($sql)
     {
-        $slq_args = array_slice(func_get_args(), 1);
+        $sql_args = array_slice(func_get_args(), 1);
         try {
-            $stml = $this->db->prepare($slq);
-            $stml->execute($slq_args);
+            $stml = $this->db->prepare($sql);
+            $stml->execute($sql_args);
             return $stml;
         } catch (PDOException $e) {
-            return $e->getMessage();
+            echo $e->getMessage() . "\n $sql";
+            die;
         }
     }
 }

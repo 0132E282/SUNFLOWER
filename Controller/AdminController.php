@@ -11,12 +11,7 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'])) : 'index';
 $query = new Query();
 switch ($action) {
     case 'index':
-        View('home');
-        break;
-    case 'create':
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        }
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/create']);
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/site/dashboard']);
         break;
     default:
         echo 'không có file';

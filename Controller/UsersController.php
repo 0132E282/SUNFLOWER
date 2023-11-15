@@ -11,12 +11,38 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'])) : 'index';
 $query = new Query();
 switch ($action) {
     case 'index':
-        $data = $query->table('users')->select()->limit(1)->offset(2)->all();
-        View(['layout' => 'layouts/defaultLayout', 'content' => 'users'], ['user' => $data]);
+        $data = $query->table('users')->select()->orderBy('created_at')->limit(25)->all();
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/table'], ['user_list' => $data]);
         break;
     case 'create':
-        $data = $query->table('users')->insert(['username' => "hoangphuc", 'password' => 1]);
-        print_r($data);
+        $role = $query->table('role')->select()->all();
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/form'], ['role_list' => $role]);
+        break;
+    case 'create_user':
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            try {
+                $username = $query->table('users')->select()->where('username', '=', $_POST['username'])->first();
+                if (!is_array($username)) {
+                    $file_url = upload_file($_FILES['avatar'], ['store' => 'avatar']);
+                    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                    $data = $query->table('users')->insert([
+                        'username' => $_POST['username'],
+                        'password' =>  $hashed_password,
+                        'name' => $_POST['name'],
+                        'photo_url' => $file_url,
+                    ]);
+                    $query->table('role_user')->insert([
+                        'role_id' => $_POST['role'],
+                        'user_id' =>  $data['id']
+                    ]);
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                }
+            } catch (PDOException $e) {
+                $message = urlencode('tạo tài khoản thất bại');
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
+            break;
+        }
         break;
     case 'update':
         $data = $query->table('users')->where('id', '=', 4)->update(['username' => "hoangphuc1", 'password' => 1]);
