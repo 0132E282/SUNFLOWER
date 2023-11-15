@@ -14,10 +14,7 @@ switch ($action) {
         View('home');
         break;
     case 'create':
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        }
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/create']);
-        break;
+
     default:
         echo 'không có file';
 }

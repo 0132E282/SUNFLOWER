@@ -8,6 +8,8 @@
                     <th>hình</th>
                     <th>tên người dùng</th>
                     <th>tài khoản</th>
+                    <th>trạng thái</th>
+                    <th>ngày tạo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -16,17 +18,27 @@
                 foreach ($user_list as $key => $value) {
                     echo '<tr>
                 <td>' . ++$key . '</td>
-                <td> <img src="' . $value['photo_url'] . '" class="rounded-circle" style="width: 40px;" /></td>
-                <td>' . $value['name'] . '</td>
+                <td> 
+                    <div  class="position-relative" style="width: 40px;" >
+                      <img src="' . $value['photo_url'] . '" class="rounded-circle w-100 h-100"  />
+                      ' . ($value['locked'] ? '<i class="bx bx-lock-alt fs-6 position-absolute top-0 start-100 translate-middle"></i>' : '') . ' 
+                    </div>
+                </td>
+                <td>' . $value['user_name'] . '</td>
                 <td>' . $value['username'] . '</td>
+                <td>' . $value['role_name'] . '</td>
+                <td>' . $value['created_at'] . '</td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                            <a class="dropdown-item" href="?controller=users&action=lock_user&action=update&user=' . $value['id'] . '"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
+                           ' . (!$value['locked'] ?
+                        '<a id="btnShowModalBlock" data-value="?controller=users&action=lock_user&user=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-alt me-1"></i>khóa tài khoản</a>' :
+                        '<a id="btnShowModalBlock" data-value="?controller=users&action=unlock_user&user=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-open-alt me-1"></i>mở khóa tài khoản</a>'
+                    ) . '
                         </div>
                     </div>
                 </td>
@@ -37,5 +49,5 @@
             </tbody>
         </table>
     </div>
-
 </div>
+<?php View('components/modal/modalDelete', ['id' => 'blockAccount', 'title' => 'khóa tài khoản', 'content' => 'bạn muốn khóa tài khoản này không', 'btnShowModal' => 'btnShowModalBlock']) ?>

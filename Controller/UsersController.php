@@ -11,12 +11,30 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'])) : 'index';
 $query = new Query();
 switch ($action) {
     case 'index':
-        $data = $query->table('users')->select()->orderBy('created_at')->limit(25)->all();
+        $data = $query->table('users')->select(['users.id' => 'id', 'users.photo_url' => 'photo_url', 'role.name' => 'role_name', 'users.*', 'users.name' => 'user_name', 'username', 'users.created_at' => 'created_at'])->join('role', 'role_id', 'id', 'left')->orderBy('created_at')->limit(25)->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/table'], ['user_list' => $data]);
         break;
     case 'create':
         $role = $query->table('role')->select()->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/form'], ['role_list' => $role]);
+        break;
+    case 'lock_user':
+        $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
+        if ($user) {
+            $data =  $query->table('users')->where('id', '=', $user['id'])->update([
+                'locked' => 1
+            ]);
+        }
+
+        break;
+    case 'unlock_user':
+        $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
+        if ($user) {
+            $data =  $query->table('users')->where('id', '=', $user['id'])->update([
+                'locked' => 0
+            ]);
+        }
+
         break;
     case 'create_user':
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -30,11 +48,9 @@ switch ($action) {
                         'password' =>  $hashed_password,
                         'name' => $_POST['name'],
                         'photo_url' => $file_url,
-                    ]);
-                    $query->table('role_user')->insert([
                         'role_id' => $_POST['role'],
-                        'user_id' =>  $data['id']
                     ]);
+
                     header('Location: ' . $_SERVER['HTTP_REFERER']);
                 }
             } catch (PDOException $e) {
@@ -45,8 +61,11 @@ switch ($action) {
         }
         break;
     case 'update':
-        $data = $query->table('users')->where('id', '=', 4)->update(['username' => "hoangphuc1", 'password' => 1]);
-        print_r($data);
+        $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
+        if ($user) {
+            $role = $query->table('role')->select()->all();
+            View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/form'], ['role_list' => $role, 'user' => $user]);
+        }
         break;
     case 'delete':
         $data = $query->table('users')->where('id', '=', 4)->delete();

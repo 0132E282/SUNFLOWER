@@ -36,7 +36,7 @@ class Query extends PDOConnect
     }
     function where($field, $compare, $value)
     {
-        $this->sql .= " WHERE $field $compare '$value'";
+        $this->sql .= " WHERE $field $compare  '$value'";
         return $this;
     }
     function and($field, $compare, $value)
@@ -73,10 +73,10 @@ class Query extends PDOConnect
     {
         $valueCol = '';
         foreach ($data as $key => $value) {
-            $valueCol .= gettype($value) == 'integer' ? " $key = $value ," : "$key = '$value' ,";
+            $valueCol .= is_numeric($value) || gettype($value) == 'integer' ? " $key = $value ," : "$key = '$value' ,";
         }
-        $this->sql = " UPDATE $this->table SET " . substr($valueCol, 0, -1) . " " . $this->sql;
-        $this->execute($this->sql);
+        $sql = " UPDATE $this->table SET " . substr($valueCol, 0, -1) . " " . $this->sql;
+        $this->execute($sql);
     }
     function orderBy($column, $direction = 'DESC')
     {
@@ -99,9 +99,9 @@ class Query extends PDOConnect
         $this->sql .= " GROUP BY $column";
         return $this;
     }
-    function join($tableJoin, $foreignKey, $location)
+    function join($tableJoin, $foreignKey, $primaryKey = 'id', $location = 'INNER')
     {
-        $this->sql .= "$location JOIN $this->table.$tableJoin ON  $foreignKey = $tableJoin.id";
+        $this->sql .= "$location JOIN $tableJoin ON  $this->table.$foreignKey = $tableJoin.$primaryKey";
         return $this;
     }
     // lấy tất cả dữ liệu
@@ -118,16 +118,9 @@ class Query extends PDOConnect
     // lấy một dữ liệu
     function first()
     {
-        try {
-            $stml = parent::query($this->sql);
-            if ($stml->errorInfo()) {
-                echo $stml->errorInfo();
-            }
-            $this->sql = '';
-            return $stml->fetch(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        $stml = parent::query($this->sql);
+        $this->sql = '';
+        return $stml->fetch(PDO::FETCH_ASSOC);
     }
 
     // check cơ sở dữ liệu
