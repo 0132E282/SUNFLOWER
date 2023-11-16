@@ -34,10 +34,10 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="?controller=users&action=lock_user&action=update&user=' . $value['id'] . '"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
+                            <a class="dropdown-item" href="?controller=users&action=lock_user&action=update&id=' . $value['id'] . '"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
                            ' . (!$value['locked'] ?
-                        '<a id="btnShowModalBlock" data-value="?controller=users&action=lock_user&user=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-alt me-1"></i>khóa tài khoản</a>' :
-                        '<a id="btnShowModalBlock" data-value="?controller=users&action=unlock_user&user=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-open-alt me-1"></i>mở khóa tài khoản</a>'
+                        '<a id="btnShowModalBlock" data-value="?controller=users&action=lock_user&id=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-alt me-1"></i>khóa tài khoản</a>' :
+                        '<a id="btnShowModalBlock" data-value="?controller=users&action=unlock_user&id=' . $value['id'] . '" class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#unblockAccount"><i class="bx bx-lock-open-alt me-1"></i>mở khóa tài khoản</a>'
                     ) . '
                         </div>
                     </div>
@@ -51,3 +51,4 @@
     </div>
 </div>
 <?php View('components/modal/modalDelete', ['id' => 'blockAccount', 'title' => 'khóa tài khoản', 'content' => 'bạn muốn khóa tài khoản này không', 'btnShowModal' => 'btnShowModalBlock']) ?>
+<?php View('components/modal/modalDelete', ['id' => 'unblockAccount', 'title' => 'mỡ khóa tài khoản', 'content' => 'bạn muốn mỡ khóa tài khoản này', 'btnShowModal' => 'btnShowModalBlock']) ?>

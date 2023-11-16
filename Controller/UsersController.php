@@ -25,7 +25,7 @@ switch ($action) {
                 'locked' => 1
             ]);
         }
-
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         break;
     case 'unlock_user':
         $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
@@ -34,7 +34,7 @@ switch ($action) {
                 'locked' => 0
             ]);
         }
-
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         break;
     case 'create_user':
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -61,10 +61,32 @@ switch ($action) {
         }
         break;
     case 'update':
-        $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
+        $user = $query->table('users')->select()->where('id', '=', $_GET['id'])->first();
         if ($user) {
             $role = $query->table('role')->select()->all();
             View(['layout' => 'layouts/adminLayout', 'content' => 'pages/users/form'], ['role_list' => $role, 'user' => $user]);
+        }
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        break;
+    case 'update_user':
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user = $query->table('users')->select()->where('id', '=', $_GET['id'])->first();
+            if ($user) {
+                if (!empty($_POST['password'])) {
+                    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                }
+                if ($_FILES['avatar']) {
+                    $file_url = upload_file($_FILES['avatar'], ['store' => 'avatar']);
+                }
+                $query->table('users')->where('id', '=', $_GET['id'])->update([
+                    'name' => $_POST['name'] ?? $user['name'],
+                    'password' => $hashed_password ?? $user['password'],
+                    'role_id' => $_POST['role'] ?? $user['role'],
+                    'name' => $_POST['name'] ?? $user['name'],
+                    'photo_url' =>   $file_url ?? $user['photo_url'],
+                ]);
+            }
+            back(['success' => 'cập nhập tài khoản người dùng thành công ! oke']);
         }
         break;
     case 'delete':

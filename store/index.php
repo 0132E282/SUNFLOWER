@@ -18,10 +18,6 @@ function upload_file($file, $option = [])
             $upload = move_uploaded_file($file['tmp_name'], $store . '/' . $newFileName);
             if (!$upload) return $error[] = 'tải lên không thành công';
             return $store . '/' . $newFileName;
-        } else {
-            return $error[] = 'size của nó phải <=' . $sizeAllow;
         }
-    } else {
-        return $error[] = 'type của file phải có đuôi ' . join(',', $typeAllow);
     }
 }

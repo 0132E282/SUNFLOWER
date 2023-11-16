@@ -1,18 +1,18 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <?php
-    if (!empty($_GET['success'])) {
-        echo '<div class="alert alert-success" role="alert">
-        ' . $_GET['success'] . '
-      </div>';
+    if (!empty($message['success'])) {
+        echo '
+        <div class="alert alert-success alert-dismissible" role="alert">
+            ' . $message['success'] . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        ';
     }
-    if (!empty($_GET['error'])) {
-        echo '<div class="alert  alert-danger" role="alert">
-        ' . $_GET['error'] . '
-      </div>';
-    }
+
     ?>
+
     <div class="card ">
-        <form class="row g-3 bg-while" action="?controller=users&action=create_user" method="POST" enctype="multipart/form-data">
+        <form class="row g-3 bg-while" action="<?= empty($_GET['id']) ? '?controller=users&action=create_user' : '?controller=users&action=update_user&id=' . $_GET['id'] ?>" method="POST" enctype="multipart/form-data">
             <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
                     <img src="<?= $user['photo_url'] ?? 'public/assets/img/avatars/1.png' ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
@@ -55,12 +55,30 @@
                             } ?>
                         </select>
                     </div>
-                    <div class="col-12 mb-3">
-                        <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary"><?= !empty($_GET['id']) ? 'cập nhập' : 'Tạo tài khoản'  ?></button>
                     </div>
                 </div>
             </div>
         </form>
+    </div>
+    <div class="card mt-3">
+        <h5 class="card-header">Delete Account</h5>
+        <div class="card-body">
+            <div class="mb-3 col-12 mb-0">
+                <div class="alert alert-warning">
+                    <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
+                    <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+                </div>
+            </div>
+            <form id="formAccountDeactivation" onsubmit="return false">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation">
+                    <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
+                </div>
+                <button type="submit" class="btn btn-danger deactivate-account" fdprocessedid="szttwj">Deactivate Account</button>
+            </form>
+        </div>
     </div>
 </div>
 <script src="public/assets/js/pages-account-settings-account.js">

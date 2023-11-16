@@ -1,12 +1,21 @@
 <?php
 function View($view = [], $data = [])
 {
-    try {
-        // extract biến tất cả các key của array thành biến
-        extract($data);
-        if (is_array($view)) extract($view);
-        return require_once(is_array($view) ? $layout . '.php' : $view . '.php');
-    } catch (\Exception $e) {
-        echo $e->getMessage();
+    // extract biến tất cả các key của array thành biến
+    global $message;
+    extract($data);
+    if (is_array($view)) extract($view);
+
+    return require(is_array($view) ? $layout . '.php' : $view . '.php');
+}
+function back($with = [])
+{
+    if (is_array($with)) {
+        session_push('message', $with);
     }
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+}
+function redirect($url)
+{
+    header('Location: ' . $url);
 }
