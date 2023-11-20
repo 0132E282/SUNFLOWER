@@ -56,6 +56,27 @@
             </a>
         </li>
         <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Sản phẩm</span>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=product" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Tất cả</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=product&action=create" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tạo sản phẩm</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=category" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Danh mục</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Tài Khoản</span>
         </li>
         <li class="menu-item">

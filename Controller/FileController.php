@@ -11,10 +11,23 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'])) : 'index';
 $query = new Query();
 switch ($action) {
     case 'index':
-
+        $path = 'store/images';
+        $files_list = scandir($path, SCANDIR_SORT_ASCENDING);
+        $files_list_new = array_filter($files_list, function ($file) {
+            $tex = pathinfo($file,  PATHINFO_EXTENSION);
+            return in_array($tex, ['jpg', 'jpeg', 'png', 'gif']);
+        });
+        $path_file_list = array_map(function ($file) use ($path) {
+            return $path . '/' . $file;
+        }, $files_list_new);
+        print_r(json_encode($path_file_list));
         break;
-    case 'create':
-
+    case 'upload':
+        $fileList = $_FILES['upload'];
+        $file_upload = upload_multiple_file($fileList);
+        if ($file_upload) {
+            print_r(json_encode($file_upload));
+        }
         break;
     default:
         echo 'không có file';

@@ -5,6 +5,7 @@ class Query extends PDOConnect
 {
     private $sql = '';
     private $table = '';
+    private $where = '';
     // select input ['id', 'name' => 'name1' , 'description] => elector id , name1 , description form database,
     // cớ thể dùng chuổi để select
     // default lấy tất cả 
@@ -36,12 +37,22 @@ class Query extends PDOConnect
     }
     function where($field, $compare, $value)
     {
-        $this->sql .= " WHERE $field $compare  '$value'";
+        if ($this->where !== '') {
+            $this->where .= " AND $field $compare  '$value'";
+        } else {
+            $this->where .= " WHERE $field $compare  '$value'";
+        }
+        $this->sql .= $this->where;
         return $this;
     }
-    function and($field, $compare, $value)
+    function is_NUll($field)
     {
-        $this->sql .= " AND $field $compare '$value'";
+        if ($this->where !== '') {
+            $this->where .= " AND $field IS NULL";
+        } else {
+            $this->where .= "WHERE $field IS NULL";
+        }
+        $this->sql .= $this->where;
         return $this;
     }
     function or($field, $compare, $value)
@@ -52,7 +63,7 @@ class Query extends PDOConnect
     function delete()
     {
         $this->sql = "DELETE FROM $this->table" . $this->sql;
-        $id = $this->execute($this->sql);
+        $this->execute($this->sql);
     }
     // vd $query->table('users')->insert(['name' => 'a' , password => 1234])
     // => sql = 'INSERT INTO users (name, password ) VALUES ('a',1234)';
@@ -101,7 +112,7 @@ class Query extends PDOConnect
     }
     function join($tableJoin, $foreignKey, $primaryKey = 'id', $location = 'INNER')
     {
-        $this->sql .= "$location JOIN $tableJoin ON  $this->table.$foreignKey = $tableJoin.$primaryKey";
+        $this->sql .= " $location JOIN $tableJoin ON  $this->table.$foreignKey = $tableJoin.$primaryKey";
         return $this;
     }
     // lấy tất cả dữ liệu
@@ -134,6 +145,7 @@ class Query extends PDOConnect
             echo $e->getMessage();
         }
     }
+
     function __destruct()
     {
         $this->sql = '';

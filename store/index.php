@@ -21,3 +21,24 @@ function upload_file($file, $option = [])
         }
     }
 }
+// upload nhiều file
+function upload_multiple_file($files)
+{
+    $filesName = $files['name'];
+    $fileUpload = [];
+    if (!empty($filesName)) {
+        foreach ($filesName as $key => $value) {
+            $fileNameArr = explode('.', $value);
+            $tex = end($fileNameArr);
+            $newFileName = md5(uniqid()) . '.' . $tex;
+            $fileSize = $files['size'][$key] / 1024 / 1024;
+            if ($fileSize <= 10) {
+                $isUpload  =  move_uploaded_file($files['tmp_name'][$key], 'store/images/' . $newFileName);
+                if ($isUpload) {
+                    $fileUpload[] = 'store/images/' . $newFileName;
+                }
+            }
+        }
+    }
+    return $fileUpload;
+}

@@ -40,22 +40,19 @@ switch ($action) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             try {
                 $username = $query->table('users')->select()->where('username', '=', $_POST['username'])->first();
-                if (!is_array($username)) {
-                    $file_url = upload_file($_FILES['avatar'], ['store' => 'avatar']);
-                    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $data = $query->table('users')->insert([
-                        'username' => $_POST['username'],
-                        'password' =>  $hashed_password,
-                        'name' => $_POST['name'],
-                        'photo_url' => $file_url,
-                        'role_id' => $_POST['role'],
-                    ]);
-
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
-                }
-            } catch (PDOException $e) {
-                $message = urlencode('tạo tài khoản thất bại');
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
+                // if (is_array($username)) throw new Exception('tài khoản nầy đã có người tạo');
+                $file_url = upload_file($_FILES['avatar'], ['store' => 'avatar']);
+                $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                $data = $query->table('users')->insert([
+                    'username' => $_POST['username'],
+                    'password' =>  $hashed_password,
+                    'name' => $_POST['name'],
+                    'photo_url' => $file_url,
+                    'role_id' => $_POST['role'],
+                ]);
+                if ($data) back(['success' => 'tạo tài khoản thành công ! oke']);
+            } catch (Exception $e) {
+                echo $e->getMessage();
             }
             break;
         }

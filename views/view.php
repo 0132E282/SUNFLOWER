@@ -15,7 +15,10 @@ function back($with = [])
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
-function redirect($url)
+function redirect($url, $with = [])
 {
+    if (is_array($with)) {
+        session_push('message', $with);
+    }
     header('Location: ' . $url);
 }
