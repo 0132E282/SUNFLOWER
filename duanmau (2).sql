@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 15, 2023 lúc 12:17 PM
+-- Thời gian đã tạo: Th10 22, 2023 lúc 10:41 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.1.17
 
@@ -24,17 +24,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `categories`
+-- Cấu trúc bảng cho bảng `category`
 --
 
-CREATE TABLE `categories` (
+CREATE TABLE `category` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `paren_id` bigint(20) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `update_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `parent_id` bigint(20) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `category`
+--
+
+INSERT INTO `category` (`id`, `name`, `parent_id`, `created_at`, `update_at`, `deleted_at`, `user_id`) VALUES
+(25, 'áo khoác nam', 26, '2023-11-17 23:52:17', '2023-11-17 23:52:17', NULL, 84),
+(26, 'thời trang nam', 0, '2023-11-21 16:12:51', '2023-11-21 16:12:51', NULL, 84),
+(27, 'thời trang nữ', 0, '2023-11-21 16:13:08', '2023-11-21 16:13:08', NULL, 84),
+(28, 'thời trang cho bé', 0, '2023-11-21 16:13:20', '2023-11-21 16:13:20', NULL, 84),
+(29, 'áo sơ mi nam', 26, '2023-11-21 16:18:15', '2023-11-21 16:18:15', NULL, 84),
+(30, 'quần tay nam', 26, '2023-11-21 16:18:28', '2023-11-21 16:18:28', NULL, 84),
+(31, 'áo khoác nữ', 27, '2023-11-21 16:18:44', '2023-11-21 16:18:44', NULL, 84);
 
 -- --------------------------------------------------------
 
@@ -81,10 +95,21 @@ CREATE TABLE `image` (
   `alt` varchar(255) NOT NULL,
   `image_url` varchar(255) NOT NULL,
   `product_id` bigint(20) NOT NULL,
-  `update_at` timestamp NULL DEFAULT NULL,
-  `create_at` timestamp NULL DEFAULT NULL,
+  `update_at` timestamp NULL DEFAULT current_timestamp(),
+  `create_at` timestamp NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `image`
+--
+
+INSERT INTO `image` (`id`, `alt`, `image_url`, `product_id`, `update_at`, `create_at`, `deleted_at`) VALUES
+(26, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/0e173639ae4218c86b2c5ba528230aab.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
+(27, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/67895d07a9c9e54ac270856ef365447c.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
+(28, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/ede83ec93e84fdbc69fe2046459b0cc1.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
+(29, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/070fe03339c5e37c4844c99a68d14e16.webp', 24, '2023-11-22 09:39:28', '2023-11-22 09:39:28', NULL),
+(30, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/dec08b8a5e5fcc3b6f393e7a91235149.webp', 24, '2023-11-22 09:39:28', '2023-11-22 09:39:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -168,12 +193,21 @@ CREATE TABLE `products` (
   `category_id` bigint(20) NOT NULL,
   `count_views` bigint(20) DEFAULT 0,
   `count_buy` bigint(20) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp(),
   `delete_at` int(11) DEFAULT NULL,
   `feature_image` varchar(255) DEFAULT NULL,
-  `quantity` bigint(20) DEFAULT 0
+  `quantity` bigint(20) DEFAULT 0,
+  `discount` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `user_id`, `description`, `price`, `count_likes`, `count_comments`, `category_id`, `count_views`, `count_buy`, `created_at`, `updated_at`, `delete_at`, `feature_image`, `quantity`, `discount`) VALUES
+(22, 'Áo sơ mi nam dài tay Aristino ALS02903', 84, '<p>FORM D&Aacute;NG:&nbsp;Regular Fit<br>THIẾT KẾ:<br>- &Aacute;o sơ mi d&agrave;i tay phom d&aacute;ng Regular Fit su&ocirc;ng nhẹ, vừa vặn t&ocirc;n d&aacute;ng<br>- &Aacute;o thiết kế đơn giản c&ugrave;ng m&agrave;u trắng in chấm xanh mang đến phong c&', 715500, 0, 0, 29, 0, 0, '2023-11-22 09:38:01', '2023-11-22 16:38:01', NULL, 'store/images/b46db704c13cced6a74d8522ae38b374.webp', 12, 795000),
+(24, 'Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 84, '', 805500, 0, 0, 29, 0, 0, '2023-11-22 09:39:28', '2023-11-22 16:39:28', NULL, 'store/images/ea3aad0be7150a57d12fff4057f02a9f.webp', 123, 795000);
 
 -- --------------------------------------------------------
 
@@ -209,30 +243,10 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`, `description`) VALUES
-(1, 'khách hàng thường', ''),
-(2, 'khách hàng vip', ''),
+(1, 'khách hàng', ''),
+(2, 'khách vip', ''),
 (3, 'nhân viên', NULL),
 (4, 'quản lý', NULL);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `role_user`
---
-
-CREATE TABLE `role_user` (
-  `id` bigint(20) NOT NULL,
-  `role_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `role_user`
---
-
-INSERT INTO `role_user` (`id`, `role_id`, `user_id`) VALUES
-(55, 2, 55),
-(56, 3, 56);
 
 -- --------------------------------------------------------
 
@@ -256,34 +270,35 @@ CREATE TABLE `users` (
   `id` bigint(20) NOT NULL,
   `name` varchar(40) NOT NULL,
   `username` varchar(40) NOT NULL,
-  `password` varchar(40) NOT NULL,
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `photo_url` varchar(255) DEFAULT NULL,
-  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `role_id` tinyint(1) NOT NULL,
   `email_vaildate` varchar(255) DEFAULT NULL,
   `google_id` varchar(250) DEFAULT NULL,
   `facebook_id` varchar(255) DEFAULT NULL,
   `logged_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `locked` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `username`, `password`, `photo_url`, `is_admin`, `email_vaildate`, `google_id`, `facebook_id`, `logged_at`, `created_at`, `updated_at`) VALUES
-(55, 'Phúc Nuyễn Hoàng', 'admin01', '$2y$10$KM/95JK5mEnu.N5jQaDKC.xI0SXVzURI1', 'store/avatar/1938af91e8eee9f9defa90530a76e005.png', 0, NULL, NULL, NULL, NULL, NULL, NULL),
-(56, 'Phúc Nuyễn Hoàng', 'admin011', '$2y$10$DaTCahJctaQ3XnJAUvcSfebkdyHDaAwcM', 'store/avatar/d15923bf299dbc6f56d99c63e263128e.png', 0, NULL, NULL, NULL, NULL, '2023-11-15 10:43:14', '2023-11-15 10:43:14');
+INSERT INTO `users` (`id`, `name`, `username`, `password`, `photo_url`, `role_id`, `email_vaildate`, `google_id`, `facebook_id`, `logged_at`, `created_at`, `updated_at`, `locked`) VALUES
+(84, 'Phúc Nuyễn Hoàng', 'admin01', '$2y$10$Xn1AnWnuh45g1vi07WVGcOoXAC3eZ.mBIpj3va2fkmHD5C0O9jjyy', 'store/avatar/5166769102803e3d2df578980e76017c.png', 1, NULL, NULL, NULL, NULL, '2023-11-17 11:54:53', '2023-11-17 11:54:53', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Chỉ mục cho bảng `categories`
+-- Chỉ mục cho bảng `category`
 --
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `comments`
@@ -360,14 +375,6 @@ ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `role_user`
---
-ALTER TABLE `role_user`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `role_id` (`role_id`);
-
---
 -- Chỉ mục cho bảng `status`
 --
 ALTER TABLE `status`
@@ -384,10 +391,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT cho bảng `categories`
+-- AUTO_INCREMENT cho bảng `category`
 --
-ALTER TABLE `categories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `category`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT cho bảng `comments`
@@ -405,7 +412,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT cho bảng `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT cho bảng `notification`
@@ -435,7 +442,7 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `product_reviews`
@@ -450,12 +457,6 @@ ALTER TABLE `role`
   MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `role_user`
---
-ALTER TABLE `role_user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
-
---
 -- AUTO_INCREMENT cho bảng `status`
 --
 ALTER TABLE `status`
@@ -465,11 +466,17 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `category`
+--
+ALTER TABLE `category`
+  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Các ràng buộc cho bảng `comments`
@@ -516,7 +523,7 @@ ALTER TABLE `order_item`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 
 --
 -- Các ràng buộc cho bảng `product_reviews`
@@ -524,13 +531,6 @@ ALTER TABLE `products`
 ALTER TABLE `product_reviews`
   ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`);
-
---
--- Các ràng buộc cho bảng `role_user`
---
-ALTER TABLE `role_user`
-  ADD CONSTRAINT `role_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `role_user_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
