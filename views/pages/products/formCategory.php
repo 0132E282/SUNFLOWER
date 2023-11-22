@@ -66,7 +66,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="?controller=category&id=<?= $category['id'] ?>"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                                <a id="btn-delete-category" data-value="?controller=category&action=delete_category&id=<?= $category['id'] ?>" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-category"><i class='bx bx-trash'></i></i>xóa</a>
+                                                <a id="btn-delete-category" data-value="?controller=category&action=delete_category&id=<?= $category['id'] ?>" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-category"><i class='bx bx-trash'></i>xóa</a>
                                             </div>
                                         </div>
                                     </td>
@@ -83,4 +83,4 @@
         </div>
     </div>
 </div>
-<?php View('components/modal/modalDelete', ['id' => 'blockAccount', 'title' => 'xóa tài danh mục', 'content' => 'bạn chắc muốn xóa nó không', 'btnShowModal' => 'btn-delete-category']) ?>
+<?php View('components/modal/modalLink', ['id' => 'delete-category', 'btnShowModal' => 'btn-delete-category', 'title' => 'xóa tài danh mục', 'content' => 'bạn chắc muốn xóa nó không']) ?>

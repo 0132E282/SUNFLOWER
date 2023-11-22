@@ -7,7 +7,8 @@
 $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'])) : 'index';
 // sử dụng thư viện query
 // nó là một class nên sử dụng new
-// ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui
+// ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui4
+session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
 $query = new Query();
 switch ($action) {
     case 'index':

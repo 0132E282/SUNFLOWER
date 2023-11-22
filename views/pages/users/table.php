@@ -50,5 +50,5 @@
         </table>
     </div>
 </div>
-<?php View('components/modal/modalDelete', ['id' => 'blockAccount', 'title' => 'khóa tài khoản', 'content' => 'bạn muốn khóa tài khoản này không', 'btnShowModal' => 'btnShowModalBlock']) ?>
-<?php View('components/modal/modalDelete', ['id' => 'unblockAccount', 'title' => 'mỡ khóa tài khoản', 'content' => 'bạn muốn mỡ khóa tài khoản này', 'btnShowModal' => 'btnShowModalBlock']) ?>
+<?php View('components/modal/modalLink', ['id' => 'blockAccount', 'title' => 'khóa tài khoản', 'content' => 'bạn muốn khóa tài khoản này không', 'btnShowModal' => 'btnShowModalBlock']) ?>
+<?php View('components/modal/modalLink', ['id' => 'unblockAccount', 'title' => 'mỡ khóa tài khoản', 'content' => 'bạn muốn mỡ khóa tài khoản này', 'btnShowModal' => 'btnShowModalBlock']) ?>

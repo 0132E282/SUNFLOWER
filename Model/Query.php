@@ -121,6 +121,7 @@ class Query extends PDOConnect
         try {
             $data = parent::query($this->sql)->fetchAll();
             $this->sql = '';
+            $this->where = '';
             return $data;
         } catch (Exception $e) {
             return $e->getMessage();
@@ -131,6 +132,7 @@ class Query extends PDOConnect
     {
         $stml = parent::query($this->sql);
         $this->sql = '';
+        $this->where = '';
         return $stml->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -140,14 +142,10 @@ class Query extends PDOConnect
         try {
             parent::query($sql);
             $this->sql = '';
+            $this->where = '';
             return $this->db->lastInsertId();
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-    }
-
-    function __destruct()
-    {
-        $this->sql = '';
     }
 }

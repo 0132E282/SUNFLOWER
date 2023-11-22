@@ -1,27 +1,43 @@
-function validate(option) {
+function validator(option) {
     ((option)=>{
+        let isError = false;
         const form = document.forms[option.form];
-        option.rules.forEach(rule => {
-            const input = document.querySelector(`input[name="${rule.name}"]`);
-            input.onblur = function (e) { 
-              const messenger =  rule.test(e.target.value); 
-              console.log(messenger);
-            };
+        function validate(rules , inputName){
+            const errorElement = inputName.parentElement.querySelector('.massage-error em')
+            errorElement.innerText = '';
+            for(let i = 0; i < rules.length; i++) {
+                const message = rules[i].test(inputName.value);
+                if(message){
+                    isError = true;
+                    errorElement.innerText = message;
+                    break;
+                }else{
+                    isError = false;
+                }
+             }
+        }
+        Object.keys(option.rules).forEach(name => {
+            const inputName = document.querySelector('[name="' + name+'"]');
+            inputName.onblur = function (e) {
+                e.target.value = e.target.value.trim();
+                validate(option.rules[name],inputName);
+            }
         });
         form.onsubmit = function (e){
-            e.preventDefault();
+            if(isError){
+                e.preventDefault();
+            }
         }
     })(option)
 };
-validate.require = function (name) {
+validator.require = function () {
     return {
-        name,
-        test :  function (value){
-            return value.trim() === '' ? 'vui lồng nhâp nội dung' : '';
+        test: function(value){
+           return value.trim() === '' ? 'vui lồng nhâp nội dung' : ''
         }
     }
 }
-validate.minLength = function (name , min) {
+validator.minLength = function (name , min) {
     return {
         name,
         test :  function (value){
@@ -29,9 +45,8 @@ validate.minLength = function (name , min) {
         }
     }
 }
-validate.isNumber = function (name) {
+validator.isNumber = function () {
     return {
-        name,
         test :  function (value){
             const regEx = /\D/;
             return regEx.test(value) ? `nhập vào phải là số`: '';

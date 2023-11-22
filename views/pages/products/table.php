@@ -20,25 +20,25 @@
                     <tr>
                         <td>1</td>
                         <td>
-                            <div class="position-relative" style="width: 40px;">
-                                <img src="<?= $value['feature_image'] ?>" class="rounded-circle w-100 h-100">
+                            <div class="position-relative" style="width: 60px;">
+                                <img src="<?= $value['feature_image'] ?>" class="w-100 h-100">
 
                             </div>
                         </td>
-                        <td><?= $value['name'] ?></td>
+                        <td style="max-width: 300px;"><?= $value['name'] ?></td>
                         <td><?= $value['user_name'] ?></td>
-                        <td><?= $value['price'] ?></td>
-                        <td><?= $value['discount'] ?></td>
-                        <td><?= $value['quantity'] ?></td>
-                        <td><?= $value['count_buy'] ?></td>
+                        <td><?= number_format($value['price']) . ' đ'  ?></td>
+                        <td><?= number_format($value['discount']) . ' đ'  ?></td>
+                        <td><?= number_format($value['quantity']) ?></td>
+                        <td><?= number_format($value['count_buy']) ?></td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="?controller=users&amp;action=lock_user&amp;action=update&amp;id=84"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                    <a id="btnShowModalBlock" data-value="?controller=users&amp;action=lock_user&amp;id=84" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#blockAccount"><i class="bx bx-lock-alt me-1"></i>khóa tài khoản</a>
+                                    <a class="dropdown-item" href="?controller=product&action=update&id=<?= $value['id'] ?>"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
+                                    <a id="btn-delete-product" data-value="?controller=product&action=delete&id=<?= $value['id'] ?>" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-product"><i class='bx bx-trash me-1'></i>xóa sản phẩm</a>
                                 </div>
                             </div>
                         </td>
@@ -48,3 +48,4 @@
         </table>
     </div>
 </div>
+<?php View('components/modal/modalLink', ['id' => 'delete-product', 'btnShowModal' => 'btn-delete-product', 'title' => 'xóa sản phẩm', 'content' => 'bạn chắc muốn xóa nó không']) ?>

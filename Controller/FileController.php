@@ -15,7 +15,7 @@ switch ($action) {
         $files_list = scandir($path, SCANDIR_SORT_ASCENDING);
         $files_list_new = array_filter($files_list, function ($file) {
             $tex = pathinfo($file,  PATHINFO_EXTENSION);
-            return in_array($tex, ['jpg', 'jpeg', 'png', 'gif']);
+            return in_array($tex, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
         });
         $path_file_list = array_map(function ($file) use ($path) {
             return $path . '/' . $file;
