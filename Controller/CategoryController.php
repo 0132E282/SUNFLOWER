@@ -21,7 +21,7 @@ switch ($action) {
                 $category_parent = $query->table('category')->select('name')->where('id', '=', $category['parent_id'])->first();
                 return $category = [...$category, 'parent_name' => $category_parent['name'] ?? 'danh mục cha'];
             }, $category_list);
-            View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/formCategory'], ['category_list' => $category_list, 'category_detail' => $category_detail]);
+            View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/category'], ['category_list' => $category_list, 'category_detail' => $category_detail]);
         }
         break;
     case 'delete_category':

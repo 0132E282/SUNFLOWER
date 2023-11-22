@@ -112,6 +112,7 @@ class Query extends PDOConnect
     }
     function join($tableJoin, $foreignKey, $primaryKey = 'id', $location = 'INNER')
     {
+
         $this->sql .= " $location JOIN $tableJoin ON  $this->table.$foreignKey = $tableJoin.$primaryKey";
         return $this;
     }

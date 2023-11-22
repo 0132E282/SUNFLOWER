@@ -8,6 +8,7 @@
                     <th>hình</th>
                     <th>tên sản phẩm</th>
                     <th>người tạo</th>
+                    <th>danh mục</th>
                     <th>giá sản phẩm</th>
                     <th>giá giảm</th>
                     <th>kho</th>
@@ -22,11 +23,11 @@
                         <td>
                             <div class="position-relative" style="width: 60px;">
                                 <img src="<?= $value['feature_image'] ?>" class="w-100 h-100">
-
                             </div>
                         </td>
-                        <td style="max-width: 300px;"><?= $value['name'] ?></td>
+                        <td style="max-width: 300px; cursor: pointer;" data-value="<?= $value['id'] ?>" class="btn-show-modal" data-bs-toggle="modal" data-bs-target="#modal-product"><?= $value['name'] ?></td>
                         <td><?= $value['user_name'] ?></td>
+                        <td><?= $value['category_name'] ?></td>
                         <td><?= number_format($value['price']) . ' đ'  ?></td>
                         <td><?= number_format($value['discount']) . ' đ'  ?></td>
                         <td><?= number_format($value['quantity']) ?></td>
@@ -49,3 +50,13 @@
     </div>
 </div>
 <?php View('components/modal/modalLink', ['id' => 'delete-product', 'btnShowModal' => 'btn-delete-product', 'title' => 'xóa sản phẩm', 'content' => 'bạn chắc muốn xóa nó không']) ?>
+<?php View('components/modal/modalProducts') ?>
+<script>
+    const btnShowModalList = document.querySelectorAll('.btn-show-modal');
+    btnShowModalList.forEach(function(button) {
+        button.onclick = function(e) {
+            document.querySelector('.btn-show-modal.active')?.classList.remove('active');
+            e.currentTarget.classList.add('active');
+        }
+    })
+</script>

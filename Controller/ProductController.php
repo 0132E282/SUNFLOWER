@@ -12,7 +12,7 @@ $query = new Query();
 session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
 switch ($action) {
     case 'index_get':
-        $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'products.*'])->join('users', 'user_id')->orderBy('products.created_at')->all();
+        $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id')->orderBy('products.created_at')->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'], ['products' => $product_list]);
 
         break;
@@ -62,19 +62,23 @@ switch ($action) {
                 'quantity' => input('quantity-product') ?? $product['quantity-product'],
                 'discount' => input('discount-product') ?? $product['discount-product']
             ]);
-            if ($product) {
-                $query->table('image')->where('product_id', '=', $product['id'])->delete();
-                foreach (json_decode($_POST['description-images']) as $key => $value) {
-                    $image = $query->table('image')->insert([
-                        'image_url' => $value,
-                        'product_id' => $product['id'],
-                        'alt' => 'description image ' . $product['name']
-                    ]);
+            $imagesDescription = json_decode($_POST['description-images'], true);
+            if (is_array($product)) {
+                if (isset($imagesDescription) && count($imagesDescription) > 0) {
+                    $query->table('image')->where('product_id', '=', $product['id'])->delete();
+                    foreach ($imagesDescription as $key => $value) {
+                        $image = $query->table('image')->insert([
+                            'image_url' => $value,
+                            'product_id' => $product['id'],
+                            'alt' => 'description image ' . $product['name']
+                        ]);
+                    }
                 }
                 back(['success' => 'cập nhập sản phẩm thành công']);
             }
+        } else {
+            back(['error' => 'không tìm thấy sản phẩm']);
         }
-        back(['error' => 'không tìm thấy sản phẩm']);
         break;
     case 'delete_get':
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
@@ -87,11 +91,20 @@ switch ($action) {
         }
         break;
     case 'detail_get':
-        $product = $query->table('products')->select([
-            'users.id' => 'user_id',
-            'users.name' => 'user_name',
-            'category.name' =>  'category_name',
-        ])->where('id', '=', $_GET['id'])->join('users', 'user_id')->join('category', 'category_id')->first();
+        $product = $query->table('products')
+            ->select([
+                'users.name' => 'user_name',
+                'users.id' => 'user_id',
+                'category.name' => 'category_name',
+                'category.id' => 'category_id',
+                'products.*'
+            ])
+            ->join('users', 'user_id')
+            ->join('category', 'category_id')
+            ->where('products.id', '=', $_GET['id'])->first();
+        if ($product) {
+            $product['images'] = $query->table('image')->select()->where('product_id', '=', $product['id'])->all();
+        }
         print_r(json_encode($product));
         break;
     default:

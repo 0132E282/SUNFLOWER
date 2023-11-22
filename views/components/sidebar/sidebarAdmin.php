@@ -76,6 +76,12 @@
                 <div data-i18n="Basic">Danh mục</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="?controller=attribute" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Thuộc tính</div>
+            </a>
+        </li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Tài Khoản</span>
         </li>

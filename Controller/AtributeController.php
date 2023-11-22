@@ -12,7 +12,7 @@ session_exists('current_user') ? $current_user = session_get('current_user') :  
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/site/dashboard']);
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/attribute']);
         break;
     default:
         echo 'không có file';
