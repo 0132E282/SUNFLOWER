@@ -1,10 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <?php if (!empty($message['success'])) : ?>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <?= $message['success'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif ?>
+    <?php View('components/alerts') ?>
     <div class="row ">
         <div class="col-md-4">
             <div class="card mb-4  h-100 position-sticky ">

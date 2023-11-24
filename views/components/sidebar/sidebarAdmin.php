@@ -50,9 +50,60 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="index.html" class="menu-link">
+            <a href="?controller=admin" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">slider</span>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=slider" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tất cả</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=slider&action=create" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tạo slider</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">banner</span>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=banner" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tất cả</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=banner&action=create" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tạo banner</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=banner&action=create-group" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tạo group banner</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">đơn hàng</span>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=order" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Tất cả</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=order&action=methodPay" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">phương thức thành toán</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase">
@@ -74,6 +125,12 @@
             <a href="?controller=category" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Danh mục</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="?controller=attribute&action=customization" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">tùy biến</div>
             </a>
         </li>
         <li class="menu-item">

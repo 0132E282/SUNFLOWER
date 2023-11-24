@@ -18,10 +18,20 @@
         </div>
     </div>
 </div>
+<!-- sử lý modal -->
 <script>
-    const myModal = document.getElementById('<?= $id ?>')
-    const btnDelete = document.getElementById('<?= $btnShowModal ?>')
-    myModal.addEventListener('shown.bs.modal', () => {
-        myModal.querySelector('#clickBtn').href = btnDelete.dataset.value;
+    const modalLink = document.getElementById('<?= $id ?>')
+    const btnList = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#<?= $id ?>"]');
+    btnList.forEach(function(btn) {
+        btn.onclick = function(e) {
+            if (e.currentTarget.classList.contains('active')) {
+                e.currentTarget.classList.remove('active')
+            }
+            e.target.classList.add('active');
+        }
+    })
+    modalLink.addEventListener('shown.bs.modal', () => {
+        const btnModalLink = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#<?= $id ?>"].active');
+        modalLink.querySelector('#clickBtn').href = btnModalLink.dataset.value;
     })
 </script>

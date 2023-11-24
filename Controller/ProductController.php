@@ -1,5 +1,4 @@
 <?php
-
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -14,10 +13,9 @@ switch ($action) {
     case 'index_get':
         $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id')->orderBy('products.created_at')->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'], ['products' => $product_list]);
-
         break;
     case 'create_get':
-        $categoryList = $query->table('category')->select()->all();
+        $categoryList =  $query->table('category')->select()->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/form'], ['categoryList' => $categoryList]);
         break;
     case 'create_post':
@@ -47,6 +45,7 @@ switch ($action) {
         if (is_array($product)) {
             $product['images'] = $query->table('image')->select()->where('product_id', '=', $product['id'])->all();
         }
+
         $categoryList = $query->table('category')->select()->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/form'], ['categoryList' => $categoryList, 'product' => $product]);
         break;
@@ -108,5 +107,6 @@ switch ($action) {
         print_r(json_encode($product));
         break;
     default:
-        echo 'không có file';
+        View('error/404');
+        break;
 }

@@ -1,4 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
+    <?php View('components/alerts') ?>
     <div class="card">
         <h5 class="card-header">Tài khoản người dùng</h5>
         <table class="table table-hover table-striped">
@@ -49,7 +50,7 @@
         </table>
     </div>
 </div>
-<?php View('components/modal/modalLink', ['id' => 'delete-product', 'btnShowModal' => 'btn-delete-product', 'title' => 'xóa sản phẩm', 'content' => 'bạn chắc muốn xóa nó không']) ?>
+<?php View('components/modal/modalLink', ['id' => 'delete-product', 'title' => 'xóa banner', 'content' => 'bạn chắc muốn xóa nó không']) ?>
 <?php View('components/modal/modalProducts') ?>
 <script>
     const btnShowModalList = document.querySelectorAll('.btn-show-modal');

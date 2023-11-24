@@ -1,37 +1,54 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <?php if (!empty($message['success'])) : ?>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <?= $message['success'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif ?>
+    <?php View('components/alerts') ?>
     <div class="row ">
         <div class="col-md-4">
             <div class="card mb-4  h-100 position-sticky ">
                 <div class="d-flex justify-content-between align-content-center card-header">
-                    <h5 class="m-0 ">Tạo danh mục sản phẩm</h5>
-                    <a href="?controller=category" class="btn btn-icon btn-secondary" fdprocessedid="x31gvo">
+                    <h5 class="m-0 ">Tạo danh tạo thuộc tính</h5>
+                    <a href="?controller=attribute" class="btn btn-icon btn-secondary" fdprocessedid="x31gvo">
                         <i class='bx bx-add-to-queue'></i>
                     </a>
                 </div>
                 <div class="card-body">
-                    <form action="<?= empty($category_detail['id']) ? '?controller=category&action=create_category' : '?controller=category&action=update_category&id=' . $category_detail['id'] ?> " method="POST">
+                    <form action="<?= empty($detailAttribute['id']) ? '?controller=attribute&action=create' : '?controller=attribute&action=update&id=' . $detailAttribute['id'] ?> " method="POST">
                         <div class="mb-3">
-                            <label for="name_category" class="form-label">tên danh mục</label>
-                            <input id="name_category" value="<?= $category_detail['name'] ?? '' ?>" name="name" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <label for="name_attribute" class="form-label">tên thuộc tính</label>
+                            <input id="name_attribute" value="<?= $detailAttribute['name'] ?? '' ?>" name="name" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
                         </div>
                         <div class="mb-3">
-                            <label for="defaultSelect" class="form-label">danh mục cha</label>
-                            <select id="defaultSelect" class="form-select" fdprocessedid="fwn97q" name="parent_id">
-                                <option value="0">chọn danh mục cha</option>
-                                <?php foreach ($category_list as $key => $category) : ?>
-                                    <?php if ($category['id'] != $category_detail['id']) :  ?>
-                                        <option value="<?= $category['id'] ?>" <?= !empty($category_detail['parent_id']) && $category['id'] == $category_detail['parent_id'] ? 'selected' : ''  ?>><?= $category['name'] ?></option>
-                                    <?php endif ?>
-                                <?php endforeach ?>
+                            <label for="defaultSelect" class="form-label">loại </label>
+                            <select id="defaultSelect" class="form-select" fdprocessedid="fwn97q" name="type">
+                                <option value="text" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'text' ? 'selected' : '' ?>>nội dung</option>
+                                <option value="color" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'color' ? 'selected' : '' ?>>màu</option>
+                                <option value="src" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'src' ? 'selected' : '' ?>>hình ảnh</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h">tạo danh mục</button>
+                        <div class="mb-3">
+                            <label for="name_attribute" class="form-label">giá trị</label>
+                            <input id="name_attribute" name="value" value="<?= $detailAttribute['value'] ?? '' ?>" class=" form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name_attribute" class="form-label">đường dẫn tỉnh</label>
+                            <input id="name_attribute" name="static_path" value="<?= $detailAttribute['static_path'] ?? '' ?>" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description-attribute" class="form-label">mô tả thuộc tích</label>
+                            <textarea class="form-control" id="description-attribute" value="<?= $detailAttribute['description'] ?? '' ?>" rows="3" name="description" spellcheck="false"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="defaultSelect" class="form-label">nhóm thuộc tính</label>
+                            <select id="defaultSelect" class="form-select" fdprocessedid="fwn97q" name="parent_id">
+                                <option value="0">chọn danh mục cha</option>
+                                <?php if (!empty($parentAttribute)) :  ?>
+                                    <?php foreach ($parentAttribute as $key => $attribute) : ?>
+                                        <?php if ($attribute['id'] != $detailAttribute['id']) :  ?>
+                                            <option value="<?= $attribute['id'] ?>" <?= !empty($detailAttribute['parent_id']) && $attribute['id'] == $detailAttribute['parent_id'] ? 'selected' : ''  ?>><?= $attribute['name'] ?></option>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+                                <?php endif ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h"><?= !empty($detailAttribute['id']) ? 'cập nhập thuộc tính' : ' tạo thuộc tính' ?></button>
                     </form>
                 </div>
             </div>
@@ -43,39 +60,37 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>tên danh mục</th>
-                            <th>cấp danh mục</th>
-                            <th>người tạo</th>
+                            <th>tên thuộc tính</th>
+                            <th>giá trị</th>
+                            <th>đường dân tỉnh</th>
+                            <th>mô tả thuộc tính</th>
                             <th>ngày tạo</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        <?php if (count($category_list) > 0) : ?>
-                            <?php foreach ($category_list as $key => $category) : ?>
+                        <?php if (!empty($attributeList)) : ?>
+                            <?php foreach ($attributeList as $key => $value) : ?>
                                 <tr>
                                     <td><?= ++$key ?></td>
-                                    <td><?= $category['name'] ?></td>
-                                    <td><?= $category['parent_name'] ?></td>
-                                    <td><?= $category['user_name'] ?></td>
-                                    <td><?= $category['created_at'] ?></td>
+                                    <td><?= $value['name'] ?></td>
+                                    <td><?= $value['value'] ?></td>
+                                    <td><?= $value['static_path'] ?></td>
+                                    <td><?= $value['description'] ?></td>
+                                    <td><?= $value['created_at'] ?></td>
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="?controller=category&id=<?= $category['id'] ?>"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                                <a id="btn-delete-category" data-value="?controller=category&action=delete_category&id=<?= $category['id'] ?>" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-category"><i class='bx bx-trash'></i>xóa</a>
+                                                <a class="dropdown-item" href="?controller=attribute&id=<?= $value['id'] ?>"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
+                                                <a data-value="<?= '?controller=attribute&action=delete&id=' . $value['id'] ?>" class="dropdown-item btn-delete-attr" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-attribute"><i class='bx bx-trash'></i>xóa</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
-                        <?php else : ?>
-                            <tr>
-                                <td class=" text-center h-100 " colspan="6">không có dử liêu</td>
-                            </tr>
                         <?php endif ?>
                     </tbody>
                 </table>
@@ -83,4 +98,4 @@
         </div>
     </div>
 </div>
-<?php View('components/modal/modalLink', ['id' => 'delete-category', 'btnShowModal' => 'btn-delete-category', 'title' => 'xóa tài danh mục', 'content' => 'bạn chắc muốn xóa nó không']) ?>
+<?php View('components/modal/modalLink', ['id' => 'delete-attribute', 'btnShowModal' => 'btn-delete-attr', 'title' => 'xóa tài danh mục', 'content' => 'bạn chắc muốn xóa nó không']) ?>

@@ -21,7 +21,7 @@
                     </ul>
                     <div class="tab-content shadow-none ">
                         <div class="tab-pane fade active show " id="navs-top-home" role="tabpanel">
-                            <div class="d-flex modal-images-list">
+                            <div class="d-flex modal-images-list flex-wrap ">
                             </div>
                         </div>
                         <div class="tab-pane fade " id="navs-top-upload-images" role="tabpanel">
@@ -52,6 +52,13 @@
     const formUpload = document.querySelector('.form-upload-images');
     const modal = document.querySelector("#<?= $id ?? '' ?>");
     const imagesList = document.querySelector('.modal-images-list');
+    const btnInputFile = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#<?= $id ?? '' ?>"]');
+    btnInputFile.forEach(item => {
+        item.onclick = (e) => {
+            document.querySelector('.active[data-bs-toggle="modal"][data-bs-target="#<?= $id ?? '' ?>"]')?.classList.remove('active');
+            e.currentTarget.classList.add('active');
+        }
+    });
     formUpload.querySelector('input[type="file"]').onchange = function(e) {
         if (e.target.files) {
             uploadFile()
@@ -99,9 +106,10 @@
             .catch(function(error) {
                 console.log(error);
             })
-    })
+    });
+
     modal.querySelector('.btn-save-change').onclick = function() {
-        const btnModal = document.querySelector(".btn-input-file.active input");
+        const btnModal = document.querySelector('.active[data-bs-toggle="modal"][data-bs-target="#<?= $id ?? '' ?>"] input');
         const inputCheckboxChecked = imagesList.querySelectorAll('.modal-images-item input:checked');
         if (btnModal) {
             const pathImagesList = Array.from(inputCheckboxChecked).map((input) => {
@@ -113,6 +121,7 @@
                 input.checked = false;
             })
             modal.querySelector('.btn-close_modal').click();
+            document.querySelector('.active[data-bs-toggle="modal"][data-bs-target="#<?= $id ?? '' ?>"]')?.classList.remove('active');
         }
     }
 </script>

@@ -1,10 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <?php if (!empty($message['success'])) : ?>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <?= $message['success'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif ?>
+    <?php View('components/alerts') ?>
     <form action="?controller=product&action=<?= !empty($product)  ? 'update&id=' . $product['id'] : 'create' ?>" method="POST" name="form-product">
         <div class="row">
             <!-- Basic Layout -->
@@ -107,7 +102,7 @@
     </form>
 </div>
 <?php View('components/modal/modalUploadFile', ['id' => 'manager-file']) ?>
-
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
 <script src="https://cdn.tiny.cloud/1/g8a7cmcv53x66nhue0tp27n51tk8cyg7so0mrqbzh2a37ycw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="public/assets/js/validate.js"></script>
 <!-- <script>
@@ -153,15 +148,10 @@
         ],
         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
     });
+</script>
+<script>
     const inputImages = document.querySelector('#input-description-images');
     const listImagesReview = document.querySelector('.list-image-review');
-    const btnInputFile = document.querySelectorAll('.btn-input-file');
-    btnInputFile.forEach(item => {
-        item.onclick = (e) => {
-            document.querySelector('.btn-input-file.active')?.classList.remove('active');
-            e.currentTarget.classList.add('active');
-        }
-    })
     inputImages.onclick = function(e) {
         if (e.currentTarget.value) {
             listImagesReview.innerHTML = JSON.parse(e.currentTarget.value)?.map((value) => {
