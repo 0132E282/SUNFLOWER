@@ -1,16 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <?php
-    if (!empty($message['success'])) {
-        echo '
-        <div class="alert alert-success alert-dismissible" role="alert">
-            ' . $message['success'] . '
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        ';
-    }
-
-    ?>
-
+    <?php View('components/alerts') ?>
     <div class="card ">
         <form class="row g-3 bg-while" action="<?= empty($_GET['id']) ? '?controller=users&action=create_user' : '?controller=users&action=update_user&id=' . $_GET['id'] ?>" method="POST" enctype="multipart/form-data">
             <div class="card-body">

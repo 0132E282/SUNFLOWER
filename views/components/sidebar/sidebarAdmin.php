@@ -1,5 +1,5 @@
 <!-- Menu -->
-
+<?php require_once 'Menu.php' ?>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="index.html" class="app-brand-link">
@@ -44,128 +44,25 @@
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
-
     <div class="menu-inner-shadow"></div>
-
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
-            <a href="?controller=admin" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Dashboard</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">slider</span>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=slider" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tất cả</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=slider&action=create" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tạo slider</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">banner</span>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=banner" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tất cả</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=banner&action=create" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tạo banner</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=banner&action=create-group" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tạo group banner</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">đơn hàng</span>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=order" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Tất cả</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=order&action=methodPay" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">phương thức thành toán</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Sản phẩm</span>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=product" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Tất cả</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=product&action=create" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tạo sản phẩm</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=category" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Danh mục</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=attribute&action=customization" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">tùy biến</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=attribute" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Thuộc tính</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Tài Khoản</span>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=users" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Tất cả</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=users&action=create" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Tạo tài khoản</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="?controller=users&action=role" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">quyền hạng</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">thùng rác</div>
-            </a>
-        </li>
+        <?php foreach ($menuList as $key => $menu) : ?>
+            <?php if (isset($menu['title']) && $menu['title'] != '') : ?>
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text"><?= $menu['title'] ?></span>
+                </li>
+            <?php endif ?>
+            <?php if (isset($menu['children']) && count($menu['children']) > 0) : ?>
+                <?php foreach ($menu['children'] as $key => $item) : ?>
+                    <li class="menu-item">
+                        <a href="<?= $item['url'] ?>" class="menu-link">
+                            <i class="menu-icon <?= $item['icon'] ?>"></i>
+                            <div data-i18n="Analytics"><?= $item['name'] ?></div>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+            <?php endif ?>
+        <?php endforeach ?>
     </ul>
 </aside>
-<!-- / Menu -->

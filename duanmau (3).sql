@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 22, 2023 lúc 10:41 AM
+-- Thời gian đã tạo: Th10 24, 2023 lúc 05:57 PM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.1.17
 
@@ -20,6 +20,116 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `duanmau`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `attribute`
+--
+
+CREATE TABLE `attribute` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `static_path` varchar(600) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT 0,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(40) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `attribute`
+--
+
+INSERT INTO `attribute` (`id`, `name`, `value`, `static_path`, `parent_id`, `description`, `type`, `user_id`, `created_at`, `update_at`) VALUES
+(10, 'màu', 'color', '', 0, '', 'text', 84, '2023-11-23 02:48:22', '2023-11-23 02:48:22'),
+(11, 'đỏ', '#FF0000', '', 10, '', 'color', 84, '2023-11-23 02:49:28', '2023-11-23 02:49:28'),
+(12, 'đen', '#000000', '', 10, '', 'color', 84, '2023-11-23 02:50:01', '2023-11-23 02:50:01'),
+(13, 'kích thước', 'size', '', 0, '', 'text', 84, '2023-11-23 03:17:18', '2023-11-23 03:17:18'),
+(14, 'S', 'S', '', 13, '', 'text', 84, '2023-11-23 03:17:40', '2023-11-23 03:17:40'),
+(15, 'M', 'M', '', 13, '', 'text', 84, '2023-11-23 07:49:36', '2023-11-23 07:49:36'),
+(16, 'XL', 'XL', '', 13, '', 'text', 84, '2023-11-23 07:49:52', '2023-11-23 07:49:52'),
+(17, 'XXL', 'XXL', '', 13, '', 'text', 84, '2023-11-23 07:50:08', '2023-11-23 07:50:08'),
+(18, 'vàng', '#FFFF00', '', 10, '', 'color', 84, '2023-11-23 07:50:55', '2023-11-23 07:50:55');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `attribute_customization`
+--
+
+CREATE TABLE `attribute_customization` (
+  `id` int(11) NOT NULL,
+  `customization_id` bigint(20) NOT NULL,
+  `attribute_id` bigint(20) NOT NULL,
+  `parent_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `attribute_customization`
+--
+
+INSERT INTO `attribute_customization` (`id`, `customization_id`, `attribute_id`, `parent_id`) VALUES
+(3, 6, 11, 10),
+(4, 6, 15, 13),
+(5, 7, 11, 10),
+(6, 7, 15, 13),
+(7, 8, 18, 10),
+(8, 8, 16, 13),
+(9, 9, 12, 10),
+(10, 9, 15, 13);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `banner`
+--
+
+CREATE TABLE `banner` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `images` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `banner_group_id` bigint(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `banner`
+--
+
+INSERT INTO `banner` (`id`, `name`, `url`, `images`, `user_id`, `banner_group_id`, `created_at`, `update_at`) VALUES
+(8, 'black friday giảm 70%', '', 'store/images/66a523fb20fe9a8dca48060219b62d5d.jpg', 84, 3, '2023-11-24 07:13:30', '2023-11-24 07:13:30'),
+(9, 'black friday  39k', '', 'store/images/99fadbaebe0aac00fe1d6dcf6c5d37fd.webp', 84, 3, '2023-11-24 07:13:30', '2023-11-24 07:13:30'),
+(13, '23', '123', 'store/images/22be486df556e7814cd3f9cdc266256b.jpg', 84, NULL, '2023-11-24 10:36:54', '2023-11-24 10:36:54'),
+(14, '23', '123', 'store/images/22be486df556e7814cd3f9cdc266256b.jpg', 84, NULL, '2023-11-24 10:37:15', '2023-11-24 10:37:15');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `banner_group`
+--
+
+CREATE TABLE `banner_group` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `banner_group`
+--
+
+INSERT INTO `banner_group` (`id`, `name`, `user_id`, `description`) VALUES
+(3, 'banner-sale', 84, '1231231'),
+(4, 'banner-product', 84, '1231231'),
+(5, 'slider', 84, ' ');
 
 -- --------------------------------------------------------
 
@@ -108,8 +218,33 @@ INSERT INTO `image` (`id`, `alt`, `image_url`, `product_id`, `update_at`, `creat
 (26, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/0e173639ae4218c86b2c5ba528230aab.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
 (27, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/67895d07a9c9e54ac270856ef365447c.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
 (28, 'description image Áo sơ mi nam dài tay Aristino ALS02903', 'store/images/ede83ec93e84fdbc69fe2046459b0cc1.webp', 22, '2023-11-22 09:38:01', '2023-11-22 09:38:01', NULL),
-(29, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/070fe03339c5e37c4844c99a68d14e16.webp', 24, '2023-11-22 09:39:28', '2023-11-22 09:39:28', NULL),
-(30, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/dec08b8a5e5fcc3b6f393e7a91235149.webp', 24, '2023-11-22 09:39:28', '2023-11-22 09:39:28', NULL);
+(61, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/070fe03339c5e37c4844c99a68d14e16.webp', 24, '2023-11-22 14:32:02', '2023-11-22 14:32:02', NULL),
+(62, 'description image Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 'store/images/dec08b8a5e5fcc3b6f393e7a91235149.webp', 24, '2023-11-22 14:32:02', '2023-11-22 14:32:02', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `menus`
+--
+
+CREATE TABLE `menus` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `parent_id` bigint(20) DEFAULT 0,
+  `description` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `menus`
+--
+
+INSERT INTO `menus` (`id`, `name`, `url`, `parent_id`, `description`, `user_id`, `created_at`, `update_at`) VALUES
+(4, 'cửa hàng', '?controller=shop&page=1', 0, 'trang cửa hàng', 84, '2023-11-24 14:24:46', '2023-11-24 14:24:46'),
+(5, 'trang chủ', '/', 0, 'đây là trang chủ', 84, '2023-11-24 14:45:22', '2023-11-24 14:45:22');
 
 -- --------------------------------------------------------
 
@@ -206,8 +341,36 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `user_id`, `description`, `price`, `count_likes`, `count_comments`, `category_id`, `count_views`, `count_buy`, `created_at`, `updated_at`, `delete_at`, `feature_image`, `quantity`, `discount`) VALUES
-(22, 'Áo sơ mi nam dài tay Aristino ALS02903', 84, '<p>FORM D&Aacute;NG:&nbsp;Regular Fit<br>THIẾT KẾ:<br>- &Aacute;o sơ mi d&agrave;i tay phom d&aacute;ng Regular Fit su&ocirc;ng nhẹ, vừa vặn t&ocirc;n d&aacute;ng<br>- &Aacute;o thiết kế đơn giản c&ugrave;ng m&agrave;u trắng in chấm xanh mang đến phong c&', 715500, 0, 0, 29, 0, 0, '2023-11-22 09:38:01', '2023-11-22 16:38:01', NULL, 'store/images/b46db704c13cced6a74d8522ae38b374.webp', 12, 795000),
-(24, 'Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 84, '', 805500, 0, 0, 29, 0, 0, '2023-11-22 09:39:28', '2023-11-22 16:39:28', NULL, 'store/images/ea3aad0be7150a57d12fff4057f02a9f.webp', 123, 795000);
+(22, 'Áo sơ mi nam dài tay Aristino ALS02903', 84, '<p>FORM D&Aacute;NG:&nbsp;Regular Fit<br>THIẾT KẾ:<br>- &Aacute;o sơ mi d&agrave;i tay phom d&aacute;ng Regular Fit su&ocirc;ng nhẹ, vừa vặn t&ocirc;n d&aacute;ng<br>- &Aacute;o thiết kế đơn giản c&ugrave;ng m&agrave;u trắng in chấm xanh mang đến phong c&', 715500, 3, 0, 29, 0, 0, '2023-11-22 09:38:01', '2023-11-22 16:38:01', NULL, 'store/images/b46db704c13cced6a74d8522ae38b374.webp', 12, 795000),
+(24, 'Áo sơ mi nam dài tay Aristino ALS12102 màu Xanh tím than', 84, '<p>2</p>', 805500, 0, 0, 29, 0, 0, '2023-11-22 09:39:28', '2023-11-22 16:39:28', NULL, 'store/images/ea3aad0be7150a57d12fff4057f02a9f.webp', 123, 795000);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_customization`
+--
+
+CREATE TABLE `product_customization` (
+  `id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL,
+  `weight` bigint(20) NOT NULL,
+  `price` bigint(20) NOT NULL,
+  `quantity` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_customization`
+--
+
+INSERT INTO `product_customization` (`id`, `product_id`, `weight`, `price`, `quantity`, `code`) VALUES
+(3, 22, 0, 715500, 0, ''),
+(4, 24, 0, 805500, 0, ''),
+(5, 24, 0, 805500, 0, ''),
+(6, 24, 0, 805500, 0, ''),
+(7, 24, 0, 805500, 0, ''),
+(8, 24, 0, 805500, 0, ''),
+(9, 24, 0, 805500, 0, '');
 
 -- --------------------------------------------------------
 
@@ -251,6 +414,31 @@ INSERT INTO `role` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `slider`
+--
+
+CREATE TABLE `slider` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `images` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `slider`
+--
+
+INSERT INTO `slider` (`id`, `name`, `url`, `images`, `user_id`, `created_at`, `update_at`) VALUES
+(2, 'slider-1', '123123', 'store/images/d9879a5aa8bda1ae9af2eb8b79f7cbda.jpg', 84, '2023-11-24 10:39:58', '2023-11-24 10:39:58'),
+(3, 'slider-2', '', 'store/images/72e8faff951cdf5e57d5f0969669e32b.jpg', 84, '2023-11-24 10:52:44', '2023-11-24 10:52:44'),
+(4, 'slider-3', '', 'store/images/22be486df556e7814cd3f9cdc266256b.jpg', 84, '2023-11-24 10:54:11', '2023-11-24 10:54:11');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `status`
 --
 
@@ -287,11 +475,40 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `photo_url`, `role_id`, `email_vaildate`, `google_id`, `facebook_id`, `logged_at`, `created_at`, `updated_at`, `locked`) VALUES
-(84, 'Phúc Nuyễn Hoàng', 'admin01', '$2y$10$Xn1AnWnuh45g1vi07WVGcOoXAC3eZ.mBIpj3va2fkmHD5C0O9jjyy', 'store/avatar/5166769102803e3d2df578980e76017c.png', 1, NULL, NULL, NULL, NULL, '2023-11-17 11:54:53', '2023-11-17 11:54:53', 0);
+(84, 'admin1', 'admin01', '$2y$10$Xn1AnWnuh45g1vi07WVGcOoXAC3eZ.mBIpj3va2fkmHD5C0O9jjyy', 'store/avatar/5166769102803e3d2df578980e76017c.png', 1, NULL, NULL, NULL, NULL, '2023-11-17 11:54:53', '2023-11-17 11:54:53', 0),
+(85, 'admin2', 'admin2', '$2y$10$IH.GhpjYTHcJkm0wuCjOXO/lBiIpbk8usuEGnOEiYJVD.b07Z5W.e', 'store/avatar/3fa3000faff90e7f8262e44adb1a462e.png', 4, NULL, NULL, NULL, NULL, '2023-11-24 14:36:44', '2023-11-24 14:36:44', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `attribute`
+--
+ALTER TABLE `attribute`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `attribute_customization`
+--
+ALTER TABLE `attribute_customization`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `attribute_id` (`attribute_id`),
+  ADD KEY `customization_id` (`customization_id`);
+
+--
+-- Chỉ mục cho bảng `banner`
+--
+ALTER TABLE `banner`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `banner_group_id` (`banner_group_id`) USING BTREE;
+
+--
+-- Chỉ mục cho bảng `banner_group`
+--
+ALTER TABLE `banner_group`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `category`
@@ -321,6 +538,13 @@ ALTER TABLE `customers`
 ALTER TABLE `image`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Chỉ mục cho bảng `menus`
+--
+ALTER TABLE `menus`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `notification`
@@ -361,6 +585,13 @@ ALTER TABLE `products`
   ADD KEY `category_id` (`category_id`);
 
 --
+-- Chỉ mục cho bảng `product_customization`
+--
+ALTER TABLE `product_customization`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Chỉ mục cho bảng `product_reviews`
 --
 ALTER TABLE `product_reviews`
@@ -373,6 +604,13 @@ ALTER TABLE `product_reviews`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `slider`
+--
+ALTER TABLE `slider`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `status`
@@ -391,10 +629,34 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `attribute`
+--
+ALTER TABLE `attribute`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT cho bảng `attribute_customization`
+--
+ALTER TABLE `attribute_customization`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `banner`
+--
+ALTER TABLE `banner`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT cho bảng `banner_group`
+--
+ALTER TABLE `banner_group`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT cho bảng `comments`
@@ -412,7 +674,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT cho bảng `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT cho bảng `menus`
+--
+ALTER TABLE `menus`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `notification`
@@ -442,7 +710,13 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT cho bảng `product_customization`
+--
+ALTER TABLE `product_customization`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `product_reviews`
@@ -457,6 +731,12 @@ ALTER TABLE `role`
   MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT cho bảng `slider`
+--
+ALTER TABLE `slider`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT cho bảng `status`
 --
 ALTER TABLE `status`
@@ -466,11 +746,31 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `attribute`
+--
+ALTER TABLE `attribute`
+  ADD CONSTRAINT `attribute_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Các ràng buộc cho bảng `attribute_customization`
+--
+ALTER TABLE `attribute_customization`
+  ADD CONSTRAINT `attribute_customization_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `attribute` (`id`),
+  ADD CONSTRAINT `attribute_customization_ibfk_2` FOREIGN KEY (`customization_id`) REFERENCES `product_customization` (`id`);
+
+--
+-- Các ràng buộc cho bảng `banner`
+--
+ALTER TABLE `banner`
+  ADD CONSTRAINT `banner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `banner_ibfk_2` FOREIGN KEY (`banner_group_id`) REFERENCES `banner_group` (`id`);
 
 --
 -- Các ràng buộc cho bảng `category`
@@ -496,6 +796,12 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `image`
   ADD CONSTRAINT `image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Các ràng buộc cho bảng `menus`
+--
+ALTER TABLE `menus`
+  ADD CONSTRAINT `menus_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Các ràng buộc cho bảng `notification`
@@ -526,11 +832,23 @@ ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 
 --
+-- Các ràng buộc cho bảng `product_customization`
+--
+ALTER TABLE `product_customization`
+  ADD CONSTRAINT `product_customization_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
 -- Các ràng buộc cho bảng `product_reviews`
 --
 ALTER TABLE `product_reviews`
   ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`);
+
+--
+-- Các ràng buộc cho bảng `slider`
+--
+ALTER TABLE `slider`
+  ADD CONSTRAINT `slider_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
