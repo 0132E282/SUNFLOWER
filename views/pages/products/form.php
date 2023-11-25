@@ -8,37 +8,38 @@
                     <div class="card-body">
                         <div class="mb-3 input-wrapper">
                             <label for="nameProducts" class="form-label">tên sản phẩm</label>
-                            <input type="text" value="<?= $product['name'] ?? '' ?>" class="form-control" id="nameProducts" name="name-product" placeholder="nhập tên sản phẩm mà bạn muốn" fdprocessedid="uggdbw">
-                            <p class="mb-0 text-danger mt-1 massage-error"><em></em></p>
+                            <input type="text" value="<?= $product['name'] ?? old('name-product') ?>" class="form-control" id="nameProducts" name="name-product" placeholder="nhập tên sản phẩm mà bạn muốn" fdprocessedid="uggdbw">
+                            <?php if (!empty($error['name-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['name-product']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="input-wrapper mb-3">
                             <label for="description-products" class="form-label">mô tả sản phẩm</label>
-                            <textarea class="form-control" id="description-products" name="description-product" rows="7" spellcheck="false"><?= $product['description'] ?? '' ?></textarea>
+                            <textarea class="form-control" id="description-products" name="description-product" rows="7" spellcheck="false"><?= $product['description'] ?? old('description-product') ?></textarea>
+                            <?php if (!empty($error['description-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['description-product']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="input-wrapper mb-3">
                             <label for="category_list" class="form-label">chọn danh mục sản phẩm</label>
                             <select class="form-select" id="category_list" name="category" fdprocessedid="mnavrk">
                                 <option value=" ">chọn danh mục sản phảm</option>
                                 <?php foreach ($categoryList as $key => $value) : ?>
-                                    <option value="<?= $value['id'] ?>" <?= !empty($product['category_id']) && $product['category_id'] == $value['id']  ? 'selected' : '' ?>><?= $value['name'] ?></option>
+                                    <option value="<?= $value['id'] ?>" <?= !empty($product['category_id']) && $product['category_id'] == $value['id'] || $value['id']  == old('category')  ? 'selected' : '' ?>><?= $value['name'] ?></option>
                                 <?php endforeach ?>
                             </select>
-                            <p class="mb-0 text-danger mt-1 massage-error"><em></em></p>
+                            <?php if (!empty($error['category'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['category']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3 input-wrapper">
                             <label for="quantity-product" class="form-label">số lượng sản phẩm</label>
-                            <input type="text" class="form-control" value="<?= $product['quantity'] ?? '' ?>" id="quantity-product" name="quantity-product" placeholder="nhập giá sản phẩm" name="price-product" fdprocessedid="uggdbw">
-                            <p class="mb-0 text-danger mt-1 massage-error"><em></em></p>
+                            <input type="text" class="form-control" value="<?= $product['quantity'] ?? old('quantity-product') ?>" id="quantity-product" name="quantity-product" placeholder="nhập giá sản phẩm" name="price-product" fdprocessedid="uggdbw">
+                            <?php if (!empty($error['quantity-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['quantity-product']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3 input-wrapper">
                             <label for="price_product" class="form-label">giá sản phẩm</label>
-                            <input type="text" class="form-control" value="<?= $product['price'] ?? '' ?>" id="price_product" placeholder="nhập giá sản phẩm" name="price-product" fdprocessedid="uggdbw">
-                            <p class="mb-0 text-danger mt-1 massage-error"><em></em></p>
+                            <input type="text" class="form-control" value="<?= $product['price'] ?? old('price-product') ?>" id="price_product" placeholder="nhập giá sản phẩm" name="price-product" fdprocessedid="uggdbw">
+                            <?php if (!empty($error['price-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['price-product']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3 input-wrapper">
                             <label for="discount-product" class="form-label">giá sản phẩm được giảm</label>
-                            <input type="text" class="form-control" value="<?= $product['discount'] ?? '' ?>" id="discount-product" name="discount-product" placeholder="nhập giảm giá sản phẩm" fdprocessedid="uggdbw">
-                            <p class="mb-0 text-danger mt-1 massage-error"><em></em></p>
+                            <input type="text" class="form-control" value="<?= $product['discount'] ?? old('discount') ?>" id="discount-product" name="discount-product" placeholder="nhập giảm giá sản phẩm" fdprocessedid="uggdbw">
+                            <?php if (!empty($error['discount-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['discount-product']['message'] ?></p> <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -58,13 +59,13 @@
                                 Ảnh sản phẩm
                             </label>
                             <label for="input-feature_image" class="form-label ">
-                                <img src="<?= $product['feature_image'] ?? 'public\assets\img\default\product-default.png' ?>" id="uploaded-feature_image" class="img-thumbnail mx-auto d-block w-50" alt="...">
+                                <img src="<?= $product['feature_image'] ?? json_decode(old('feature_image'))[0] ?? 'public\assets\img\default\product-default.png' ?>" id="uploaded-feature_image" class="img-thumbnail mx-auto d-block w-50" alt="...">
                             </label>
                             <div class="button-wrapper">
                                 <label for="input-feature_image" class="btn btn-primary me-2 mb-4 btn-input-file" tabindex="0" data-bs-toggle="modal" data-bs-target="#manager-file">
                                     <span class="d-none d-sm-block">tải hình sản phẩm</span>
                                     <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="text" value="<?= $product['feature_image'] ?? '' ?>" id="input-feature_image" class="input-file-images" name="feature_image" hidden="">
+                                    <input type="text" value="<?= $product['feature_image'] ?? old('feature_image') ?>" id="input-feature_image" class="input-file-images" name="feature_image" hidden="">
                                 </label>
                                 <label type="button" class="btn btn-outline-secondary account-image-reset mb-4" fdprocessedid="axbads">
                                     <i class="bx bx-reset d-block d-sm-none"></i>
@@ -72,6 +73,7 @@
                                 </label>
                                 <p class="text-muted mb-0">Được phép JPG, GIF hoặc PNG. Kích thước tối đa 800K</p>
                             </div>
+                            <?php if (!empty($error['feature_image'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['feature_image']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <div class="list-image-review mb-3 d-flex flex-wrap">

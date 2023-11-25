@@ -1,9 +1,10 @@
 <?php
+function old($name)
+{
+    global $error;
+    return isset($error[$name]) ? $error[$name]['old'] : '';
+}
 function input($name)
 {
-    if (!empty($_POST[$name]) && $_POST[$name] != '') {
-        return $_POST[$name];
-    } else if (!empty($_POST[$name]) && $_POST[$name] != '') {
-        return $_POST[$name];
-    }
+    return $_GET[$name] ||  $_POST[$name];
 }

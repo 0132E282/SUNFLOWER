@@ -1,8 +1,11 @@
 <?php
 require 'bootstrap.php';
 session_start();
+$error = session_get('error');
+session_remove('error');
 $message = session_get('message');
-session_push('message', '');
+session_remove('message');
+
 $controller = 'site';
 // kiểm tra biến controller có tồn tại không 
 if (!empty($_GET['controller'])) {

@@ -4,7 +4,7 @@
         <form class="row g-3 bg-while" action="<?= empty($_GET['id']) ? '?controller=users&action=create_user' : '?controller=users&action=update_user&id=' . $_GET['id'] ?>" method="POST" enctype="multipart/form-data">
             <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                    <img src="<?= $user['photo_url'] ?? 'public/assets/img/avatars/1.png' ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                    <img src="<?= $user['photo_url'] ?? 'public/assets/img/avatars/5166769102803e3d2df578980e76017c.png' ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
                     <div class="button-wrapper">
                         <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -25,15 +25,18 @@
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label for="user_name" class="form-label">Tên tài khoản</label>
-                        <input type="text" value="<?= $user['name'] ?? '' ?>" class="form-control" id="user_name" placeholder="tên tài khoản" name="name">
+                        <input type="text" value="<?= $user['name'] ?? old('name')  ?>" class="form-control" id="user_name" placeholder="tên tài khoản" name="name">
+                        <?php if (!empty($error['name'])) : ?> <p class="text-danger ms-1 mt-1 mb-0"><?= $error['name']['message'] ?></p> <?php endif ?>
                     </div>
                     <div class="col-12 mb-3">
-                        <label for="tài khoản" class="form-label">tài khoản</label>
-                        <input type="text" value="<?= $user['username'] ?? '' ?>" class="form-control" id="tài khoản" name="username">
+                        <label for="username" class="form-label">tài khoản</label>
+                        <input id="username" type="text" value="<?= $user['username'] ?? old('username') ?>" class="form-control" name="username" placeholder="nhập tài khoản ">
+                        <?php if (!empty($error['username'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['username']['message'] ?></p> <?php endif ?>
                     </div>
                     <div class="col-12 mb-3">
                         <label for="user_password" class="form-label">mật khẩu</label>
-                        <input type="password" <?= !empty($user['password']) ? 'disabled' : '' ?> class="form-control" id="user_password" name="password">
+                        <input type="password" <?= !empty($user['password']) ? 'disabled' : '' ?> class="form-control" id="user_password" name="password" value="<?= old('password') ?>" placeholder="nhập password">
+                        <?php if (!empty($error['password'])) : ?> <p class="text-danger ms-1 mt-1 mb-0"><?= $error['password']['message'] ?></p> <?php endif ?>
                     </div>
 
                     <div class="col-12 mb-3">

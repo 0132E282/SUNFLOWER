@@ -86,6 +86,21 @@ $menuList = [
         ]
     ],
     [
+        'title' => 'slider',
+        'children' => [
+            [
+                'name' => 'tất cả',
+                'url' => '?controller=slider',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'tạo slider',
+                'url' => '?controller=slider&action=create',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ]
+        ]
+    ],
+    [
         'title' => 'tài khoản',
         'children' => [
             [

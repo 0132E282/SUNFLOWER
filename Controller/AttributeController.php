@@ -1,4 +1,6 @@
 <?php
+require_once 'Request/validateAttribute.php';
+require_once 'Request/validateCustomization.php';
 
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
@@ -31,29 +33,31 @@ switch ($action) {
         );
         break;
     case 'create_post':
+        $req = validateAttribute();
         $attribute = $query->table('attribute')->insert([
-            'name' => input('name'),
-            'value' => input('value'),
-            'static_path' => input('static_path'),
-            'parent_id' => input('parent_id'),
-            'type' => input('type'),
+            'name' => $req['name'],
+            'value' => $req['value'],
+            'static_path' => $req['static_path'],
+            'parent_id' => $req['parent_id'],
+            'type' => $req['type'],
             'user_id' => $current_user['id'],
-            'description' => input('description')
+            'description' => $req['description']
         ]);
         if (is_array($attribute)) {
             back(['success' => 'tạo thuộc tính thành công']);
         }
         break;
     case 'update_post':
+        $req = validateAttribute();
         $attribute = $query->table('attribute')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($attribute)) {
             $query->table('attribute')->where('id', '=', $attribute['id'])->update([
-                'name' => input('name') ?? $attribute['name'],
-                'value' => input('value') ?? $attribute['value'],
-                'static_path' => input('static_path') ?? $attribute['static_path'],
-                'parent_id' => input('parent_id') ?? $attribute['parent_id'],
-                'type' => input('type') ?? $attribute['type'],
-                'description' => input('description') ?? $attribute['description']
+                'name' => $req['name'] ?? $attribute['name'],
+                'value' => $req['value'] ?? $attribute['value'],
+                'static_path' => $req['static_path'] ?? $attribute['static_path'],
+                'parent_id' => $req['parent_id'] ?? $attribute['parent_id'],
+                'type' => $req['type'] ?? $attribute['type'],
+                'description' => $req['description'] ?? $attribute['description']
             ]);
             back(['success' => 'tạo thuộc tính thành công']);
         }
@@ -87,23 +91,30 @@ switch ($action) {
         ]);
         break;
     case 'create_customization_post':
-        $customization = $query->table('product_customization')->insert([
-            'product_id' => input('product'),
-            'price' => input('product_price'),
-            'quantity' => input('product_quantity'),
-            'code' => input('product_code'),
-            'weight' => input('product_weight'),
-        ]);
-        if (count($customization) > 0) {
-            foreach (input('attribute') as $key => $value) {
-                $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
-                $query->table('attribute_customization')->insert([
-                    'customization_id' => $customization['id'],
-                    'attribute_id' => $attribute['id'],
-                    'parent_id' => $attribute['parent_id'],
-                ]);
-            }
-            back(['success' => 'tạo thành công']);
+        try {
+            $req = validateCustomization();
+            // if (!empty($req['attribute'])) {
+            //     $customization = $query->table('product_customization')->insert([
+            //         'product_id' => $req['product'],
+            //         'price' => $req['product_price'],
+            //         'quantity' => $req['product_quantity'],
+            //         'code' => $req['product_code'],
+            //         'weight' => $req['product_weight'],
+            //     ]);
+            //     if (count($customization) > 0) {
+            //         foreach ($req['attribute'] as $key => $value) {
+            //             $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
+            //             $query->table('attribute_customization')->insert([
+            //                 'customization_id' => $customization['id'],
+            //                 'attribute_id' => $attribute['id'],
+            //                 'parent_id' => $attribute['parent_id'],
+            //             ]);
+            //         }
+            //         back(['success' => 'tạo thành công']);
+            //     }
+            // }
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
         }
         break;
     default:

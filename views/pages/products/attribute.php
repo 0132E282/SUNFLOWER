@@ -13,27 +13,35 @@
                     <form action="<?= empty($detailAttribute['id']) ? '?controller=attribute&action=create' : '?controller=attribute&action=update&id=' . $detailAttribute['id'] ?> " method="POST">
                         <div class="mb-3">
                             <label for="name_attribute" class="form-label">tên thuộc tính</label>
-                            <input id="name_attribute" value="<?= $detailAttribute['name'] ?? '' ?>" name="name" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <input id="name_attribute" value="<?= $detailAttribute['name'] ?? old('name') ?>" name="name" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['name'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['name']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <label for="defaultSelect" class="form-label">loại </label>
                             <select id="defaultSelect" class="form-select" fdprocessedid="fwn97q" name="type">
-                                <option value="text" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'text' ? 'selected' : '' ?>>nội dung</option>
-                                <option value="color" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'color' ? 'selected' : '' ?>>màu</option>
-                                <option value="src" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'src' ? 'selected' : '' ?>>hình ảnh</option>
+                                <option value="text" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'text' || old('type') == 'text' ? 'selected' : '' ?>>nội dung</option>
+                                <option value="color" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'color' || old('type')  == 'color' ? 'selected' : '' ?>>màu</option>
+                                <option value="src" <?= !empty($detailAttribute['type']) && $detailAttribute['type'] == 'src' || old('type')  == 'src' ? 'selected' : '' ?>>hình ảnh</option>
                             </select>
+                            <?php if (!empty($error['type'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['type']['message'] ?></p> <?php endif ?>
+
                         </div>
                         <div class="mb-3">
                             <label for="name_attribute" class="form-label">giá trị</label>
-                            <input id="name_attribute" name="value" value="<?= $detailAttribute['value'] ?? '' ?>" class=" form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <input id="name_attribute" name="value" value="<?= $detailAttribute['value'] ?? old('value') ?>" class=" form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['value'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['value']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <label for="name_attribute" class="form-label">đường dẫn tỉnh</label>
-                            <input id="name_attribute" name="static_path" value="<?= $detailAttribute['static_path'] ?? '' ?>" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <input id="name_attribute" name="static_path" value="<?= $detailAttribute['static_path'] ?? old('static_path') ?>" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['static_path'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['static_path']['message'] ?></p> <?php endif ?>
+
                         </div>
                         <div class="mb-3">
                             <label for="description-attribute" class="form-label">mô tả thuộc tích</label>
-                            <textarea class="form-control" id="description-attribute" value="<?= $detailAttribute['description'] ?? '' ?>" rows="3" name="description" spellcheck="false"></textarea>
+                            <textarea class="form-control" id="description-attribute" value="<?= $detailAttribute['description'] ?? old('description') ?>" rows="3" name="description" spellcheck="false"></textarea>
+                            <?php if (!empty($error['description'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['description']['message'] ?></p> <?php endif ?>
+
                         </div>
                         <div class="mb-3">
                             <label for="defaultSelect" class="form-label">nhóm thuộc tính</label>
@@ -42,11 +50,12 @@
                                 <?php if (!empty($parentAttribute)) :  ?>
                                     <?php foreach ($parentAttribute as $key => $attribute) : ?>
                                         <?php if ($attribute['id'] != $detailAttribute['id']) :  ?>
-                                            <option value="<?= $attribute['id'] ?>" <?= !empty($detailAttribute['parent_id']) && $attribute['id'] == $detailAttribute['parent_id'] ? 'selected' : ''  ?>><?= $attribute['name'] ?></option>
+                                            <option value="<?= $attribute['id'] ?>" <?= !empty($detailAttribute['parent_id']) && $attribute['id'] == $detailAttribute['parent_id'] || $attribute['id']  == old('parent_id')  ? 'selected' : ''  ?>><?= $attribute['name'] ?></option>
                                         <?php endif ?>
                                     <?php endforeach ?>
                                 <?php endif ?>
                             </select>
+                            <?php if (!empty($error['parent_id'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['parent_id']['message'] ?></p> <?php endif ?>
                         </div>
                         <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h"><?= !empty($detailAttribute['id']) ? 'cập nhập thuộc tính' : ' tạo thuộc tính' ?></button>
                     </form>

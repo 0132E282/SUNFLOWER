@@ -1,4 +1,5 @@
 <?php
+require_once 'Request/validateFormProducts.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -19,25 +20,34 @@ switch ($action) {
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/form'], ['categoryList' => $categoryList]);
         break;
     case 'create_post':
-        $product = $query->table('products')->insert([
-            'name' => input('name-product'),
-            'user_id' => $current_user['id'],
-            'description' => input('description-product'),
-            'category_id ' => input('category'),
-            'price' => input('price-product'),
-            'feature_image' => input('feature_image'),
-            'quantity' => input('quantity-product'),
-            'discount' => input('discount-product')
-        ]);
-        if ($product) {
-            foreach (json_decode($_POST['description-images']) as $key => $value) {
-                $image = $query->table('image')->insert([
-                    'image_url' => $value,
-                    'product_id' => $product['id'],
-                    'alt' => 'description image ' . $product['name']
-                ]);
+        try {
+            $req = validateFormProducts();
+            $product = $query->table('products')->insert([
+                'name' => $req['name-product'],
+                'user_id' => $current_user['id'],
+                'description' => $req['description-product'],
+                'category_id ' => $req['category'],
+                'price' => $req['price-product'],
+                'feature_image' => $req['feature_image'],
+                'quantity' => $req['quantity-product'],
+                'discount' => $req['discount-product']
+            ]);
+            if (count($product) > 0) {
+                if (isset($req['description-images'])) {
+                    foreach (json_decode($req['description-images']) as $key => $value) {
+                        $image = $query->table('image')->insert([
+                            'image_url' => $value,
+                            'product_id' => $product['id'],
+                            'alt' => 'description image ' . $product['name']
+                        ]);
+                    }
+                }
+                back(['success' => 'tạo sản phẩm thành công']);
+            } else {
+                throw new Exception('tạo sản phẩm thất bai');
             }
-            back(['success' => 'tạo sản phẩm thành công']);
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
         }
         break;
     case 'update_get':
@@ -51,15 +61,16 @@ switch ($action) {
         break;
     case 'update_post':
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
+        $req = validateFormProducts();
         if (is_array($product)) {
             $query->table('products')->where('id', '=', $product['id'])->update([
-                'name' => input('name-product') ?? $product['name'],
-                'description' => input('description-product')  ?? $product['description'],
-                'category_id ' => input('category')  ?? $product['category_id'],
-                'price' => input('price-product') ?? $product['price'],
-                'feature_image' => input('feature_image') ?? $product['feature_image'],
-                'quantity' => input('quantity-product') ?? $product['quantity-product'],
-                'discount' => input('discount-product') ?? $product['discount-product']
+                'name' =>  $req['name-product'] ?? $product['name'],
+                'description' =>  $req['description-product']  ?? $product['description'],
+                'category_id ' =>  $req['category']  ?? $product['category_id'],
+                'price' =>  $req['price-product'] ?? $product['price'],
+                'feature_image' =>  $req['feature_image'] ?? $product['feature_image'],
+                'quantity' =>  $req['quantity-product'] ?? $product['quantity-product'],
+                'discount' =>  $req['discount-product'] ?? $product['discount-product']
             ]);
             $imagesDescription = json_decode($_POST['description-images'], true);
             if (is_array($product)) {

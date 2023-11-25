@@ -16,9 +16,10 @@
                                 <select id="product-list" class="form-select" fdprocessedid="huu2px" name="product">
                                     <option value="">chọn sản phẩm</option>
                                     <?php foreach ($products as $key => $value) : ?>
-                                        <option value="<?= $value['id'] ?>" <?= isset($productDetail['id']) && $value['id'] === $productDetail['id'] ? 'selected' : '' ?>><?= $value['name'] ?></option>
+                                        <option value="<?= $value['id'] ?>" <?= isset($productDetail['id']) && $value['id'] == $productDetail['id'] || $value['id'] == old('product') ? 'selected' : '' ?>><?= $value['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php if (!empty($error['product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
                                 <h6>thuộc tính</h6>
@@ -26,30 +27,35 @@
                                     <?php foreach ($attr_list as $key => $value) : ?>
                                         <div class="col">
                                             <select id="defaultSelect" name="attribute[]" class="form-select" fdprocessedid="lhqxok">
-                                                <option><?= $value['name'] ?></option>
+                                                <option value="' '"><?= $value['name'] ?></option>
                                                 <?php foreach ($value['children'] as $key => $value) : ?>
                                                     <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
                                     <?php endforeach; ?>
+                                    <?php if (!empty($error['attribute'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['attribute']['message'] ?></p> <?php endif ?>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="defaultInput" class="form-label">giá sản phẩm (mặt định lấy giả gốc)</label>
-                                <input id="defaultInput" value="<?= $productDetail['price'] ?? '' ?>" class="form-control" name="product_price" type="text" placeholder="giá sản phẩm" fdprocessedid="731r6">
+                                <label for="price_product" class="form-label">giá sản phẩm (mặt định lấy giả gốc)</label>
+                                <input id="price_product" value="<?= $productDetail['price'] ?? old('product_price') ?>" class="form-control" name="product_price" type="text" placeholder="giá sản phẩm" fdprocessedid="731r6">
+                                <?php if (!empty($error['product_price'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_price']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
-                                <label for="defaultInput" class="form-label">số lượng (không vượt qua <?= $productDetail['quantity'] ?? '' ?> sản phẩm)</label>
-                                <input id="defaultInput" class="form-control" type="text" name="product_quantity" placeholder="số lượng sản phẩm" fdprocessedid="731r6">
+                                <label for="quantity_product" class="form-label">số lượng (không vượt qua <?= $productDetail['quantity'] ?? '' ?> sản phẩm)</label>
+                                <input id="quantity_product" class="form-control" value="<?= old('product_quantity') ?>" type="text" name="product_quantity" placeholder="số lượng sản phẩm" fdprocessedid="731r6">
+                                <?php if (!empty($error['product_quantity'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_quantity']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
-                                <label for="defaultInput" class="form-label">mã sản phẩm</label>
-                                <input id="defaultInput" class="form-control" type="text" name="product_code" placeholder="mã sản phẩm" fdprocessedid="731r6">
+                                <label for="product_code" class="form-label">mã sản phẩm</label>
+                                <input id="product_code" class="form-control" type="text" name="product_code" value="<?= old('product_code') ?>" placeholder="mã sản phẩm" fdprocessedid="731r6">
+                                <?php if (!empty($error['product_code'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_code']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
-                                <label for="defaultInput" class="form-label">cân nặng (kg)</label>
-                                <input id="defaultInput" class="form-control" type="text" name="product_weight" placeholder="cân nặng" fdprocessedid="731r6">
+                                <label for="product-weight" class="form-label">cân nặng (kg)</label>
+                                <input id="product-weight" class="form-control" type="text" name="product_weight" <?= old('product_weight') ?> placeholder="cân nặng" fdprocessedid="731r6">
+                                <?php if (!empty($error['product_weight'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_weight']['message'] ?></p> <?php endif ?>
                             </div>
                             <button class="btn btn-primary ">tạo tùy biến sản phẩm</button>
                         </form>

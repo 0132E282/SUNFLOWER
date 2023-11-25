@@ -1,1 +1,0 @@
-<h1>đây là view <?php print_r($user) ?></h1>

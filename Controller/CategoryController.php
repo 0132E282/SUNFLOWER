@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Request/validateCategory.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -44,10 +44,11 @@ switch ($action) {
         break;
     case 'create_category':
         try {
+            $req = validateCategory();
             if (count($current_user) > 0 && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 $category = $query->table('category')->insert([
-                    'name' => input('name'),
-                    'parent_id' => input('parent_id'),
+                    'name' =>  $req['name'],
+                    'parent_id' =>  $req['parent_id'],
                     'user_id' => $current_user['id'],
                 ]);
                 if ($category) back(['success' => 'tạo danh mục sản phẩm thành công']);

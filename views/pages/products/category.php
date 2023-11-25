@@ -14,6 +14,7 @@
                         <div class="mb-3">
                             <label for="name_category" class="form-label">tên danh mục</label>
                             <input id="name_category" value="<?= $category_detail['name'] ?? '' ?>" name="name" class="form-control" type="text" placeholder="danh mục" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['name'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['name']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <label for="defaultSelect" class="form-label">danh mục cha</label>

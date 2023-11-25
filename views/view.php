@@ -1,8 +1,10 @@
 <?php
 function View($view = [], $data = [])
 {
-    // extract biến tất cả các key của array thành biến
+    // sử dụng biến toàn cục
     global $message;
+    global $error;
+    // extract biến tất cả các key của array thành biến
     extract($data);
     if (is_array($view)) extract($view);
 
@@ -15,6 +17,7 @@ function back($with = [])
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
+
 function redirect($url, $with = [])
 {
     if (is_array($with)) {
