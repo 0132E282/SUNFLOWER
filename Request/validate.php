@@ -55,7 +55,7 @@ function validate($handle, $messageInput)
 // hàm kiểm tra chuổi có phải là chuổi rổng không
 function required($name, $message)
 {
-    if (empty(input($name)) || !empty(input($name)) && trim(input($name)) == '') {
+    if (empty(input($name)) || !empty(input($name)) && trim((string) input($name)) == '') {
         return isset($message) &&  $message != '' ? $message : "trường dữ $name liệu này không được để tróng";
     }
 };

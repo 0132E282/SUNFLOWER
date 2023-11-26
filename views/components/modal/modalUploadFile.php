@@ -112,10 +112,16 @@
         const btnModal = document.querySelector('.active[data-bs-toggle="modal"][data-bs-target="#<?= $id ?? '' ?>"] input');
         const inputCheckboxChecked = imagesList.querySelectorAll('.modal-images-item input:checked');
         if (btnModal) {
-            const pathImagesList = Array.from(inputCheckboxChecked).map((input) => {
-                return input.value;
-            });
-            btnModal.value = JSON.stringify(pathImagesList);
+            let pathImagesList;
+            if (btnModal.multiple === true) {
+                console.log(1);
+                pathImagesList = JSON.stringify(Array.from(inputCheckboxChecked).map((input) => {
+                    return input.value;
+                }));
+            } else {
+                pathImagesList = inputCheckboxChecked[inputCheckboxChecked.length - 1].value;
+            }
+            btnModal.value = pathImagesList;
             btnModal.click();
             inputCheckboxChecked.forEach(input => {
                 input.checked = false;

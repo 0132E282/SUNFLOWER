@@ -6,5 +6,5 @@ function old($name)
 }
 function input($name)
 {
-    return $_GET[$name] ||  $_POST[$name];
+    return $_POST[$name] ?? $_GET[$name];
 }

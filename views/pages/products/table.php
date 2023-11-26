@@ -1,5 +1,49 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <?php View('components/alerts') ?>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <?php if (isset($orderby)) : ?>
+                    <div class="col-3">
+                        <div class="row">
+                            <label for="html5-text-input" class="col-md-2 col-form-label" style="width: max-content;">xấp sếp </label>
+                            <div class="col-md-8">
+                                <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
+                                    <?php foreach ($orderby as $value) : ?>
+                                        <option value="<?= $value['value'] ?>" <?= isset($_POST['order']) && $value['value'] == $_POST['order'] ? 'selected' : "" ?>><?= $value['name'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="row">
+                            <label for="html5-text-input" class="col-md-2 col-form-label" style="width: max-content;">theo</label>
+                            <div class="col-md-8">
+                                <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
+                                    <option value="DESC">DESC (tăng dần)</option>
+                                    <option value="ASC">ASC (giảm dần)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif ?>
+                <div class="col-3">
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-2 col-form-label">Text</label>
+                        <div class="col-md-10">
+                            <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
+                                <option>Default select</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <h5 class="card-header">Tài khoản người dùng</h5>
         <table class="table table-hover table-striped">

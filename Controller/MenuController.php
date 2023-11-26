@@ -1,5 +1,5 @@
 <?php
-
+require_once "Request/validateFormMenus.php";
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -21,11 +21,12 @@ switch ($action) {
         break;
     case 'create_post':
         try {
+            $req = validateFormMenus();
             $menus =  $query->table('menus')->insert([
-                'name' => $_POST['name'],
-                'parent_id' => $_POST['menus_parent'],
-                'url' => $_POST['menu_url'] ?? '',
-                'description' => $_POST['description'],
+                'name' => $req['name'],
+                'parent_id' => $req['menus_parent'],
+                'url' => $req['menu_url'] ?? '',
+                'description' => $req['description'],
                 'user_id' => $current_user['id'],
             ]);
             if (count($menus) > 0) back(['success' => 'tạo menu thành công']);
@@ -49,13 +50,14 @@ switch ($action) {
         break;
     case 'update_post':
         try {
+            $req = validateFormMenus();
             $menu = $query->table('menus')->select()->where('id', '=', $_GET['id'])->first();
             if (count($menu) > 0) {
                 $query->table('menus')->where('id', '=', $menu['id'])->update([
-                    'name' => $_POST['name'],
-                    'parent_id' => $_POST['menus_parent'],
-                    'url' => $_POST['menu_url'] ?? '',
-                    'description' => $_POST['description'],
+                    'name' => $req['name'],
+                    'parent_id' => $req['menus_parent'],
+                    'url' => $req['menu_url'] ?? '',
+                    'description' => $req['description'],
                 ]);
                 back(['success' => 'tạo menu thành công']);
             };

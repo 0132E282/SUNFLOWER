@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Request/validateFormBanner.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -21,15 +21,14 @@ switch ($action) {
         break;
     case 'create_post':
         try {
-            foreach ($_POST['banner-images'] as $key => $image) {
-                $query->table('banner')->insert([
-                    'name' => $_POST['banner-name'][$key] ?? '',
-                    'images' => json_decode($image)[0],
-                    'banner_group_id' => $_POST['banner-group'][$key] ?? 0,
-                    'user_id' => $current_user['id'],
-                    'url' => $_POST['banner-path'][$key] ?? '',
-                ]);
-            }
+            $req = validateFormBanner();
+            $query->table('banner')->insert([
+                'name' => $_POST['banner-name'] ?? '',
+                'images' => $req['banner-images'],
+                'banner_group_id' => $_POST['banner-group'] ?? 0,
+                'user_id' => $current_user['id'],
+                'url' => $_POST['banner-path'] ?? '',
+            ]);
             back(['success' => 'tạo thành công']);
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);
@@ -50,11 +49,12 @@ switch ($action) {
         break;
     case 'update_post':
         try {
+            $req = validateFormBanner();
             $banner = $query->table('banner')->select()->where('id', '=', $_GET['id'])->first();
             if (count($banner)) {
                 $query->table('banner')->where('id', '=', $banner['id'])->update([
                     'name' => $_POST['banner-name'] ?? $banner['name'],
-                    'images' => json_decode($_POST['banner-images'])[0] ?? $banner['images'],
+                    'images' => $req['banner-images'] ?? $banner['images'],
                     'banner_group_id' => $_POST['banner-group'] ?? $banner['banner_group_id'],
                     'url' => $_POST['banner-path'] ?? $banner['url'],
                 ]);

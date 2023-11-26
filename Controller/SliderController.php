@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Request/validateFormSlider.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -20,14 +20,13 @@ switch ($action) {
         break;
     case 'create_post':
         try {
-            foreach ($_POST['slider-images'] as $key => $image) {
-                $slider =  $query->table('slider')->insert([
-                    'name' =>  $_POST['slider-name'][$key] ?? '',
-                    'images' => json_decode($image)[0],
-                    'user_id' => $current_user['id'],
-                    'url' => $_POST['slider-path'][$key] ?? '',
-                ]);
-            }
+            $req = validateFormSlider();
+            $slider =  $query->table('slider')->insert([
+                'images' => $req['slider-images'],
+                'name' =>  $req['slider-name'] ?? '',
+                'user_id' => $current_user['id'],
+                'url' => $req['slider-path'] ?? '',
+            ]);
             if (count($slider) > 0) {
                 back(['success' => 'tạo slider thành công']);
             }
@@ -44,12 +43,13 @@ switch ($action) {
         }
         break;
     case 'update_post':
+        $req = validateFormSlider();
         $slider = $query->table('slider')->select()->where('id', '=', $_GET['id'])->first();
         if (count($slider) > 0) {
             $query->table('slider')->where('id', '=', $slider['id'])->update([
-                'name' => $_POST['slider-name'] ?? $slider['name'],
+                'name' => $req['slider-name'] ?? $slider['name'],
                 'images' => json_decode($_POST['slider-images'])[0] ?? $slider['images'],
-                'url' => $_POST['slider-path'] ?? $slider['url'],
+                'url' => $req['slider-path'] ?? $slider['url'],
             ]);
             back(['success' => 'slider cập nhập thành công']);
         } else {

@@ -28,7 +28,7 @@
                         </div>
                         <div class="mb-3 input-wrapper">
                             <label for="quantity-product" class="form-label">số lượng sản phẩm</label>
-                            <input type="text" class="form-control" value="<?= $product['quantity'] ?? old('quantity-product') ?>" id="quantity-product" name="quantity-product" placeholder="nhập giá sản phẩm" name="price-product" fdprocessedid="uggdbw">
+                            <input type="text" class="form-control" value="<?= $product['quantity'] ?? old('quantity-product') ?>" id="quantity-product" name="quantity-product" placeholder="nhập giá sản phẩm" fdprocessedid="uggdbw">
                             <?php if (!empty($error['quantity-product'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['quantity-product']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3 input-wrapper">
@@ -59,7 +59,7 @@
                                 Ảnh sản phẩm
                             </label>
                             <label for="input-feature_image" class="form-label ">
-                                <img src="<?= $product['feature_image'] ?? json_decode(old('feature_image'))[0] ?? 'public\assets\img\default\product-default.png' ?>" id="uploaded-feature_image" class="img-thumbnail mx-auto d-block w-50" alt="...">
+                                <img src="<?= $product['feature_image'] ?? old('feature_image') !== '' ? old('feature_image')  : 'public\assets\img\default\product-default.png' ?>" id="uploaded-feature_image" class="img-thumbnail mx-auto d-block w-50" alt="...">
                             </label>
                             <div class="button-wrapper">
                                 <label for="input-feature_image" class="btn btn-primary me-2 mb-4 btn-input-file" tabindex="0" data-bs-toggle="modal" data-bs-target="#manager-file">
@@ -77,8 +77,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="list-image-review mb-3 d-flex flex-wrap">
-                                <?php if (!empty($product['images'])) : ?>
-                                    <?php foreach ($product['images'] as $image) : ?>
+                                <?php if (!empty($product['images']) || old('description-images') != '') : ?>
+                                    <?php foreach (($product['images'] ?? json_decode(old('description-images'))) as $image) : ?>
                                         <div class="w-25 position-relative  me-1 mt-1">
                                             <img src="<?= $image['image_url'] ?>" class="rounded float-start" alt="<?= $image['alt'] ?>" style="width: 70px;">
                                         </div>
@@ -89,7 +89,7 @@
                                 <label type="button" class="btn btn-primary me-2 btn-input-file" tabindex="0" data-bs-toggle="modal" data-bs-target="#manager-file">
                                     <span class="d-none d-sm-block">tải ảnh mô tả</span>
                                     <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="input" id="input-description-images" value="<?= json_encode($product['images']) ?>" class="input-file-images" name="description-images" hidden="">
+                                    <input type="text" id="input-description-images" value="<?= isset($product['images']) ? json_encode($product['images']) : old('description-images') ?>" class="input-file-images" multiple name="description-images" hidden="">
                                 </label>
                                 <button type="button" class="btn btn-outline-secondary reset-images " fdprocessedid="axbads">
                                     <i class="bx bx-reset d-block d-sm-none"></i>
@@ -107,30 +107,7 @@
 <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
 <script src="https://cdn.tiny.cloud/1/g8a7cmcv53x66nhue0tp27n51tk8cyg7so0mrqbzh2a37ycw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="public/assets/js/validate.js"></script>
-<!-- <script>
-    validator({
-        form: 'form-product',
-        rules: {
-            'name-product': [
-                validator.require('name-product'),
-            ],
-            'price-product': [
-                validator.require(),
-                validator.isNumber(),
-            ],
-            'quantity-product': [
-                validator.require(),
-                validator.isNumber(),
-            ],
-            'category': [
-                validator.require(),
-            ],
-            'discount-product': [
-                validator.isNumber(),
-            ],
-        }
-    });
-</script> -->
+
 <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
 <script type="text/javascript">
     tinymce.init({
@@ -156,6 +133,7 @@
     const listImagesReview = document.querySelector('.list-image-review');
     inputImages.onclick = function(e) {
         if (e.currentTarget.value) {
+            console.log(e.currentTarget.value)
             listImagesReview.innerHTML = JSON.parse(e.currentTarget.value)?.map((value) => {
                 return `
             <div class="w-25 position-relative me-1 mt-1">
@@ -167,7 +145,6 @@
     }
     document.querySelector('#input-feature_image').onclick = function(e) {
         if (e.target.value) {
-            e.target.value = JSON.parse(e.target.value)[0];
             document.querySelector('#uploaded-feature_image').src = e.target.value;
         }
     }

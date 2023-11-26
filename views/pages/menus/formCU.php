@@ -15,15 +15,19 @@
                     <form action="?controller=menu&action=<?= isset($menu['id']) ? 'update&id=' . $menu['id'] : 'create' ?> " method="POST">
                         <div class="mb-3">
                             <label for="name_menu" class="form-label">tên menu</label>
-                            <input id="name_menu" value="<?= $menu['name'] ?? '' ?>" name="name" class="form-control" type="text" placeholder="nhập tên menu" fdprocessedid="5dmahi">
+                            <input id="name_menu" value="<?= $menu['name'] ?? old('name') ?>" name="name" class="form-control" type="text" placeholder="nhập tên menu" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['name'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['name']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <label for="menu_path" class="form-label">đường dẫn</label>
-                            <input id="menu_path" value="<?= $menu['url'] ?? '' ?>" name="menu_url" class="form-control" type="text" placeholder="đường dẫn menu" fdprocessedid="5dmahi">
+                            <input id="menu_path" value="<?= $menu['url'] ?? old('menu_url') ?>" name="menu_url" class="form-control" type="text" placeholder="đường dẫn menu" fdprocessedid="5dmahi">
+                            <?php if (!empty($error['menu_url'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['menu_url']['message'] ?></p> <?php endif ?>
+
                         </div>
                         <div class="mb-3">
                             <label for="menus-description" class="form-label">mô tả menu</label>
-                            <textarea class="form-control" id="menus-description" name="description" rows="3" spellcheck="false"><?= $menu['description'] ?? '' ?></textarea>
+                            <textarea class="form-control" id="menus-description" name="description" rows="3" spellcheck="false"><?= $menu['description'] ?? old('description') ?></textarea>
+                            <?php if (!empty($error['description'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['description']['message'] ?></p> <?php endif ?>
                         </div>
                         <div class="mb-3">
                             <label for="defaultSelect" class="form-label">menu cha</label>
@@ -31,15 +35,17 @@
                                 <option value="0">chọn danh mục cha</option>
                                 <?php if (isset($menusList) && count($menusList) > 0) : ?>
                                     <?php foreach ($menusList as $key => $value) : ?>
-                                        <?php if (isset($menu['parent_id']) && $menu['id'] != $value['id']) : ?>
-                                            <option value="<?= $value['id'] ?>" <?= $menu['parent_id'] == 'id'  ? 'selected' : '' ?>><?= $value['name'] ?></option>
+                                        <?php if ($value['id'] != $menu['id']) : ?>
+                                            <option value="<?= $value['id'] ?>" <?= $value['id'] == old('menus_parent') || isset($menu['parent_id']) && $value['id'] == $menu['parent_id']  ? 'selected' : ''  ?>><?= $value['name'] ?? '' ?></option>
                                         <?php endif ?>
                                     <?php endforeach; ?>
                                 <?php endif ?>
                             </select>
+                            <?php if (!empty($error['menus_parent'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['menus_parent']['message'] ?></p> <?php endif ?>
                         </div>
                         <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h">tạo menu</button>
                     </form>
+
                 </div>
             </div>
         </div>

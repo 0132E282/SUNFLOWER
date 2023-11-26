@@ -12,8 +12,17 @@ $query = new Query();
 session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
 switch ($action) {
     case 'index_get':
+        $orderby = [
+            ['name' => 'ngày tạo', 'value' => 'created_at',],
+            ['name' => 'theo giá', 'value' => 'price',],
+            ['name' => 'số lượng like', 'value' => 'count_likes',],
+            ['name' => 'số  try cập sản phẩm', 'value' => 'count_views',],
+            ['name' => 'số sản phẩm đã bán', 'value' => 'count_buy',],
+            ['name' => 'số sản phẩm', 'value' => 'quantity',],
+            ['name' => 'số bình luật', 'value' => 'count_comments',],
+        ];
         $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id')->orderBy('products.created_at')->all();
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'], ['products' => $product_list]);
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'], ['products' => $product_list, 'orderby' => $orderby]);
         break;
     case 'create_get':
         $categoryList =  $query->table('category')->select()->all();
@@ -93,7 +102,6 @@ switch ($action) {
     case 'delete_get':
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($product)) {
-            $query->table('image')->where('product_id', '=', $product['id'])->delete();
             $query->table('products')->where('id', '=', $product['id'])->delete();
             back(['success' => 'xóa sản phẩm thành công ' . $product['name']]);
         } else {

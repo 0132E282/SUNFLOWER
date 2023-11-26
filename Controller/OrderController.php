@@ -12,9 +12,18 @@ session_exists('current_user') ? $current_user = session_get('current_user') :  
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/index']);
+        $orderList = $query->table('orders')->select([
+            'customers.name' => 'customer_name',
+            'customers.phone_number' => 'customer_phone_number',
+            'customers.city' => 'customer_city',
+            'customers.email' => 'customer_email',
+            'customers.district' => 'customer_district',
+            'orders.*'
+        ])->join('customers', 'customers_id')->all();
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/index'], ['orderList' => $orderList]);
         break;
-    case 'create':
+    case 'detail_get':
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/detail']);
 
         break;
     default:

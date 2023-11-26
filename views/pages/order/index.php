@@ -2,59 +2,39 @@
     <div class="w-100">
     </div>
     <div class="card">
-        <h5 class="card-header">banner</h5>
+        <h5 class="card-header">quẩn lý đơn hàng</h5>
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>hình</th>
-                    <th>tên</th>
-                    <th> miêu tả</th>
-                    <th>người tạo</th>
+                    <th>mã đơn hàng</th>
+                    <th>tên khách hàng</th>
+                    <th>số điện thoại</th>
+                    <th>số tiền thánh toán</th>
+                    <th>thành phố</th>
                     <th>ngày tạo</th>
-                    <th></th>
+                    <th>trạng thái</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                <tr>
-                    <td>1</td>
-                    <td style="max-width: 300px; ">trang chủ</td>
-                    <td>/</td>
-                    <td>đây là trang chủ</td>
-                    <td>admin1</td>
-                    <td>2023-11-24 21:45:22</td>
-
-                    <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="?controller=menu&amp;action=update&amp;id=5"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                <a id="btn-delete-product" data-value="?controller=menu&amp;action=delete&amp;id=5" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-menu"><i class="bx bx-trash me-1"></i>xóa sản phẩm</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td style="max-width: 300px; ">cửa hàng</td>
-                    <td>?controller=shop&amp;page=1</td>
-                    <td>trang cửa hàng</td>
-                    <td>admin1</td>
-                    <td>2023-11-24 21:24:46</td>
-                    <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="?controller=menu&amp;action=update&amp;id=4"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                <a id="btn-delete-product" data-value="?controller=menu&amp;action=delete&amp;id=4" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-menu"><i class="bx bx-trash me-1"></i>xóa sản phẩm</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                <?php if (isset($orderList) && count($orderList) > 0) : ?>
+                    <?php foreach ($orderList as $key => $order) : ?>
+                        <tr>
+                            <td><?= ++$key ?></td>
+                            <td></td>
+                            <td><a href="?controller=order&action=detail&id=<?= $order['id'] ?>"><?= $order['customer_name'] ?></a></td>
+                            <td><?= $order['customer_phone_number'] ?></td>
+                            <td><?= $order['total'] ?></td>
+                            <td><?= $order['customer_city'] ?></td>
+                            <td><?= $order['created_at'] ?></td>
+                            <td><?= $order['status'] == 2 ? 'đã giao hàng'  : ($order['status'] == 1 ? 'đã xử lý' : 'chưa xử lý') ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                <?php else : ?>
+                    <tr colspan="8">
+                        <td>không có dữ liệu</td>
+                    </tr>
+                <?php endif ?>
             </tbody>
         </table>
     </div>

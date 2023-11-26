@@ -93,26 +93,26 @@ switch ($action) {
     case 'create_customization_post':
         try {
             $req = validateCustomization();
-            // if (!empty($req['attribute'])) {
-            //     $customization = $query->table('product_customization')->insert([
-            //         'product_id' => $req['product'],
-            //         'price' => $req['product_price'],
-            //         'quantity' => $req['product_quantity'],
-            //         'code' => $req['product_code'],
-            //         'weight' => $req['product_weight'],
-            //     ]);
-            //     if (count($customization) > 0) {
-            //         foreach ($req['attribute'] as $key => $value) {
-            //             $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
-            //             $query->table('attribute_customization')->insert([
-            //                 'customization_id' => $customization['id'],
-            //                 'attribute_id' => $attribute['id'],
-            //                 'parent_id' => $attribute['parent_id'],
-            //             ]);
-            //         }
-            //         back(['success' => 'tạo thành công']);
-            //     }
-            // }
+            if (!empty($req['attribute'])) {
+                $customization = $query->table('product_customization')->insert([
+                    'product_id' => $req['product'],
+                    'price' => $req['product_price'],
+                    'quantity' => $req['product_quantity'],
+                    'code' => $req['product_code'],
+                    'weight' => $req['product_weight'],
+                ]);
+                if (count($customization) > 0) {
+                    foreach ($req['attribute'] as $key => $value) {
+                        $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
+                        $query->table('attribute_customization')->insert([
+                            'customization_id' => $customization['id'],
+                            'attribute_id' => $attribute['id'],
+                            'parent_id' => $attribute['parent_id'],
+                        ]);
+                    }
+                    back(['success' => 'tạo thành công']);
+                }
+            }
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);
         }
