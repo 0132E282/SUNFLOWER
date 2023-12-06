@@ -26,6 +26,7 @@ switch ($action) {
                 'name' =>  $req['slider-name'] ?? '',
                 'user_id' => $current_user['id'],
                 'url' => $req['slider-path'] ?? '',
+                'sub_title' => $req['sub_title'] ?? '',
             ]);
             if (count($slider) > 0) {
                 back(['success' => 'tạo slider thành công']);
@@ -48,8 +49,9 @@ switch ($action) {
         if (count($slider) > 0) {
             $query->table('slider')->where('id', '=', $slider['id'])->update([
                 'name' => $req['slider-name'] ?? $slider['name'],
-                'images' => json_decode($_POST['slider-images'])[0] ?? $slider['images'],
+                'images' => $_POST['slider-images'] ?? $slider['images'],
                 'url' => $req['slider-path'] ?? $slider['url'],
+                'sub_title' => $req['sub_title'] ?? '',
             ]);
             back(['success' => 'slider cập nhập thành công']);
         } else {

@@ -125,6 +125,20 @@ switch ($action) {
         }
         print_r(json_encode($product));
         break;
+    case 'products_attributes_get':
+        $products = $query->table('product_customization')->select([
+            'products.name' => 'product_name',
+            'products.feature_image' => 'product_feature_image',
+            'products.price' => 'product_price',
+            'products.id' => 'product_id',
+            'product_customization.*'
+        ])->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')->all();
+        $products = array_map(function ($product) use ($query) {
+            $attributes = $query->table('attribute_customization')->select('name')->join('attribute', 'attribute_id')->where('customization_id', '=', $product['id'])->all();
+            return [...$product, 'attributes' =>  $attributes];
+        }, $products);
+        print_r(json_encode($products));
+        break;
     default:
         View('error/404');
         break;

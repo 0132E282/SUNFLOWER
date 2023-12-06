@@ -9,11 +9,15 @@
                     <form action="?controller=banner&action=<?= isset($bannerGroup['id']) ? 'update-group&id=' . $bannerGroup['id'] : 'create-group' ?>" method="post">
                         <div class="mb-4">
                             <label for="group-name" class="form-label">tên group</label>
-                            <input type="text" class="form-control" id="group-name" name="name" value="<?= $bannerGroup['name'] ?? '' ?>" placeholder="tên group" fdprocessedid="ewfbhm">
+                            <input type="text" class="form-control" id="group-name" name="name" value="<?= $bannerGroup['name'] ?? old('name') ?>" placeholder="tên group" fdprocessedid="ewfbhm">
+                            <?php if (!empty($error['name'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['name']['message'] ?></p> <?php endif ?>
                         </div>
+
                         <div class="mb-4">
                             <label for="group-description" class="form-label">mô tả</label>
-                            <textarea class="form-control" id="group-description" name="description" rows="3"> <?= $bannerGroup['description'] ?? '' ?></textarea>
+                            <textarea class="form-control" id="group-description" name="description" rows="3"> <?= $bannerGroup['description'] ?? old('description') ?></textarea>
+                            <?php if (!empty($error['description'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['description']['message'] ?></p> <?php endif ?>
+
                         </div>
                         <button type="submit" class="btn btn-primary" fdprocessedid="8o0s66"><?= isset($bannerGroup['id']) ? 'cập nhập nhóm' : 'tạo nhóm' ?></button>
                     </form>

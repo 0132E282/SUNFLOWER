@@ -27,6 +27,11 @@
                                             <?php if (!empty($error['banner-name'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['banner-name']['message'] ?></p> <?php endif ?>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="sub_title" class="form-label">tiêu đề phụ</label>
+                                            <input type="text" class="form-control" name="sub_title" value="<?= $banner['sub_title'] ?? old('sub_title') ?>" id="sub_title" placeholder="tên hình ảnh">
+                                            <?php if (!empty($error['sub_title'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['sub_title']['message'] ?></p> <?php endif ?>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="banner-path" class="form-label">đường dẫn </label>
                                             <input type="text" class="form-control" id="banner-path" name="banner-path" value="<?= $banner['url'] ??  old('url') ?>" placeholder="đường dẫn banner">
                                             <?php if (!empty($error['banner-path'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['banner-path']['message'] ?></p> <?php endif ?>

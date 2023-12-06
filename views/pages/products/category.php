@@ -40,7 +40,6 @@
                         <tr>
                             <th>#</th>
                             <th>tên danh mục</th>
-                            <th>cấp danh mục</th>
                             <th>người tạo</th>
                             <th>ngày tạo</th>
                             <th></th>
@@ -52,7 +51,6 @@
                                 <tr>
                                     <td><?= ++$key ?></td>
                                     <td><?= $category['name'] ?></td>
-                                    <td><?= $category['parent_name'] ?></td>
                                     <td><?= $category['user_name'] ?></td>
                                     <td><?= $category['created_at'] ?></td>
                                     <td>

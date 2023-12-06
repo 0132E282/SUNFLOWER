@@ -1,5 +1,6 @@
 <?php
 require_once 'Request/validateFormBanner.php';
+require_once 'Request/validateFormGroup.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -28,6 +29,7 @@ switch ($action) {
                 'banner_group_id' => $_POST['banner-group'] ?? 0,
                 'user_id' => $current_user['id'],
                 'url' => $_POST['banner-path'] ?? '',
+                'sub_title' => $req['sub_title'],
             ]);
             back(['success' => 'tạo thành công']);
         } catch (Exception $e) {
@@ -98,10 +100,12 @@ switch ($action) {
         break;
     case 'create-group_post':
         try {
+            $req = validateFormGroup();
             $group = $query->table('banner_group')->insert([
-                'name' => $_POST['name'],
+                'name' => $req['name'],
                 'user_id' => $current_user['id'],
-                'description' => $_POST['description'],
+                'description' => $req['description'],
+
             ]);
             if (!count($group)) throw new Exception('tạo banner group thất bại');
             back(['success' => 'tạo  banner group thành công']);
@@ -111,11 +115,13 @@ switch ($action) {
         break;
     case 'update-group_post':
         try {
+            $req = validateFormGroup();
             $bannerGroup = $query->table('banner_group')->select()->where('id', '=', $_GET['id'])->first();
             if (count($bannerGroup) > 0) {
                 $query->table('banner_group')->where('id', '=',  $bannerGroup['id'])->update([
-                    'name' => $_POST['name'],
-                    'description' => $_POST['description'],
+                    'name' => $req['name'],
+                    'description' => $req['description'],
+                    'sub_title' => $req['sub_title'],
                 ]);
                 back(['success' => 'cập nhập banner group thành công']);
             } else {

@@ -28,7 +28,7 @@ switch ($action) {
                     'locked' => $user['locked']
                 ];
                 session_push('current_user', $current_user);
-                redirect('index.php?controller=admin', ['success' => 'đăng nhập thành công']);
+                redirect('index.php?controller=dashboard', ['success' => 'đăng nhập thành công']);
             } else {
                 back(['error' => 'tài khoản hoạt mật khẩu không chín xát']);
             }

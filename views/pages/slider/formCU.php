@@ -30,6 +30,10 @@
                                             <label for="slider-path" class="form-label">đường dẫn </label>
                                             <input type="text" class="form-control" id="slider-path" name="slider-path" value="<?= $slider['url'] ?? '' ?>" placeholder="đường dẫn slider">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="sub_title" class="form-label"> tiêu đề phụ</label>
+                                            <input type="text" class="form-control" id="sub_title" name="sub_title" value="<?= $slider['sub_title'] ?? '' ?>" placeholder="tiêu đề phụ">
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -16,7 +16,7 @@
                 <?php if (isset($slider_list) && count($slider_list) > 0) : ?>
                     <?php foreach ($slider_list as $key => $slider) : ?>
                         <tr>
-                            <td>1</td>
+                            <td><?= ++$key ?></td>
                             <td>
                                 <div class="position-relative" style="width: 100px;">
                                     <img src="<?= $slider['images'] ?>" class="w-100 h-100">

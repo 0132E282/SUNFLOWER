@@ -1,4 +1,5 @@
 <?php
+$query = new Query();
 // hàm sử lý dùng để sử lý lỗi (hàm chính )
 function validate($handle, $messageInput)
 {
@@ -77,5 +78,13 @@ function isNumber($name, $message)
 {
     if (!empty(input($name)) && !is_numeric(input($name))) {
         return isset($message) &&  $message != '' ? $message : "$name phải là số";
+    }
+}
+function unique($name, $message, $table, $col)
+{
+    global $query;
+    $data = $query->table($table)->select()->where($col, '=', input($name))->first();
+    if (!empty($data) && count($data) > 0) {
+        return isset($message) &&  $message != '' ? $message : "$name có tồn tại trong bản $col";
     }
 }

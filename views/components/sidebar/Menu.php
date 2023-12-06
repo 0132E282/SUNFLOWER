@@ -5,7 +5,7 @@ $menuList = [
         'children' => [
             [
                 'name' => 'Dashboard',
-                'url' => '?controller=site',
+                'url' => '?controller=dashboard',
                 'icon' => 'tf-icons bx bx-home-circle',
             ]
         ]
@@ -51,6 +51,16 @@ $menuList = [
             [
                 'name' => 'tất cả',
                 'url' => '?controller=order',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'trạng thái đơn hàng',
+                'url' => '?controller=status',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'tạo trạng thái đơn hàng',
+                'url' => '?controller=status&action=create',
                 'icon' => 'tf-icons bx bx-home-circle',
             ]
         ]

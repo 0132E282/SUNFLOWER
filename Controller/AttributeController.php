@@ -71,14 +71,20 @@ switch ($action) {
                 back(['error' => 'bạn không thể xóa thuộc tính vì nó là cao nhất']);
             } else {
                 $query->table('attribute')->where('id', '=', $_GET['id'])->delete();
-                back(['error' => 'xóa thành công']);
+                back(['success' => 'xóa thành công']);
             }
         }
 
         break;
     case 'customization_get':
         $attr_list = renderParentAttributeChill($query->table('attribute')->select()->where('parent_id', '=', 0)->all(), $query);
-        $customizationList = $query->table('product_customization')->select(['products.name' => 'product_name', 'product_customization.*'])->join('products', 'product_id')->all();
+        $productsCustomizationList = $query->table('product_customization')->join('products', 'product_id')->select(['products.name' => 'product_name', 'product_customization.*'])->all();
+        $productsCustomizationList = array_map(function ($productsCustomization) {
+            global $query;
+            $attr = $query->table('attribute_customization')->select('attribute.*')->join('attribute', 'attribute_id')->where('customization_id', '=', $productsCustomization['id'])->all();
+            $productsCustomization['attr'] =  $attr;
+            return $productsCustomization;
+        }, $productsCustomizationList);
         $products = $query->table('products')->select()->orderBy('created_at')->all();
         if (!empty($_GET['id'])) {
             $productDetail = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
@@ -87,7 +93,7 @@ switch ($action) {
             'attr_list' => $attr_list,
             'products' => $products,
             'productDetail' => $productDetail ?? [],
-            'customizationList' => $customizationList
+            'customizationList' => $productsCustomizationList
         ]);
         break;
     case 'create_customization_post':
@@ -98,7 +104,6 @@ switch ($action) {
                     'product_id' => $req['product'],
                     'price' => $req['product_price'],
                     'quantity' => $req['product_quantity'],
-                    'code' => $req['product_code'],
                     'weight' => $req['product_weight'],
                 ]);
                 if (count($customization) > 0) {

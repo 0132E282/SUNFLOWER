@@ -11,21 +11,24 @@
   headingColor = config.colors.headingColor;
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
-
+ 
+  document.addEventListener('DOMContentLoaded',function(){
+    fetch('?controller=dashboard&action=statistical_orders')
+    .then(res => res.json())
+    .then(function(statisticalOrder){
+      const data = Object.values(statisticalOrder.statisticalMonth).map(statistical=> statistical?.total);
+      const categories = Object.values(statisticalOrder.statisticalMonth).map(statistical=> 'T '+statistical?.moth);
+      TotalRevenue([{'name' : statisticalOrder.year ,'data' : data }],{categories});
+      growthChart(statisticalOrder);
+      renderOrderStatistics(statisticalOrder)
+    })
+  })
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
-  const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
+  function TotalRevenue(series,option = {}){
+    const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
     totalRevenueChartOptions = {
-      series: [
-        {
-          name: '2021',
-          data: [18, 7, 15, 29, 18, 12, 9]
-        },
-        {
-          name: '2020',
-          data: [-13, -18, -9, -14, -5, -17, -15]
-        }
-      ],
+      series:series,
       chart: {
         height: 300,
         stacked: true,
@@ -78,7 +81,7 @@
         }
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: option.categories ?? ['t1'],
         labels: {
           style: {
             fontSize: '13px',
@@ -273,13 +276,35 @@
     const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
     totalRevenueChart.render();
   }
-
+}
   // Growth Chart - Radial Bar Chart
   // --------------------------------------------------------------------
-  const growthChartEl = document.querySelector('#growthChart'),
+  function growthChart(statisticalOrder){
+    document.querySelector('.growthChart-text').innerText = 'cửa hàng  đã tăng '+parseFloat(statisticalOrder.percentage)+'%';
+    document.querySelector('.growthChart-info').innerHTML = `
+    <div class="d-flex">
+        <div class="me-2">
+            <span class="badge bg-label-primary p-2"><i class="bx bx-dollar text-primary"></i></span>
+        </div>
+        <div class="d-flex flex-column">
+            <small>danh thu </small>
+            <h6 class="mb-0">${statisticalOrder.total_revenue}</h6>
+        </div>
+    </div>
+    <div class="d-flex">
+        <div class="me-2">
+            <span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
+        </div>
+        <div class="d-flex flex-column">
+            <small>sản phẩm</small>
+            <h6 class="mb-0">${statisticalOrder.total_product}</h6>
+        </div>
+    </div>
+    `;
+    const growthChartEl = document.querySelector('#growthChart'),
     growthChartOptions = {
-      series: [78],
-      labels: ['Growth'],
+      series: [ parseFloat(statisticalOrder.percentage)],
+      labels: ['tăng trưởng'],
       chart: {
         height: 240,
         type: 'radialBar'
@@ -354,6 +379,8 @@
     const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
     growthChart.render();
   }
+}
+
 
   // Profit Report Line Chart
   // --------------------------------------------------------------------
@@ -420,73 +447,75 @@
 
   // Order Statistics Chart
   // --------------------------------------------------------------------
+ function orderStatisticsChart(series,labels){
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
-    orderChartConfig = {
-      chart: {
-        height: 165,
-        width: 130,
-        type: 'donut'
-      },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
-      colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
-      stroke: {
-        width: 5,
-        colors: cardColor
-      },
-      dataLabels: {
-        enabled: false,
-        formatter: function (val, opt) {
-          return parseInt(val) + '%';
-        }
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        padding: {
-          top: 0,
-          bottom: 0,
-          right: 15
-        }
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '75%',
-            labels: {
-              show: true,
-              value: {
-                fontSize: '1.5rem',
-                fontFamily: 'Public Sans',
-                color: headingColor,
-                offsetY: -15,
-                formatter: function (val) {
-                  return parseInt(val) + '%';
-                }
-              },
-              name: {
-                offsetY: 20,
-                fontFamily: 'Public Sans'
-              },
-              total: {
+      orderChartConfig = {
+        chart: {
+          height: 165,
+          width: 130,
+          type: 'donut'
+        },
+        labels: [...labels],
+        series: [...series],
+        colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
+        stroke: {
+          width: 5,
+          colors: cardColor
+        },
+        dataLabels: {
+          enabled: false,
+          formatter: function (val, opt) {
+            return parseInt(val) + '%';
+          }
+        },
+        legend: {
+          show: false
+        },
+        grid: {
+          padding: {
+            top: 0,
+            bottom: 0,
+            right: 15
+          }
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              size: '75%',
+              labels: {
                 show: true,
-                fontSize: '0.8125rem',
-                color: axisColor,
-                label: 'Weekly',
-                formatter: function (w) {
-                  return '38%';
+                value: {
+                  fontSize: '1.5rem',
+                  fontFamily: 'Public Sans',
+                  color: headingColor,
+                  offsetY: -15,
+                  formatter: function (val) {
+                    return parseInt(val) + '%';
+                  }
+                },
+                name: {
+                  offsetY: 20,
+                  fontFamily: 'Public Sans'
+                },
+                total: {
+                  show: true,
+                  fontSize: '0.8125rem',
+                  color: axisColor,
+                  label: 'Weekly',
+                  formatter: function (w) {
+                    return  w.config.series[0] + '%';
+                  }
                 }
               }
             }
           }
         }
-      }
-    };
-  if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
-    const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
-    statisticsChart.render();
-  }
+      };
+    if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
+      const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
+      statisticsChart.render();
+    }
+}
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
@@ -658,5 +687,60 @@
   if (typeof weeklyExpensesEl !== undefined && weeklyExpensesEl !== null) {
     const weeklyExpenses = new ApexCharts(weeklyExpensesEl, weeklyExpensesConfig);
     weeklyExpenses.render();
+  }
+  function renderOrderStatistics(data){
+  const number = new Intl.NumberFormat("vi-VN", { style: 'currency', currency: 'VND' })
+   const orderStatics = document.querySelector('#order_statistics');
+   const renderItems =  Object.values(data.order_products_category).map(categories => `
+   <li class="d-flex mb-4 pb-1">
+      <div class="avatar flex-shrink-0 me-3">
+          <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-mobile-alt"></i></span>
+      </div>
+      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+          <div class="me-2">
+              <h6 class="mb-0">${categories.category_name}</h6>
+              <small class="text-muted">Mobile, Earbuds, TV</small>
+          </div>
+          <div class="user-progress">
+              <small class="fw-semibold">${categories.total_products}</small>
+          </div>
+      </div>
+    </li>
+   ` ).join( '\n');
+   orderStatics.innerHTML = `
+   <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+          <div class="card-title mb-0">
+              <h5 class="m-0 me-2">thống kê đơn hàng</h5>
+              <small class="text-muted">${ number.format( data.total_revenue)} danh thu</small>
+          </div>
+          <div class="dropdown">
+              <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                  <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Share</a>
+              </div>
+          </div>
+      </div>
+      <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex flex-column align-items-center gap-1">
+                  <h2 class="mb-2">${data.total_orders}</h2>
+                  <span>tổng đơn hàng</span>
+              </div>
+              <div id="orderStatisticsChart"></div>
+          </div>
+          <ul class="p-0 m-0">
+            ${renderItems}
+          </ul>
+      </div>
+    </div>
+   `;
+   const dataSeries = Object.values(data.order_products_category).map((category) => parseFloat(category.percentage));
+   const labels = Object.values(data.order_products_category).map(category => category.category_name)
+   orderStatisticsChart(dataSeries,labels)
   }
 })();

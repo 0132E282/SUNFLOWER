@@ -13,19 +13,31 @@ $current_user = session_get('current_user', []);
 $currentDate = new DateTime();
 switch ($action) {
     case 'index':
-        $category_detail = [];
         if (count($current_user) > 0 && $_SERVER['REQUEST_METHOD'] == 'GET') {
-            $category_list = $query->table('category')->select(['users.name' => 'user_name', 'category.*'])->join('users', 'user_id')->orderBy('parent_id', 'asc')->all();
-
-            $category_list = array_map(function ($category) use ($query) {
-                $category_parent = $query->table('category')->select('name')->where('id', '=', $category['parent_id'])->first();
-                return $category = [...$category, 'parent_name' => $category_parent['name'] ?? 'danh mục cha'];
-            }, $category_list);
-            View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/category'], ['category_list' => $category_list, 'category_detail' => $category_detail]);
+            $category_list = $query->table('category')->select(['users.name' => 'user_name', 'category.*'])->join('users', 'user_id')->where('category.parent_id', '=', 0)->orderBy('parent_id', 'asc')->all();
+            $category_list = filterCategory($category_list);
+            if (!empty($_GET['id'])) {
+                $category_detail = $query->table('category')->select()->where('id', '=', $_GET['id'])->first();
+            }
+            View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/category'], ['category_list' => $category_list, 'category_detail' => $category_detail ?? []]);
         }
         break;
     case 'delete_category':
-        if (count($current_user) > 0 && $_SERVER['REQUEST_METHOD'] == 'GET') {
+        try {
+            if (count($current_user) > 0 && $_SERVER['REQUEST_METHOD'] == 'GET') {
+                $category = $query->table('category')->select()->where('id', '=', $_GET['id'])->first();
+                if (isset($category)) {
+                    $query->table('category')->where('parent_id', '=', $category['id'])->update([
+                        'parent_id' => $category['parent_id'],
+                    ]);
+                    $query->table('category')->where('id', '=', $category['id'])->delete();
+                    back(['success' => 'xóa dữ liệu thành công']);
+                } else {
+                    throw new Exception('không tìm thấy category');
+                }
+            }
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
         }
         break;
     case 'update_category':
@@ -59,4 +71,21 @@ switch ($action) {
     default:
         View('error/404');
         break;
+}
+
+function filterCategory($categoryList, $str = ' ')
+{
+    global $query;
+    $arr = [];
+    foreach ($categoryList as $category) {
+        $categoryChill = $query->table('category')->select(['users.name' => 'user_name', 'category.*'])->join('users', 'user_id')->where('parent_id', '=', $category['id'])->all();
+
+        $category['name'] = $str  . $category['name'];
+        if (count($categoryChill) > 0 &&  $category['parent_id'] == 0) {
+            array_push($arr, $category, ...filterCategory($categoryChill, $str .= '--'));
+        } else {
+            array_push($arr, [...$category]);
+        }
+    }
+    return $arr;
 }

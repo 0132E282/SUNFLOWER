@@ -35,14 +35,26 @@ class Query extends PDOConnect
         $this->table = $table;
         return $this;
     }
-    function where($field, $compare, $value)
+    function where($field, $compare, $value = '')
     {
         if ($this->where !== '') {
-            $this->where .= " AND $field $compare  '$value'";
+            $this->sql  .= " AND $field $compare  '$value' ";
         } else {
-            $this->where .= " WHERE $field $compare  '$value'";
+            $this->where .= " WHERE $field $compare  " . (isset($value) ? "'" . $value . "'" : '') . "";
+            $this->sql .= $this->where;
         }
-        $this->sql .= $this->where;
+
+        return $this;
+    }
+    function whereIn($field, $data = [])
+    {
+        if ($this->where !== '') {
+            $this->sql  .= " AND $field IN (" . implode(',', $data) . ")";
+        } else {
+            $this->where .= " WHERE $field IN (" . implode(',', $data) . ")";
+            $this->sql .= $this->where;
+        }
+
         return $this;
     }
     function is_NUll($field)
@@ -58,6 +70,11 @@ class Query extends PDOConnect
     function or($field, $compare, $value)
     {
         $this->sql .= " OR $field $compare '$value'";
+        return $this;
+    }
+    function having($field, $compare, $value)
+    {
+        $this->sql .= " HAVING $field $compare $value";
         return $this;
     }
     function delete()
@@ -110,17 +127,18 @@ class Query extends PDOConnect
         $this->sql .= " GROUP BY $column";
         return $this;
     }
-    function join($tableJoin, $foreignKey, $primaryKey = 'id', $location = 'INNER')
+    function join($tableJoin, $foreignKey, $primaryKey = 'id', $location = 'INNER', $table1 = '', $table2 = '')
     {
-
-        $this->sql .= " $location JOIN $tableJoin ON  $this->table.$foreignKey = $tableJoin.$primaryKey";
+        $foreignKey = isset($table1) && $table1 != '' ? "$table1.$foreignKey" : "$this->table.$foreignKey";
+        $primaryKey = isset($table2) && $table2 != '' ? "$table2.$primaryKey " : "$tableJoin.$primaryKey";
+        $this->sql .= " $location JOIN $tableJoin ON $foreignKey = $primaryKey";
         return $this;
     }
     // lấy tất cả dữ liệu
     function all()
     {
         try {
-            $data = parent::query($this->sql)->fetchAll();
+            $data = parent::query($this->sql)->fetchAll(PDO::FETCH_ASSOC);
             $this->sql = '';
             $this->where = '';
             return $data;

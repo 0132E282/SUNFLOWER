@@ -27,7 +27,7 @@
                                     <?php foreach ($attr_list as $key => $value) : ?>
                                         <div class="col">
                                             <select id="defaultSelect" name="attribute[]" class="form-select" fdprocessedid="lhqxok">
-                                                <option value="' '"><?= $value['name'] ?></option>
+                                                <option value="" selected disabled><?= $value['name'] ?></option>
                                                 <?php foreach ($value['children'] as $key => $value) : ?>
                                                     <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                                                 <?php endforeach; ?>
@@ -48,11 +48,6 @@
                                 <?php if (!empty($error['product_quantity'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_quantity']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
-                                <label for="product_code" class="form-label">mã sản phẩm</label>
-                                <input id="product_code" class="form-control" type="text" name="product_code" value="<?= old('product_code') ?>" placeholder="mã sản phẩm" fdprocessedid="731r6">
-                                <?php if (!empty($error['product_code'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_code']['message'] ?></p> <?php endif ?>
-                            </div>
-                            <div class="mb-3">
                                 <label for="product-weight" class="form-label">cân nặng (kg)</label>
                                 <input id="product-weight" class="form-control" type="text" name="product_weight" <?= old('product_weight') ?> placeholder="cân nặng" fdprocessedid="731r6">
                                 <?php if (!empty($error['product_weight'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_weight']['message'] ?></p> <?php endif ?>
@@ -69,25 +64,30 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th>mã sản phẩm</th>
-                            <th>tên sản phẩm</th>
-                            <th>giá sản phẩm</th>
+                            <th>mã</th>
+                            <th>tên</th>
+                            <th>giá</th>
                             <th>cân nặng</th>
-                            <th>số lượng sản phẩm</th>
-
+                            <th>số lượng</th>
+                            <th>thuộc tính</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <?php foreach ($customizationList as $key => $value) : ?>
                             <tr>
-                                <td><?= $value['code'] ?></td>
+                                <td><?= $value['id'] ?></td>
                                 <td><?= $value['product_name'] ?></td>
                                 <td><?= $value['price'] ?></td>
                                 <td><?= $value['weight'] ?></td>
                                 <td><?= $value['quantity'] ?></td>
-
-                                <td></td>
+                                <td><?php
+                                    if (isset($value['attr']) && $value['attr'] > 0) {
+                                        echo join('-', array_map(function ($attr) {
+                                            return $attr['name'];
+                                        }, $value['attr']));
+                                    }
+                                    ?></td>
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" fdprocessedid="k4mzlr">

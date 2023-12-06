@@ -7,6 +7,7 @@
                     <th>#</th>
                     <th>hình</th>
                     <th>tên banner</th>
+                    <th>tiêu đề phụ</th>
                     <th>người tạo</th>
                     <th>nhóm</th>
                     <th>ngày tạo</th>
@@ -17,13 +18,14 @@
                 <?php if (isset($bannerList) && count($bannerList) > 0) : ?>
                     <?php foreach ($bannerList as $key => $banner) : ?>
                         <tr>
-                            <td>1</td>
+                            <td><?= ++$key ?></td>
                             <td>
                                 <div class="position-relative" style="width: 100px;">
                                     <img src="<?= $banner['images'] ?>" class="w-100 h-100">
                                 </div>
                             </td>
                             <td style="max-width: 300px; "><?= $banner['name'] ?></td>
+                            <td><?= $banner['sub_title'] ?></td>
                             <td><?= $banner['user_name'] ?></td>
                             <td><?= $banner['group_name'] ?></td>
                             <td><?= $banner['created_at'] ?></td>
