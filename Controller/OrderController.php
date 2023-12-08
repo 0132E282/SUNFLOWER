@@ -16,7 +16,7 @@ switch ($action) {
         $orderList = $query->table('orders')->select([
             'customers.name' => 'customer_name',
             'customers.phone_number' => 'customer_phone_number',
-            'customers.city' => 'customer_city',
+            'customers.provincial_city' => 'customer_provincial_city',
             'customers.email' => 'customer_email',
             'customers.district' => 'customer_district',
             'status.name' => 'status_name',
@@ -47,13 +47,16 @@ switch ($action) {
                 'customers.name' => 'customer_name',
                 'customers.phone_number' => 'customer_phone_number',
                 'customers.email' => 'customer_email',
-                'customers.address' => 'customer_address',
-                'customers.city' => 'customer_city',
+                'customers.detail_address' => 'customer_address',
+                'customers.provincial_city' => 'customer_provincial_city',
                 'customers.district' => 'customer_district',
+                'customers.wards' => 'customer_wards',
+                'status.is_paid' => 'status_is_paid',
                 'orders.*',
                 '(SELECT SUM( price * quantity ) from order_item WHERE order_id = orders.id)' => 'total',
             ]
-        )->join('customers', 'customers_id')->where('orders.id', '=', $_GET['id'])->first();
+        )->join('customers', 'customers_id')->join('status', 'status_id')->where('orders.id', '=', $_GET['id'])->first();
+
         $productDetail['productsList'] = $query->table('order_item')
             ->select([
                 'order_item.quantity * order_item.price ' => 'total', 'order_item.*',
@@ -73,18 +76,29 @@ switch ($action) {
         },  $productDetail['productsList']);
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/detail'], ['productDetail' => $productDetail, 'statusList' => $statusList]);
         break;
+    case 'create_post':
 
-
+        break;
         $statusDetail = $query->table('status')->select()->where('id', '=', $_GET['id'])->first();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/formStatus'], ['statusDetail' => $statusDetail]);
         break;
     case 'update_post':
         try {
             $order = $query->table('orders')->select()->where('id', '=', $_GET['id'])->first();
+
             if (!empty($order) && count($order) > 0) {
-                $query->table('orders')->where('id', '=', $_GET['id'])->update([
-                    'status_id' => $_POST['status'],
-                ]);
+                if (!empty($_POST['update_paid'])) {
+                    $status = $query->table('status')->select()->where('is_paid', '=', 1)->first();
+                    $query->table('orders')->where('id', '=', $_GET['id'])->update([
+                        'status_id' => $status['id'],
+                        'is_paid' => 1
+                    ]);
+                } else {
+                    $query->table('orders')->where('id', '=', $_GET['id'])->update([
+                        'status_id' => $_POST['status'],
+                    ]);
+                }
+
                 back(['success' => 'cập nhập đơn hàng thành công']);
             }
             if (count($dataRes)) back(['success' => 'tạo trạng thái thành công']);

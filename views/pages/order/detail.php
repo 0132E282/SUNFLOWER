@@ -26,19 +26,34 @@
                                 </li>
                                 <li class="list-group-item d-flex align-items-center">
                                     tỉnh/thành phố :
-                                    <span class="ms-1"> <?= $productDetail['customer_city'] ?> </span>
+                                    <span class="ms-1"> <?= $productDetail['customer_provincial_city'] ?> </span>
                                 </li>
                                 <li class="list-group-item d-flex align-items-center">
                                     quận/huyện :
                                     <span class="ms-1"> <?= $productDetail['customer_district'] ?> </span>
                                 </li>
                                 <li class="list-group-item d-flex align-items-center">
-                                    địa chỉ chi tiết :
-                                    <span class="ms-1"> <?= $productDetail['customer_city'] ?> </span>
+                                    xa/phường :
+                                    <span class="ms-1"> <?= $productDetail['customer_wards'] ?> </span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    chi tiết:
+                                    <span class="ms-1"> <?= $productDetail['customer_provincial_city'] . '/' . $productDetail['customer_district'] . '/' . $productDetail['customer_wards'] . '/' . $productDetail['customer_address'] ?> </span>
                                 </li>
                                 <li class="list-group-item d-flex align-items-center  ">
                                     tổng giá sản phẩm :
                                     <span class="text-danger ms-1"><?= number_format($productDetail['total']) ?> đ</span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center  ">
+                                    phương thức vận chuyển :
+                                    <span class="ms-1"> <?= $productDetail['shipper']  ?> </span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center  ">
+                                    phương thức thanh toán:
+                                    <span class="ms-1"> <?= $productDetail['payment']  ?> </span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center  ">
+                                    <?= $productDetail['is_paid'] == 1 ? '<span class="text-success ms-1"> đã thanh toán </span> ' : '<span class="text-danger ms-1"> chưa thanh toán </span> ' ?>
                                 </li>
                                 <li class="list-group-item d-flex align-items-center">
                                     <span class="d-d-inline-block" style="width: max-content;">trạng thái đơn hàng : </span>
@@ -51,7 +66,13 @@
                                     </select>
                                 </li>
                             </ul>
-                            <button type="submit" class="btn btn-primary mt-3">lưu</button>
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <button type="submit" class="btn btn-primary mt-3">lưu</button>
+                                <?php if ($productDetail['is_paid'] != 1) : ?>
+                                    <button type="submit" name="update_paid" value="1" class="btn btn-primary mt-3">đã thanh toán</button>
+
+                                <?php endif ?>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -63,12 +84,14 @@
                     <div class="card-header d-flex  justify-content-between  align-item-center ">
                         <h5>sản phẩm</h5>
                         <div class="action">
-                            <button type="button" class="btn btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#modal-products-list" fdprocessedid="zygmmq">
-                                thêm sản phẩm
-                            </button>
-                            <button class="btn btn-primary mb-0" type="button" onclick="handleClickUpdateOrderItem()">
-                                cập nhập SP
-                            </button>
+                            <?php if ($productDetail['is_paid'] == 0 || $productDetail['status_is_paid'] == 0) : ?>
+                                <button type="button" class="btn btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#modal-products-list" fdprocessedid="zygmmq">
+                                    thêm sản phẩm
+                                </button>
+                                <button class="btn btn-primary mb-0" type="button" onclick="handleClickUpdateOrderItem()">
+                                    cập nhập SP
+                                </button>
+                            <?php endif ?>
                         </div>
                     </div>
                     <div class="card-body w-100 ">

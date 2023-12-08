@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 06, 2023 lúc 01:49 AM
+-- Thời gian đã tạo: Th12 08, 2023 lúc 02:31 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.1.17
 
@@ -191,22 +191,23 @@ CREATE TABLE `comments` (
 CREATE TABLE `customers` (
   `id` bigint(11) NOT NULL,
   `id_user` bigint(20) DEFAULT NULL,
-  `address` varchar(255) NOT NULL,
-  `name` varchar(40) NOT NULL,
+  `detail_address` varchar(255) NOT NULL,
+  `name` varchar(40) DEFAULT NULL,
   `phone_number` varchar(10) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `city` varchar(255) NOT NULL,
-  `district` varchar(255) NOT NULL
+  `provincial_city` varchar(255) NOT NULL,
+  `district` varchar(255) NOT NULL,
+  `wards` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `customers`
 --
 
-INSERT INTO `customers` (`id`, `id_user`, `address`, `name`, `phone_number`, `email`, `created_at`, `updated_at`, `city`, `district`) VALUES
-(1, NULL, 'xã cần giời', 'nguyễn văn a', '0777575101', '', NULL, NULL, 'long an', 'huyen can giuoc');
+INSERT INTO `customers` (`id`, `id_user`, `detail_address`, `name`, `phone_number`, `email`, `created_at`, `updated_at`, `provincial_city`, `district`, `wards`) VALUES
+(33, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch');
 
 -- --------------------------------------------------------
 
@@ -255,8 +256,10 @@ CREATE TABLE `menus` (
 INSERT INTO `menus` (`id`, `name`, `url`, `parent_id`, `description`, `user_id`, `created_at`, `update_at`) VALUES
 (13, 'Trang chủ', 'http://localhost/php/SUNFLOWER/', 0, '', 84, '2023-12-04 02:48:26', '2023-12-04 02:48:26'),
 (14, 'Cửa hàng', '?controller=shop&page=1', 0, '', 84, '2023-12-04 02:50:12', '2023-12-04 02:50:12'),
-(15, 'Thời trang nam', 'http://localhost/duAnMau/index.php?controller=shop&page=1', 14, '', 84, '2023-12-04 03:03:22', '2023-12-04 03:03:22'),
-(17, ' thời trang nữ', 'http://localhost/duAnMau/index.php?controller=shop&page=1', 14, '', 84, '2023-12-04 03:20:55', '2023-12-04 03:20:55');
+(15, 'Thời trang nam', '?controller=shop&page=1&category=26', 14, '', 84, '2023-12-04 03:03:22', '2023-12-04 03:03:22'),
+(17, ' thời trang nữ', '?controller=shop&page=1&category=27', 14, '', 84, '2023-12-04 03:20:55', '2023-12-04 03:20:55'),
+(18, 'về chúng tôi', 'http://localhost/php/SUNFLOWER/?controller=site&action=about', 0, ' about page', 84, '2023-12-07 16:00:33', '2023-12-07 16:00:33'),
+(19, 'liên hệ', '?controller=site&action=concat', 0, ' concat page', 84, '2023-12-07 16:06:37', '2023-12-07 16:06:37');
 
 -- --------------------------------------------------------
 
@@ -288,8 +291,18 @@ CREATE TABLE `orders` (
   `update_at` timestamp NULL DEFAULT NULL,
   `customers_id` bigint(20) NOT NULL,
   `status_id` bigint(20) DEFAULT NULL,
-  `is_paid` tinyint(1) DEFAULT 0
+  `is_paid` tinyint(1) DEFAULT 0,
+  `note` varchar(255) NOT NULL,
+  `shipper` varchar(1) NOT NULL,
+  `payment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `created_at`, `update_at`, `customers_id`, `status_id`, `is_paid`, `note`, `shipper`, `payment`) VALUES
+(28, '2023-12-07 01:04:32', NULL, 33, 4, 1, '', 'G', 'on');
 
 -- --------------------------------------------------------
 
@@ -306,6 +319,29 @@ CREATE TABLE `order_item` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `product_customization_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_item`
+--
+
+INSERT INTO `order_item` (`id`, `order_id`, `price`, `quantity`, `created_at`, `updated_at`, `product_customization_id`) VALUES
+(40, 28, 20000, 2, '2023-12-07 01:04:32', '2023-12-07 01:04:32', 57),
+(41, 28, 20000, 1, '2023-12-07 01:04:32', '2023-12-07 01:04:32', 58),
+(42, 28, 20000, 1, '2023-12-07 01:05:23', '2023-12-07 01:05:23', 59);
+
+--
+-- Bẫy `order_item`
+--
+DELIMITER $$
+CREATE TRIGGER `update_quantity_product_customization` AFTER INSERT ON `order_item` FOR EACH ROW UPDATE product_customization
+    SET quantity = quantity - NEW.quantity
+WHERE id = NEW.product_customization_id
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_quantity_products` BEFORE INSERT ON `order_item` FOR EACH ROW UPDATE products SET quantity = quantity - NEW.quantity WHERE id in (SELECT product_id FROM product_customization WHERE id = NEW.product_customization_id)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -337,7 +373,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `user_id`, `description`, `price`, `count_likes`, `count_comments`, `category_id`, `count_views`, `count_buy`, `created_at`, `updated_at`, `delete_at`, `feature_image`, `quantity`, `discount`) VALUES
-(38, 'Esprit Ruffle Shirt', 84, '', 20000, 0, 0, 27, 26, 0, '2023-12-04 22:10:37', '2023-12-05 05:10:37', NULL, 'store/images/dc2a7d3bfe60852e9b4e384977dc8190.jpg', 12322, 0),
+(38, 'Esprit Ruffle Shirt', 84, '', 20000, 0, 0, 27, 28, 0, '2023-12-04 22:10:37', '2023-12-05 05:10:37', NULL, 'store/images/dc2a7d3bfe60852e9b4e384977dc8190.jpg', 12322, 0),
 (39, 'Herschel supply', 84, '', 123000, 0, 0, 27, 22, 0, '2023-12-04 22:11:04', '2023-12-05 05:11:04', NULL, 'store/images/0706cfbf018a3729c6d100aa39ee0ca9.jpg', 123, 0),
 (40, 'Only Check Trouser', 84, '', 805500, 0, 0, 29, 20, 0, '2023-12-04 22:11:37', '2023-12-05 05:11:37', NULL, 'store/images/7ed62080a22c45017392f903ac91d84d.jpg', 12, 0),
 (41, 'Classic Trench Coat', 84, '123123123', 20000, 0, 0, 50, 20, 0, '2023-12-04 22:12:16', '2023-12-05 05:12:16', NULL, 'store/images/625dc18d6216e3c173aaf05be7555d42.jpg', 12, 0),
@@ -346,13 +382,13 @@ INSERT INTO `products` (`id`, `name`, `user_id`, `description`, `price`, `count_
 (44, 'Shirt in Stretch Cotton', 84, '', 1000000, 0, 0, 27, 20, 0, '2023-12-04 22:18:40', '2023-12-05 05:18:40', NULL, 'store/images/03b291362d8a4eebe16ca65d3a7529b1.jpg', 123, 0),
 (45, 'Pieces Metallic Printed', 84, '', 20000, 0, 0, 27, 21, 0, '2023-12-04 22:19:14', '2023-12-05 05:19:14', NULL, 'store/images/f0a419474db95f0e67639100df3eaedd.jpg', 123, 0),
 (46, 'Converse All Star Hi Plimsolls', 84, '', 700000, 0, 0, 49, 20, 0, '2023-12-04 22:19:48', '2023-12-05 05:19:48', NULL, 'store/images/0e5b8a4751f82f739a5b6dafa8573301.jpg', 70, 0),
-(47, 'Femme T-Shirt In Stripe', 84, '', 200000, 0, 0, 27, 20, 0, '2023-12-04 22:20:26', '2023-12-05 05:20:26', NULL, 'store/images/9e1fcf5761ec552db6bda1bea17332c7.jpg', 123, 0),
+(47, 'Femme T-Shirt In Stripe', 84, '', 200000, 0, 0, 27, 21, 0, '2023-12-04 22:20:26', '2023-12-05 05:20:26', NULL, 'store/images/9e1fcf5761ec552db6bda1bea17332c7.jpg', 123, 0),
 (48, 'Herschel supply', 84, '', 805500, 0, 0, 29, 20, 0, '2023-12-04 22:20:42', '2023-12-05 05:20:42', NULL, 'store/images/0e4cd5e26f25ef33d6d28431da43858b.jpg', 12, 0),
 (49, 'Herschel supply', 84, '', 123333, 0, 0, 47, 20, 0, '2023-12-04 22:21:00', '2023-12-05 05:21:00', NULL, 'store/images/0c18e1a3fd4c8b34b5122eec3314546c.jpg', 12, 0),
 (50, 'T-Shirt with Sleeve', 84, '', 200000, 0, 0, 27, 35, 0, '2023-12-04 22:22:13', '2023-12-05 05:22:13', NULL, 'store/images/1f3d5d5b3b014471bc39cbe036f63103.jpg', 1233, 0),
 (51, 'Pretty Little Thing', 84, '', 200001, 0, 0, 27, 52, 0, '2023-12-04 22:22:41', '2023-12-05 05:22:41', NULL, 'store/images/f4217da00daa3fdf6b8318af83f8f91f.jpg', 123, 10000),
 (52, 'Mini Silver Mesh Watch', 84, '', 23123123, 0, 0, 51, 21, 0, '2023-12-04 22:24:22', '2023-12-05 05:24:22', NULL, 'store/images/dd46f6b227cae370fedb0349b82ce67a.jpg', 123, 0),
-(53, 'Square Neck Back', 84, '', 20000, 0, 0, 27, 90, 0, '2023-12-04 22:25:31', '2023-12-05 05:25:31', NULL, 'store/images/c27283538e970de620a685c2c6fa368d.jpg', 123, 0);
+(53, 'Square Neck Back', 84, '', 20000, 0, 0, 27, 132, 0, '2023-12-04 22:25:31', '2023-12-05 05:25:31', NULL, 'store/images/c27283538e970de620a685c2c6fa368d.jpg', 114, 0);
 
 -- --------------------------------------------------------
 
@@ -375,9 +411,9 @@ CREATE TABLE `product_customization` (
 INSERT INTO `product_customization` (`id`, `product_id`, `weight`, `price`, `quantity`) VALUES
 (55, 53, 0, 20000, 12),
 (56, 53, 0, 20000, 123),
-(57, 53, 0, 20000, 0),
-(58, 53, 0, 20000, 0),
-(59, 53, 0, 20000, 0);
+(57, 53, 0, 20000, 100),
+(58, 53, 0, 20000, 100),
+(59, 53, 0, 20000, 100);
 
 -- --------------------------------------------------------
 
@@ -459,19 +495,20 @@ CREATE TABLE `status` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `type` varchar(50) NOT NULL DEFAULT '0',
   `icon` varchar(255) DEFAULT NULL,
-  `total_bill` tinyint(1) DEFAULT 1
+  `total_bill` tinyint(1) DEFAULT 1,
+  `is_paid` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `status`
 --
 
-INSERT INTO `status` (`id`, `name`, `description`, `user_id`, `is_default`, `created_at`, `type`, `icon`, `total_bill`) VALUES
-(1, 'chưa xử lý', '', 84, 1, '2023-11-27 04:04:19', 'warning', '', 1),
-(2, 'đã xữ lý', '', 84, 0, '2023-11-27 04:17:18', 'info', '', 1),
-(3, 'đang vẫn chuyển', '', 84, 0, '2023-11-27 04:17:46', 'info', '', 0),
-(4, 'thành công', '', 84, 0, '2023-11-27 04:18:09', 'success', '', 1),
-(5, 'thât bại', '', 84, 0, '2023-11-27 04:39:06', 'danger', '', 1);
+INSERT INTO `status` (`id`, `name`, `description`, `user_id`, `is_default`, `created_at`, `type`, `icon`, `total_bill`, `is_paid`) VALUES
+(1, 'chưa xử lý', '', 84, 1, '2023-11-27 04:04:19', 'warning', '', 1, NULL),
+(2, 'đã xữ lý', '', 84, 0, '2023-11-27 04:17:18', 'info', '', 1, NULL),
+(3, 'đang vẫn chuyển', '', 84, 0, '2023-11-27 04:17:46', 'info', '', 0, NULL),
+(4, 'thành công', '', 84, 0, '2023-11-27 04:18:09', 'success', '', 1, 1),
+(5, 'thât bại', '', 84, 0, '2023-11-27 04:39:06', 'danger', '', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -502,8 +539,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `photo_url`, `role_id`, `email_vaildate`, `google_id`, `facebook_id`, `logged_at`, `created_at`, `updated_at`, `locked`) VALUES
 (84, 'admin1', 'admin01', '$2y$10$Xn1AnWnuh45g1vi07WVGcOoXAC3eZ.mBIpj3va2fkmHD5C0O9jjyy', 'store/avatar/5166769102803e3d2df578980e76017c.png', 1, NULL, NULL, NULL, NULL, '2023-11-17 11:54:53', '2023-11-17 11:54:53', 0),
 (85, 'admin2', 'admin2', '$2y$10$IH.GhpjYTHcJkm0wuCjOXO/lBiIpbk8usuEGnOEiYJVD.b07Z5W.e', 'store/avatar/3fa3000faff90e7f8262e44adb1a462e.png', 4, NULL, NULL, NULL, NULL, '2023-11-24 14:36:44', '2023-11-24 14:36:44', 0),
-(88, 'admin3', 'admin3', '$2y$10$y69bmiVFx60KLhUFrRI/G.rVsuTpT9HjnayTPvVT22/YIsVEuxB1m', 'store/avatar/c78173996f7de90a13df2c425710859a.jpeg', 1, NULL, NULL, NULL, NULL, '2023-11-25 09:21:16', '2023-11-25 09:21:16', 0),
-(89, 'nguyen hoang phuc222', 'admin011633', '$2y$10$b4Jv56D4/fpTxzEmY1bKIOW4n5WpYJV3FX94x.cBMvvBJTTyGS8xO', 'store/avatar/e10c404760146cf2a8e85191b0258c41.jpeg', 1, NULL, NULL, NULL, NULL, '2023-11-26 12:49:57', '2023-11-26 12:49:57', 0);
+(88, 'admin3', 'admin3', '$2y$10$y69bmiVFx60KLhUFrRI/G.rVsuTpT9HjnayTPvVT22/YIsVEuxB1m', 'store/avatar/c78173996f7de90a13df2c425710859a.jpeg', 1, NULL, NULL, NULL, NULL, '2023-11-25 09:21:16', '2023-11-25 09:21:16', 1),
+(89, 'nguyen hoang phuc222', 'admin011633', '$2y$10$b4Jv56D4/fpTxzEmY1bKIOW4n5WpYJV3FX94x.cBMvvBJTTyGS8xO', 'store/avatar/e10c404760146cf2a8e85191b0258c41.jpeg', 1, NULL, NULL, NULL, NULL, '2023-11-26 12:49:57', '2023-11-26 12:49:57', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -593,6 +630,7 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_item`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_customization_id` (`product_customization_id`);
 
@@ -689,7 +727,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT cho bảng `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT cho bảng `image`
@@ -701,7 +739,7 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT cho bảng `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `notification`
@@ -713,13 +751,13 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT cho bảng `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT cho bảng `products`

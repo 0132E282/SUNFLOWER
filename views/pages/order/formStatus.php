@@ -31,6 +31,11 @@
                             <label class="form-check-label" for="total-bill" style="cursor: pointer;"> thống kê số lượng hóa đơn </label>
                             <?php if (!empty($error['total-bill'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['total-bill']['message'] ?></p> <?php endif ?>
                         </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="1" <?= old('is_paid') == 1 || !empty($statusDetail['is_paid'])  &&  $statusDetail['is_paid'] == 1 ? 'checked' : '' ?> id="is_paid" name="is_paid">
+                            <label class="form-check-label" for="is_paid" style="cursor: pointer;"> tự động cập nhập khi thanh toán thành công </label>
+                            <?php if (!empty($error['is_paid'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['is_paid']['message'] ?></p> <?php endif ?>
+                        </div>
                         <div class="mb-3">
                             <label for="type">chọn kiểu thông báo</label>
                             <select id="type" class="form-select" fdprocessedid="pe94go" name="type">

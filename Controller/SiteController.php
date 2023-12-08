@@ -24,8 +24,11 @@ switch ($action) {
         }
         View(['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/home'], ['category' => $category, 'products' => $products ?? []]);
         break;
-    case 'create':
-
+    case 'about_get':
+        View(['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/about']);
+        break;
+    case 'concat_get':
+        View(['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/concat']);
         break;
     default:
         echo 'không có file';

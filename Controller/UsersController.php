@@ -17,7 +17,7 @@ switch ($action) {
         break;
 
     case 'lock_user':
-        $user = $query->table('users')->select()->where('id', '=', $_GET['user'])->first();
+        $user = $query->table('users')->select()->where('id', '=', $_GET['id'])->first();
         if ($user) {
             $data =  $query->table('users')->where('id', '=', $user['id'])->update([
                 'locked' => 1

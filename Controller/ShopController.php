@@ -13,12 +13,25 @@ $query = new Query();
 switch ($action) {
     case 'index_get':
         $page = 25 * ($_GET['page'] - 1);
-        $category = $query->table('category')->select()->all();
-        $products = $query->table('products')->select()->limit(25)->offset($page)->all();
+        $category = $query->table('category')->select()->where('parent_id', '=', $_GET['category'] ?? 0)->all();
+        $categoryChill = getCategoryChill($category);
+        if (count($categoryChill) > 0) {
+            if (isset($_GET['category'])) {
+                $currentCategory = $query->table('category')->select()->where('id', '=', $_GET['category'])->first();
+            }
+            $categoryId = array_map(function ($category) {
+                return $category['id'] ?? null;
+            }, [...$category, ...$categoryChill, $currentCategory ?? null]);
+        }
+        $productsQuery = $query->table('products')->select();
+        if (!empty($_GET['category'])) {
+            $productsQuery = $productsQuery->whereIn('category_id', $categoryId);
+        }
+        $products = $productsQuery->limit(25)->offset($page)->all();
         View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products]);
         break;
     case 'cart_get':
-        $cart = session_get('product_cart');
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart']);
         break;
     case 'detail_get':
         try {
@@ -39,7 +52,10 @@ switch ($action) {
                             'attribute',
                             'attribute_id'
                         )
-                        ->where('product_customization.product_id', '=', $product['id'])->where('attribute.parent_id', '=',  $value['id'])->groupBy('attribute.id')->all();
+                        ->where('product_customization.product_id', '=', $product['id'])
+                        ->where('attribute.parent_id', '=',  $value['id'])
+                        ->groupBy('attribute.id')
+                        ->all();
                 }
             }
             View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/detail'], ['product' => $product, 'attr' => $attr]);
@@ -61,35 +77,37 @@ switch ($action) {
                         'product_customization.id' => 'customization_id',
                         'product_customization.price' => 'customization_price',
                         'products.price' => 'products_price',
-
                     ]
                 )
                 ->join('product_customization', 'customization_id')
                 ->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')
                 ->where('product_customization.product_id', '=', $_GET['id'])
-                ->whereIn('attribute_id', [...$_POST['attr']])->orderBy('products.id')->having('count(product_customization.id)', '=', 2)->all();
-
+                ->whereIn('attribute_id', [...$_POST['attr']])
+                ->groupBy('product_customization.id')
+                ->having('count(product_customization.id)', '=', count($_POST['attr']))
+                ->first();
             $product['attributes'] = $query->table('attribute')->select()->whereIn('id', $_POST['attr'])->all();
-            print_r(json_encode($product));
-            exit;
             if (!empty($product) && count($product) > 0) {
+                $coderProduct = $_GET['id'] . $product['customization_id'];
                 $productItem = [
-                    'id' => $product['product_id'],
+                    'id' => $coderProduct,
+                    'product_id' => $product['product_id'],
                     'customization_id' => $product['customization_id'],
                     'name' =>  $product['name'],
-                    'quantity' => $_POST['num-product'] ?? 1,
+                    'quantity' =>  $_POST['num-product'] ?? 1,
                     'price' => $product['customization_price'] ?? $product['products_price'],
                     'images' => $product['feature_image'],
                     'attr' => count($product['attributes']) > 0 ? array_map(function ($attr) {
                         return ['name' => $attr['name'], 'id' => $attr['id']];
                     }, $product['attributes']) : [],
                 ];
-                $coderProduct = $_GET['id'] . $product['customization_id'];
+
                 if (isset($cart[$coderProduct])) {
-                    $cart[$coderProduct]['quantity'] += $_POST['num-product'] ?? 1;
+                    $cart[$coderProduct]['quantity'] +=  $_POST['num-product'] ?? 1;
                 } else {
                     $cart[$coderProduct] = $productItem;
                 }
+
                 session_push('product_cart', $cart);
                 print_r(json_encode(session_get('product_cart')));
             }
@@ -104,6 +122,27 @@ switch ($action) {
         }
         session_push('product_cart', $cart);
         break;
+    case 'products_cart_get':
+        $cart = session_get('product_cart');
+        print_r(json_encode(array_values($cart)));
+        break;
+    case 'checkout_get':
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/checkout']);
+        break;
     default:
         echo 'không có file';
+}
+function getCategoryChill($categoryParent)
+{
+    global $query;
+    $arr = [];
+    foreach ($categoryParent as $category) {
+        $categoryChill = $query->table('category')->select()->where('parent_id', '=', $category['id'])->all();
+        if (!empty($categoryChill) && count($categoryChill) > 0) {
+            array_push($arr, [$category, ...getCategoryChill($categoryChill)]);
+        } else {
+            array_push($arr, $category);
+        }
+    }
+    return $arr;
 }

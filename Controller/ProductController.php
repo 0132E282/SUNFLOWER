@@ -21,8 +21,21 @@ switch ($action) {
             ['name' => 'số sản phẩm', 'value' => 'quantity',],
             ['name' => 'số bình luật', 'value' => 'count_comments',],
         ];
+        $statistical_products = $query->table('products')->select([
+            'count(id)' => 'total_products',
+            'sum(count_buy)' => 'total_sold',
+            'sum(price * quantity)' => 'total_pice',
+            'sum( quantity)' => 'total_warehouse',
+        ])->first();
         $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id')->orderBy('products.created_at')->all();
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'], ['products' => $product_list, 'orderby' => $orderby]);
+        View(
+            ['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'],
+            [
+                'products' => $product_list,
+                'orderby' => $orderby,
+                'statistical_products' => $statistical_products
+            ]
+        );
         break;
     case 'create_get':
         $categoryList =  $query->table('category')->select()->all();

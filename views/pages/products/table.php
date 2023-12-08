@@ -18,9 +18,11 @@
                             </div>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Profit</span>
-                    <h3 class="card-title mb-2">$12,628</h3>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                    <span class="fw-semibold d-block mb-1">Sảm phẩm </span>
+                    <h3 class="card-title mb-2"><?= $statistical_products['total_products'] ?? 0 ?></h3>
+                    <small class="text-success fw-semibold">
+                        <!-- <i class="bx bx-up-arrow-alt"></i> -->
+                    </small>
                 </div>
             </div>
         </div>
@@ -41,9 +43,11 @@
                             </div>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Profit</span>
-                    <h3 class="card-title mb-2">$12,628</h3>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                    <span class="fw-semibold d-block mb-1">đã bán</span>
+                    <h3 class="card-title mb-2"><?= $statistical_products['total_sold'] ?? 0 ?></h3>
+                    <small class="text-success fw-semibold">
+                        <!-- <i class="bx bx-up-arrow-alt"></i> -->
+                    </small>
                 </div>
             </div>
         </div>
@@ -64,9 +68,11 @@
                             </div>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Profit</span>
-                    <h3 class="card-title mb-2">$12,628</h3>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                    <span class="fw-semibold d-block mb-1">tổng giá SP</span>
+                    <h3 class="card-title mb-2"><?= number_format($statistical_products['total_pice'] ?? 0) ?> đ</h3>
+                    <small class="text-success fw-semibold">
+                        <!-- <i class="bx bx-up-arrow-alt"></i> -->
+                    </small>
                 </div>
             </div>
         </div>
@@ -87,9 +93,12 @@
                             </div>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Profit</span>
-                    <h3 class="card-title mb-2">$12,628</h3>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                    <span class="fw-semibold d-block mb-1">tồn kho</span>
+                    <h3 class="card-title mb-2"><?= $statistical_products['total_warehouse'] ?></h3>
+                    <small class="text-success fw-semibold">
+                        <!-- <i class="bx bx-up-arrow-alt"></i> -->
+                        <!-- +72.80% -->
+                    </small>
                 </div>
             </div>
         </div>

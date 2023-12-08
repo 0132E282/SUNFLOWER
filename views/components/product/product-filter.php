@@ -14,7 +14,7 @@
     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
         <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
         <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-        Filter
+        Lọc
     </div>
 
     <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
@@ -40,43 +40,38 @@
     <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
         <div class="filter-col1 p-r-15 p-b-27">
             <div class="mtext-102 cl2 p-b-15">
-                Sort By
+                sắp xếp
             </div>
 
             <ul>
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        Default
+                        mặt định
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        Popularity
+                        phổ biến
                     </a>
                 </li>
 
-                <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        Average rating
-                    </a>
-                </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                        Newness
+                        sản phẩm mới
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        Price: Low to High
+                        giá từ thấp đến cao
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        Price: High to Low
+                        giá từ cao đếp thấp
                     </a>
                 </li>
             </ul>
@@ -84,45 +79,40 @@
 
         <div class="filter-col2 p-r-15 p-b-27">
             <div class="mtext-102 cl2 p-b-15">
-                Price
+                Theo giá
             </div>
 
             <ul>
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                        All
+                        Tất cả
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        $0.00 - $50.00
+                        0 - 1tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        $50.00 - $100.00
+                        1tr - 2tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        $100.00 - $150.00
+                        3tr - 4 tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
                     <a href="#" class="filter-link stext-106 trans-04">
-                        $150.00 - $200.00
+                        5tr >
                     </a>
                 </li>
 
-                <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        $200.00+
-                    </a>
-                </li>
             </ul>
         </div>
 

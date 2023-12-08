@@ -55,10 +55,11 @@
                                 <td><a href="?controller=order&action=detail&id=<?= $order['id'] ?>"><?= $order['customer_name'] ?></a></td>
                                 <td><?= $order['customer_phone_number'] ?></td>
                                 <td><?= number_format($order['total']) ?> đ</td>
-                                <td><?= $order['customer_city'] ?> </td>
+                                <td><?= $order['customer_provincial_city'] ?> </td>
                                 <td><?= $order['created_at'] ?></td>
                                 <td> <span class="badge bg-<?= $order['status_type'] ?>"><?= $order['status_name'] ?></span> </td>
-                                <th><?= $order['is_paid'] == 1 ? 'đã thanh toán' : 'chưa thanh toán' ?></th>
+                                <th> <?= $order['is_paid'] == 1 ? '<span class="text-success ms-1"> đã thanh toán </span> ' : '<span class="text-danger ms-1"> chưa thanh toán </span> ' ?>
+                                </th>
                             </tr>
                         <?php endforeach ?>
                     <?php else : ?>

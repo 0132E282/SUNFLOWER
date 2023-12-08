@@ -29,6 +29,7 @@ switch ($action) {
                 'name' => $req['name'],
                 'description' => $req['description'],
                 'user_id' => $current_user['id'],
+                'is_paid' => $req['is_paid'] ?? 0,
                 'icon' => $req['icon'],
                 'total_bill' => $req['total_bill'] ?? 0,
                 'is_default' => $req['is_default'] ?? 0,
@@ -58,6 +59,7 @@ switch ($action) {
                     'total_bill' => $req['total_bill'] ?? 0,
                     'is_default' => $req['is_default'] ?? 0,
                     'type' => $req['type'],
+                    'is_paid' => $req['is_paid'] ?? 0,
                 ]);
                 back(['success' => 'tạo trạng thái thành công']);
             }
