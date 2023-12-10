@@ -135,7 +135,7 @@
 								</span>
 							</div>
 						</div>
-						<a href="?controller=shop&action=checkout" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<a href="?controller=checkout" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							thanh toán
 						</a>
 					</div>

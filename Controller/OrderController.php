@@ -77,8 +77,6 @@ switch ($action) {
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/detail'], ['productDetail' => $productDetail, 'statusList' => $statusList]);
         break;
     case 'create_post':
-
-        break;
         $statusDetail = $query->table('status')->select()->where('id', '=', $_GET['id'])->first();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/formStatus'], ['statusDetail' => $statusDetail]);
         break;

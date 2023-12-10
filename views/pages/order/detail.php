@@ -126,7 +126,7 @@
                                                             <div class="row">
                                                                 <label for="input-quantity" class="col-md-2 col-form-label" style="width: max-content;">số lượng</label>
                                                                 <div class="col-md-3">
-                                                                    <input class="form-control text-center" type="text" value="<?= $product['quantity'] ?>" name="quantity[<?= $product['product_customization_id'] ?>]" id="input-quantity" fdprocessedid="f4ekri">
+                                                                    <input class="form-control text-center" <?= $productDetail['is_paid'] == 0 || $productDetail['status_is_paid'] == 0 ? '' : 'disabled ' ?> type="text" value="<?= $product['quantity'] ?>" name="quantity[<?= $product['product_customization_id'] ?>]" id="input-quantity" fdprocessedid="f4ekri">
                                                                 </div>
                                                             </div>
                                                             <p class="card-text mb-0 text-danger fw-light fs-6 flex-1">tổng : <?= number_format($product['total']) ?> VNĐ</small></p>
@@ -134,9 +134,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="?controller=order&action=delete-order-item&id=<?= $product['id'] ?>" class="btn btn-icon shadow-sm btn-light position-absolute end-0 p-3" style="transform: translate(30%,-30%); width: 0; height: 0;">
-                                                <span class="tf-icons bx bx-x fs-4"></span>
-                                            </a>
+                                            <?php if ($productDetail['is_paid'] == 0 || $productDetail['status_is_paid'] == 0) : ?>
+                                                <a href="?controller=order&action=delete-order-item&id=<?= $product['id'] ?>" class="btn btn-icon shadow-sm btn-light position-absolute end-0 p-3" style="transform: translate(30%,-30%); width: 0; height: 0;">
+                                                    <span class="tf-icons bx bx-x fs-4"></span>
+                                                </a>
+                                            <?php endif ?>
+
                                             <input type="checkbox" value="<?= $product['product_customization_id'] ?>" checked hidden name="product_customization_id[]">
                                         </div>
                                     </div>

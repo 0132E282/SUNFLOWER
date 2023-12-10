@@ -64,13 +64,13 @@
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
+                    <a href="?controller=shop&page=1&order=price&direction=asc" class="filter-link stext-106 trans-04">
                         giá từ thấp đến cao
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
+                    <a href="?controller=shop&page=1&order=price&direction=desc" class="filter-link stext-106 trans-04">
                         giá từ cao đếp thấp
                     </a>
                 </li>

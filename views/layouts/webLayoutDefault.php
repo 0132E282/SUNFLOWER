@@ -86,7 +86,8 @@
     <script src="public/assets/vendor-web/daterangepicker/daterangepicker.js"></script>
     <!--===============================================================================================-->
     <script src="public/assets/vendor-web/slick/slick.min.js"></script>
-    <script src=" public/assets/js-web/slick-custom.js"></script>
+    <script src="public/assets/js-web/slick-custom.js"></script>
+
     <!--===============================================================================================-->
     <script src="public/assets/vendor-web/parallax100/parallax100.js"></script>
     <script>
@@ -172,7 +173,6 @@
     </script>
     <!--===============================================================================================-->
     <script src="public/assets/js-web/main.js"></script>
-
 </body>
 
 </html>

@@ -41,6 +41,7 @@ function validate($handle, $messageInput)
             }
         }
     }
+
     if ($isError == true) {
         // sâu khi lập qua sông thì bắc đầu kiểm tra nếu isError == true
         // nó sẽ gắng ss error = mảng $error

@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card mb-4  h-100 position-sticky ">
                 <div class="d-flex justify-content-between align-content-center card-header">
-                    <h5 class="m-0 ">tạo menu</h5>
+                    <h5 class="m-0 "><?= isset($menu['id']) ? 'cập nhập menus' : ' tạo menu' ?></h5>
                     <a href="?controller=menu" class="btn btn-icon btn-secondary" fdprocessedid="x31gvo">
                         <i class="bx bx-add-to-queue"></i>
                     </a>
@@ -43,7 +43,7 @@
                             </select>
                             <?php if (!empty($error['menus_parent'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['menus_parent']['message'] ?></p> <?php endif ?>
                         </div>
-                        <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h">tạo menu</button>
+                        <button type="submit" class="btn btn-primary" fdprocessedid="bnh72h"><?= isset($menu['id']) ? 'cập nhập' : ' tạo menu' ?></button>
                     </form>
 
                 </div>

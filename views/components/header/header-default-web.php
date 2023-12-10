@@ -53,7 +53,7 @@ function renderChildMenu($parent_id)
 
                 <!-- Logo desktop -->
                 <a href="#" class="logo">
-                    <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+                    <img src="public/assets/images/icons/logo-01.png" alt="IMG-LOGO">
                 </a>
 
                 <!-- Menu desktop -->

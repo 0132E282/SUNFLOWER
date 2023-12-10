@@ -465,7 +465,7 @@
         dataLabels: {
           enabled: false,
           formatter: function (val, opt) {
-            return parseInt(val) + '%';
+            return parseFloat(val).toFixed(1) + '%';
           }
         },
         legend: {

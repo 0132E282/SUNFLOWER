@@ -12,7 +12,8 @@ $current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        $page = 25 * ($_GET['page'] - 1);
+        $limit  = 25;
+        $offset_item = $limit * ($_GET['page'] - 1);
         $category = $query->table('category')->select()->where('parent_id', '=', $_GET['category'] ?? 0)->all();
         $categoryChill = getCategoryChill($category);
         if (count($categoryChill) > 0) {
@@ -23,12 +24,15 @@ switch ($action) {
                 return $category['id'] ?? null;
             }, [...$category, ...$categoryChill, $currentCategory ?? null]);
         }
-        $productsQuery = $query->table('products')->select();
+        $productsQuery = $query->table('products')->select()->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC');
         if (!empty($_GET['category'])) {
             $productsQuery = $productsQuery->whereIn('category_id', $categoryId);
         }
-        $products = $productsQuery->limit(25)->offset($page)->all();
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products]);
+        $products = $productsQuery->limit($limit)->offset($offset_item)->all();
+
+        $page = $query->select(['ROUND( count(products.id) / ' . $limit . ') ' => 'total_pages'])->table('products')->first();
+        $page['current_page'] = $_GET['page'];
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products, 'page' => $page]);
         break;
     case 'cart_get':
         View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart']);
@@ -36,6 +40,8 @@ switch ($action) {
     case 'detail_get':
         try {
             $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
+            $similarProducts = $query->table('products')->select()->where('category_id', '=', $product['category_id'])->where('id', '!=', $product['id'])->all();
+            $productReviews = $query->table('product_reviews')->select()->where('product_id', '=', $product['id'])->all();
             if (!empty($product) && count($product) > 0) {
                 $query->table('products')->where('id', '=',  $product['id'])->update(['count_views' =>  $product['count_views'] + 1]);
                 $product['images_list'] = $query->table('image')->select(['image_url', 'alt', 'id'])->where('product_id', '=', $product['id'])->all();
@@ -58,7 +64,7 @@ switch ($action) {
                         ->all();
                 }
             }
-            View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/detail'], ['product' => $product, 'attr' => $attr]);
+            View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/detail'], ['product' => $product, 'attr' => $attr, 'productReviews' => $productReviews, 'similarProducts' => $similarProducts]);
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);
         }
@@ -125,9 +131,6 @@ switch ($action) {
     case 'products_cart_get':
         $cart = session_get('product_cart');
         print_r(json_encode(array_values($cart)));
-        break;
-    case 'checkout_get':
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/checkout']);
         break;
     default:
         echo 'không có file';

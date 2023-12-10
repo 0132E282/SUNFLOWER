@@ -15,9 +15,33 @@
 
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                Load More
-            </a>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+
+                    <?php if (count($page) > 0) : ?>
+                        <?php if ($page['current_page'] > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?controller=shop&page=1" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif ?>
+                        <?php for ($i = 1; $i <= $page['total_pages']; $i++) : ?>
+                            <?php if ($i < $page['current_page'] + 3 && $i > $page['current_page'] - 3) : ?>
+                                <li class="page-item"><a class="page-link" href="?controller=shop&page=<?= $i ?>"><?= $i ?></a></li>
+                            <?php endif ?>
+                        <?php endfor; ?>
+                        <?php if ($page['current_page'] < $page['total_pages']) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?controller=shop&page=<?= $page['total_pages'] ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif ?>
+                    <?php endif ?>
+
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

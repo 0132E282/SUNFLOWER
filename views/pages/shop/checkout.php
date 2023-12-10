@@ -1,6 +1,6 @@
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
-        <form action="?controller=payment&action=momo" method="post">
+        <form action="?controller=checkout&action=create" method="post">
             <div class="flex-w flex-tr">
                 <div class="size-210 bor10 p-lr-30 p-t-55 p-b-30 p-lr-15-lg w-full-md">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
@@ -103,15 +103,15 @@
                     <div class="row p-t-30">
                         <div class="col-md-12">
                             <div class="m-l-2 mb-0">
-                                <input type="radio" class="btn-check" value="Thanh toán khi dao hàng" name="action" id="default" checked autocomplete="off">
+                                <input type="radio" class="btn-check" value="" name="payment" id="default" checked autocomplete="off">
                                 <label class="btn btn-outline-secondary w-100" for="default"> Thanh toán khi dao hàng</label><br>
                             </div>
                             <div class="m-l-2 mb-0">
-                                <input type="radio" class="btn-check" name="action" id="payment1" value="payUrl" autocomplete="off">
+                                <input type="radio" class="btn-check" name="payment" id="payment1" value="momo" autocomplete="off">
                                 <label class="btn btn-outline-secondary w-100" for="payment1">MOMO</label><br>
                             </div>
                             <div class="m-l-2 mb-0">
-                                <input type="radio" class="btn-check" name="action" id="payment2" autocomplete="off">
+                                <input type="radio" class="btn-check" name="payment" id="payment2" autocomplete="off">
                                 <label class="btn btn-outline-secondary w-100" for="payment2">Thẻ nội địa</label><br>
                             </div>
                         </div>

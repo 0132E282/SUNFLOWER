@@ -91,8 +91,13 @@ class Query extends PDOConnect
         $valueCol = '';
         foreach ($data as $key => $value) {
             $column .= $key . ' ,';
-            $valueCol  .= is_numeric($value) || gettype($value) == 'integer' ?  " $value  ," : " '$value' ,";
+            if (isset($value)) {
+                $valueCol  .= is_numeric($value) || gettype($value) == 'integer' ?  " $value  ," : " '$value' ,";
+            } else {
+                $valueCol .= ' NULL ,';
+            }
         }
+
         $sql = "INSERT INTO $this->table (" . substr($column, 0, -1) . ") VALUES (" . substr($valueCol, 0, -1) . ")";
         $id = $this->execute($sql);
         return $this->select()->where('id', '=', $id)->first();
