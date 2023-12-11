@@ -1,3 +1,29 @@
+<?php
+$query = new Query();
+
+$attr = $query->table('attribute')->select()->where('parent_id', '=', 0)->all();
+
+$attr['children'] = getChillAttr($attr);
+
+function getChillAttr($attr)
+{
+    global $query;
+    $arr = [];
+    foreach ($attr as $key => $value) {
+        $attrChill = $query->table('attribute')->select()->where('parent_id', '=', $value['id'])->all();
+        if (count($attrChill) > 0) {
+            array_push($arr, [$value, getChillAttr($attrChill)]);
+        } else {
+            array_push($arr, $value);
+        }
+    }
+    return $arr;
+}
+
+print_r($attr);
+
+?>
+
 <div class="flex-w flex-l-m filter-tope-group m-tb-10">
     <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
         tất cả
@@ -45,32 +71,26 @@
 
             <ul>
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        mặt định
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'created_at', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
+                        sản phẩm mới
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'count_views', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04">
                         phổ biến
                     </a>
                 </li>
 
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                        sản phẩm mới
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <a href="?controller=shop&page=1&order=price&direction=asc" class="filter-link stext-106 trans-04">
+                    <a href=" <?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'ASC']) ?>" class="filter-link stext-106 trans-04">
                         giá từ thấp đến cao
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="?controller=shop&page=1&order=price&direction=desc" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04">
                         giá từ cao đếp thấp
                     </a>
                 </li>
@@ -84,132 +104,46 @@
 
             <ul>
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '0']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
                         Tất cả
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        0 - 1tr
+                    <a href="<?= currentRouter([...$_GET, 'price' => '0-500000']) ?>" class="filter-link stext-106 trans-04">
+                        0 - 500k
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        1tr - 2tr
+                    <a href="<?= currentRouter([...$_GET, 'price' => '500000-1000000']) ?>" class="filter-link stext-106 trans-04">
+                        500k - 1tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        3tr - 4 tr
+                    <a href="<?= currentRouter([...$_GET, 'price' => '1000000-2000000']) ?>" class="filter-link stext-106 trans-04">
+                        1tr - 2 tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        5tr >
+                    <a href="<?= currentRouter([...$_GET, 'price' => '2000000']) ?>" class="filter-link stext-106 trans-04">
+                        2tr >
                     </a>
                 </li>
 
             </ul>
         </div>
+        <?php if (isset($attr) && count($attr) > 0) : ?>
+            <?php foreach ($attr as $value) : ?>
+                <div class="filter-col3 p-r-15 p-b-27">
+                    <div class="mtext-102 cl2 p-b-15">
+                        <?php print_r($value['name'])  ?>
+                    </div>
 
-        <div class="filter-col3 p-r-15 p-b-27">
-            <div class="mtext-102 cl2 p-b-15">
-                Color
-            </div>
-
-            <ul>
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #222;">
-                        <i class="zmdi zmdi-circle"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        Black
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-                        <i class="zmdi zmdi-circle"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                        Blue
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-                        <i class="zmdi zmdi-circle"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        Grey
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-                        <i class="zmdi zmdi-circle"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        Green
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-                        <i class="zmdi zmdi-circle"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        Red
-                    </a>
-                </li>
-
-                <li class="p-b-6">
-                    <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-                        <i class="zmdi zmdi-circle-o"></i>
-                    </span>
-
-                    <a href="#" class="filter-link stext-106 trans-04">
-                        White
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="filter-col4 p-b-27">
-            <div class="mtext-102 cl2 p-b-15">
-                Tags
-            </div>
-
-            <div class="flex-w p-t-4 m-r--5">
-                <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                    Fashion
-                </a>
-
-                <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                    Lifestyle
-                </a>
-
-                <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                    Denim
-                </a>
-
-                <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                    Streetstyle
-                </a>
-
-                <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                    Crafts
-                </a>
-            </div>
-        </div>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
     </div>
 </div>

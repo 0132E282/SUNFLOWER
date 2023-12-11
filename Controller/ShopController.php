@@ -24,11 +24,20 @@ switch ($action) {
                 return $category['id'] ?? null;
             }, [...$category, ...$categoryChill, $currentCategory ?? null]);
         }
-        $productsQuery = $query->table('products')->select()->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC');
+        $productsQuery = $query->table('products')->select();
         if (!empty($_GET['category'])) {
             $productsQuery = $productsQuery->whereIn('category_id', $categoryId);
         }
-        $products = $productsQuery->limit($limit)->offset($offset_item)->all();
+        if (!empty($_GET['price'])) {
+            $price = explode('-', trim($_GET['price']));
+            if (!empty($price[0])) {
+                $productsQuery = $productsQuery->where('price', '>=', $price[0]);
+            }
+            if (!empty($price[1])) {
+                $productsQuery = $productsQuery->where('price', '<=', $price[1]);
+            }
+        }
+        $products = $productsQuery->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC')->limit($limit)->offset($offset_item)->all();
 
         $page = $query->select(['ROUND( count(products.id) / ' . $limit . ') ' => 'total_pages'])->table('products')->first();
         $page['current_page'] = $_GET['page'];

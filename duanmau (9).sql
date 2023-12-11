@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 08, 2023 lúc 02:31 AM
+-- Thời gian đã tạo: Th12 11, 2023 lúc 04:30 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.1.17
 
@@ -82,7 +82,15 @@ INSERT INTO `attribute_customization` (`id`, `customization_id`, `attribute_id`,
 (70, 58, 12, 10),
 (71, 58, 16, 13),
 (72, 59, 18, 10),
-(73, 59, 15, 13);
+(73, 59, 15, 13),
+(74, 60, 11, 10),
+(75, 60, 15, 13),
+(76, 61, 12, 10),
+(77, 61, 15, 13),
+(78, 62, 12, 10),
+(79, 62, 17, 13),
+(80, 63, 11, 10),
+(81, 63, 14, 13);
 
 -- --------------------------------------------------------
 
@@ -207,7 +215,34 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `id_user`, `detail_address`, `name`, `phone_number`, `email`, `created_at`, `updated_at`, `provincial_city`, `district`, `wards`) VALUES
-(33, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch');
+(33, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(34, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(35, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(36, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(37, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(38, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(52, 84, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Đồng Xuân'),
+(56, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(57, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(58, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(59, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(61, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(62, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Vĩnh Phúc'),
+(63, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Mèo Vạc', 'Xã Thượng Phùng'),
+(64, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Mèo Vạc', 'Xã Thượng Phùng'),
+(65, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Mèo Vạc', 'Xã Thượng Phùng'),
+(66, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Bằng'),
+(67, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Trúc Bạch'),
+(68, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Đồng Văn', 'Xã Lũng Cú'),
+(69, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Cao Bằng', 'Huyện Bảo Lâm', 'Xã Lý Bôn'),
+(70, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Đồng Văn', 'Xã Lũng Cú'),
+(71, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Cao Bằng', 'Huyện Bảo Lạc', 'Xã Cốc Pàng'),
+(72, NULL, '1231', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Đồng Văn', 'Xã Lũng Cú'),
+(73, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Mèo Vạc', 'Xã Thượng Phùng'),
+(74, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Cao Bằng', 'Huyện Bảo Lạc', 'Xã Thượng Hà'),
+(75, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Tỉnh Hà Giang', 'Huyện Đồng Văn', 'Thị trấn Phó Bảng'),
+(76, NULL, '123123', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Buồm'),
+(77, 84, '', 'Phúc Nuyễn Hoàng', '8477757510', 'nguyenhoangphuc201122@gmail.com', NULL, NULL, 'Thành phố Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Mã');
 
 -- --------------------------------------------------------
 
@@ -294,15 +329,43 @@ CREATE TABLE `orders` (
   `is_paid` tinyint(1) DEFAULT 0,
   `note` varchar(255) NOT NULL,
   `shipper` varchar(1) NOT NULL,
-  `payment` varchar(255) DEFAULT NULL
+  `payment` varchar(255) DEFAULT NULL,
+  `order_code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`id`, `created_at`, `update_at`, `customers_id`, `status_id`, `is_paid`, `note`, `shipper`, `payment`) VALUES
-(28, '2023-12-07 01:04:32', NULL, 33, 4, 1, '', 'G', 'on');
+INSERT INTO `orders` (`id`, `created_at`, `update_at`, `customers_id`, `status_id`, `is_paid`, `note`, `shipper`, `payment`, `order_code`) VALUES
+(28, '2023-12-07 01:04:32', NULL, 33, 4, 1, '', 'G', 'on', 0),
+(29, '2023-12-08 01:50:26', NULL, 34, 1, 0, '', 'G', '', 0),
+(30, '2023-12-08 01:53:06', NULL, 35, 1, 0, '', 'G', '', 0),
+(31, '2023-12-08 01:53:54', NULL, 36, 1, 0, '', 'G', '', 0),
+(32, '2023-12-08 01:54:05', NULL, 37, 1, 0, '', 'G', '', 0),
+(33, '2023-12-08 01:54:31', NULL, 38, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(34, '2023-12-09 16:36:56', NULL, 52, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(35, '2023-12-09 16:39:25', NULL, 56, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(36, '2023-12-09 16:41:19', NULL, 57, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(37, '2023-12-09 16:41:27', NULL, 58, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(38, '2023-12-09 16:44:09', NULL, 59, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(39, '2023-12-09 16:50:00', NULL, 61, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(40, '2023-12-09 16:50:14', NULL, 62, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(41, '2023-12-09 17:42:33', NULL, 63, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(42, '2023-12-09 17:43:51', NULL, 64, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(43, '2023-12-09 17:46:13', NULL, 65, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(44, '2023-12-09 17:47:49', NULL, 66, 1, 0, '', 'G', 'Thanh toán khi dao hàng', 0),
+(45, '2023-12-09 17:48:44', NULL, 67, 1, 0, '', 'G', 'default', 0),
+(46, '2023-12-09 17:48:54', NULL, 68, 1, 0, '', 'G', 'momo', 0),
+(47, '2023-12-09 17:59:19', NULL, 69, 1, 0, '', 'G', 'momo', 0),
+(48, '2023-12-09 18:03:24', NULL, 70, 1, 0, '', 'G', 'default', 0),
+(49, '2023-12-09 18:03:36', NULL, 71, 1, 0, '', 'G', 'momo', 0),
+(50, '2023-12-09 18:09:39', NULL, 72, 1, 0, '', 'G', 'default', 1702145379),
+(51, '2023-12-09 18:09:57', NULL, 73, 1, 0, '', 'G', 'default', 1702145397),
+(52, '2023-12-09 18:10:05', NULL, 74, 1, 0, '', 'G', 'momo', 1702145405),
+(53, '2023-12-09 18:36:58', NULL, 75, 2, 1, '', 'G', 'momo', 1702147018),
+(54, '2023-12-09 18:39:35', NULL, 76, 1, 1, '', 'G', 'momo', 1702147175),
+(55, '2023-12-09 18:52:25', NULL, 77, 1, 0, '', 'G', '', 1702147945);
 
 -- --------------------------------------------------------
 
@@ -327,7 +390,34 @@ CREATE TABLE `order_item` (
 INSERT INTO `order_item` (`id`, `order_id`, `price`, `quantity`, `created_at`, `updated_at`, `product_customization_id`) VALUES
 (40, 28, 20000, 2, '2023-12-07 01:04:32', '2023-12-07 01:04:32', 57),
 (41, 28, 20000, 1, '2023-12-07 01:04:32', '2023-12-07 01:04:32', 58),
-(42, 28, 20000, 1, '2023-12-07 01:05:23', '2023-12-07 01:05:23', 59);
+(42, 28, 20000, 1, '2023-12-07 01:05:23', '2023-12-07 01:05:23', 59),
+(43, 29, 805500, 2, '2023-12-08 01:50:26', '2023-12-08 01:50:26', 60),
+(44, 30, 805500, 2, '2023-12-08 01:53:06', '2023-12-08 01:53:06', 60),
+(45, 31, 805500, 2, '2023-12-08 01:53:54', '2023-12-08 01:53:54', 60),
+(46, 32, 805500, 2, '2023-12-08 01:54:05', '2023-12-08 01:54:05', 60),
+(47, 33, 805500, 2, '2023-12-08 01:54:31', '2023-12-08 01:54:31', 60),
+(48, 34, 20000, 1, '2023-12-09 16:36:56', '2023-12-09 16:36:56', 57),
+(49, 35, 20000, 1, '2023-12-09 16:39:25', '2023-12-09 16:39:25', 57),
+(50, 36, 20000, 1, '2023-12-09 16:41:19', '2023-12-09 16:41:19', 57),
+(51, 37, 20000, 1, '2023-12-09 16:41:27', '2023-12-09 16:41:27', 57),
+(52, 38, 20000, 1, '2023-12-09 16:44:09', '2023-12-09 16:44:09', 57),
+(53, 39, 20000, 1, '2023-12-09 16:50:00', '2023-12-09 16:50:00', 57),
+(54, 40, 20000, 1, '2023-12-09 16:50:14', '2023-12-09 16:50:14', 57),
+(55, 41, 20000, 1, '2023-12-09 17:42:33', '2023-12-09 17:42:33', 57),
+(56, 42, 20000, 1, '2023-12-09 17:43:51', '2023-12-09 17:43:51', 57),
+(57, 43, 20000, 1, '2023-12-09 17:46:13', '2023-12-09 17:46:13', 57),
+(58, 44, 20000, 1, '2023-12-09 17:47:49', '2023-12-09 17:47:49', 57),
+(59, 45, 20000, 1, '2023-12-09 17:48:44', '2023-12-09 17:48:44', 57),
+(60, 46, 20000, 1, '2023-12-09 17:48:54', '2023-12-09 17:48:54', 57),
+(61, 47, 20000, 1, '2023-12-09 17:59:19', '2023-12-09 17:59:19', 57),
+(62, 48, 20000, 1, '2023-12-09 18:03:24', '2023-12-09 18:03:24', 57),
+(63, 49, 20000, 1, '2023-12-09 18:03:36', '2023-12-09 18:03:36', 57),
+(64, 50, 20000, 1, '2023-12-09 18:09:39', '2023-12-09 18:09:39', 57),
+(65, 51, 20000, 1, '2023-12-09 18:09:57', '2023-12-09 18:09:57', 57),
+(66, 52, 20000, 1, '2023-12-09 18:10:05', '2023-12-09 18:10:05', 57),
+(67, 53, 20000, 1, '2023-12-09 18:36:58', '2023-12-09 18:36:58', 57),
+(68, 54, 20000, 1, '2023-12-09 18:39:35', '2023-12-09 18:39:35', 57),
+(69, 55, 20000, 1, '2023-12-09 18:52:25', '2023-12-09 18:52:25', 57);
 
 --
 -- Bẫy `order_item`
@@ -373,22 +463,22 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `user_id`, `description`, `price`, `count_likes`, `count_comments`, `category_id`, `count_views`, `count_buy`, `created_at`, `updated_at`, `delete_at`, `feature_image`, `quantity`, `discount`) VALUES
-(38, 'Esprit Ruffle Shirt', 84, '', 20000, 0, 0, 27, 28, 0, '2023-12-04 22:10:37', '2023-12-05 05:10:37', NULL, 'store/images/dc2a7d3bfe60852e9b4e384977dc8190.jpg', 12322, 0),
+(38, 'Esprit Ruffle Shirt', 84, '', 20000, 0, 0, 27, 31, 0, '2023-12-04 22:10:37', '2023-12-05 05:10:37', NULL, 'store/images/dc2a7d3bfe60852e9b4e384977dc8190.jpg', 12322, 0),
 (39, 'Herschel supply', 84, '', 123000, 0, 0, 27, 22, 0, '2023-12-04 22:11:04', '2023-12-05 05:11:04', NULL, 'store/images/0706cfbf018a3729c6d100aa39ee0ca9.jpg', 123, 0),
-(40, 'Only Check Trouser', 84, '', 805500, 0, 0, 29, 20, 0, '2023-12-04 22:11:37', '2023-12-05 05:11:37', NULL, 'store/images/7ed62080a22c45017392f903ac91d84d.jpg', 12, 0),
-(41, 'Classic Trench Coat', 84, '123123123', 20000, 0, 0, 50, 20, 0, '2023-12-04 22:12:16', '2023-12-05 05:12:16', NULL, 'store/images/625dc18d6216e3c173aaf05be7555d42.jpg', 12, 0),
-(42, 'Front Pocket Jumper', 84, '', 20000, 0, 0, 27, 21, 0, '2023-12-04 22:12:59', '2023-12-05 05:12:59', NULL, 'store/images/2b4c6c957fc7230e996a5f02a28ddf2e.jpg', 123, 0),
-(43, 'Vintage Inspired Classic', 84, '', 805500, 0, 0, 51, 20, 0, '2023-12-04 22:16:37', '2023-12-05 05:16:37', NULL, 'store/images/519b0cd92fb2a9e2722119cb822ecf1f.jpg', 123, 0),
+(40, 'Only Check Trouser', 84, '', 805500, 0, 0, 29, 27, 0, '2023-12-04 22:11:37', '2023-12-05 05:11:37', NULL, 'store/images/7ed62080a22c45017392f903ac91d84d.jpg', 2, 0),
+(41, 'Classic Trench Coat', 84, '123123123', 20000, 0, 0, 50, 56, 0, '2023-12-04 22:12:16', '2023-12-05 05:12:16', NULL, 'store/images/625dc18d6216e3c173aaf05be7555d42.jpg', 12, 0),
+(42, 'Front Pocket Jumper', 84, '', 20000, 0, 0, 27, 23, 0, '2023-12-04 22:12:59', '2023-12-05 05:12:59', NULL, 'store/images/2b4c6c957fc7230e996a5f02a28ddf2e.jpg', 123, 0),
+(43, 'Vintage Inspired Classic', 84, '', 805500, 0, 0, 51, 29, 0, '2023-12-04 22:16:37', '2023-12-05 05:16:37', NULL, 'store/images/519b0cd92fb2a9e2722119cb822ecf1f.jpg', 123, 0),
 (44, 'Shirt in Stretch Cotton', 84, '', 1000000, 0, 0, 27, 20, 0, '2023-12-04 22:18:40', '2023-12-05 05:18:40', NULL, 'store/images/03b291362d8a4eebe16ca65d3a7529b1.jpg', 123, 0),
 (45, 'Pieces Metallic Printed', 84, '', 20000, 0, 0, 27, 21, 0, '2023-12-04 22:19:14', '2023-12-05 05:19:14', NULL, 'store/images/f0a419474db95f0e67639100df3eaedd.jpg', 123, 0),
-(46, 'Converse All Star Hi Plimsolls', 84, '', 700000, 0, 0, 49, 20, 0, '2023-12-04 22:19:48', '2023-12-05 05:19:48', NULL, 'store/images/0e5b8a4751f82f739a5b6dafa8573301.jpg', 70, 0),
+(46, 'Converse All Star Hi Plimsolls', 84, '', 700000, 0, 0, 49, 21, 0, '2023-12-04 22:19:48', '2023-12-05 05:19:48', NULL, 'store/images/0e5b8a4751f82f739a5b6dafa8573301.jpg', 70, 0),
 (47, 'Femme T-Shirt In Stripe', 84, '', 200000, 0, 0, 27, 21, 0, '2023-12-04 22:20:26', '2023-12-05 05:20:26', NULL, 'store/images/9e1fcf5761ec552db6bda1bea17332c7.jpg', 123, 0),
-(48, 'Herschel supply', 84, '', 805500, 0, 0, 29, 20, 0, '2023-12-04 22:20:42', '2023-12-05 05:20:42', NULL, 'store/images/0e4cd5e26f25ef33d6d28431da43858b.jpg', 12, 0),
+(48, 'Herschel supply', 84, '', 805500, 0, 0, 29, 23, 0, '2023-12-04 22:20:42', '2023-12-05 05:20:42', NULL, 'store/images/0e4cd5e26f25ef33d6d28431da43858b.jpg', 12, 0),
 (49, 'Herschel supply', 84, '', 123333, 0, 0, 47, 20, 0, '2023-12-04 22:21:00', '2023-12-05 05:21:00', NULL, 'store/images/0c18e1a3fd4c8b34b5122eec3314546c.jpg', 12, 0),
 (50, 'T-Shirt with Sleeve', 84, '', 200000, 0, 0, 27, 35, 0, '2023-12-04 22:22:13', '2023-12-05 05:22:13', NULL, 'store/images/1f3d5d5b3b014471bc39cbe036f63103.jpg', 1233, 0),
-(51, 'Pretty Little Thing', 84, '', 200001, 0, 0, 27, 52, 0, '2023-12-04 22:22:41', '2023-12-05 05:22:41', NULL, 'store/images/f4217da00daa3fdf6b8318af83f8f91f.jpg', 123, 10000),
-(52, 'Mini Silver Mesh Watch', 84, '', 23123123, 0, 0, 51, 21, 0, '2023-12-04 22:24:22', '2023-12-05 05:24:22', NULL, 'store/images/dd46f6b227cae370fedb0349b82ce67a.jpg', 123, 0),
-(53, 'Square Neck Back', 84, '', 20000, 0, 0, 27, 132, 0, '2023-12-04 22:25:31', '2023-12-05 05:25:31', NULL, 'store/images/c27283538e970de620a685c2c6fa368d.jpg', 114, 0);
+(51, 'Pretty Little Thing', 84, '', 200001, 0, 0, 27, 53, 0, '2023-12-04 22:22:41', '2023-12-05 05:22:41', NULL, 'store/images/f4217da00daa3fdf6b8318af83f8f91f.jpg', 123, 10000),
+(52, 'Mini Silver Mesh Watch', 84, '', 23123123, 0, 0, 51, 28, 0, '2023-12-04 22:24:22', '2023-12-05 05:24:22', NULL, 'store/images/dd46f6b227cae370fedb0349b82ce67a.jpg', 123, 0),
+(53, 'Square Neck Back', 84, '', 20000, 0, 0, 27, 166, 0, '2023-12-04 22:25:31', '2023-12-05 05:25:31', NULL, 'store/images/c27283538e970de620a685c2c6fa368d.jpg', 92, 0);
 
 -- --------------------------------------------------------
 
@@ -411,9 +501,13 @@ CREATE TABLE `product_customization` (
 INSERT INTO `product_customization` (`id`, `product_id`, `weight`, `price`, `quantity`) VALUES
 (55, 53, 0, 20000, 12),
 (56, 53, 0, 20000, 123),
-(57, 53, 0, 20000, 100),
+(57, 53, 0, 20000, 78),
 (58, 53, 0, 20000, 100),
-(59, 53, 0, 20000, 100);
+(59, 53, 0, 20000, 100),
+(60, 40, 0, 805500, 2),
+(61, 40, 0, 805500, 0),
+(62, 40, 0, 805500, 0),
+(63, 40, 0, 805500, 0);
 
 -- --------------------------------------------------------
 
@@ -423,14 +517,28 @@ INSERT INTO `product_customization` (`id`, `product_id`, `weight`, `price`, `qua
 
 CREATE TABLE `product_reviews` (
   `id` int(11) NOT NULL,
-  `id_product` bigint(20) NOT NULL,
-  `id_order` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
   `email` varchar(10) NOT NULL,
   `text` varchar(255) NOT NULL,
   `scores` int(2) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`id`, `product_id`, `user_id`, `email`, `text`, `scores`, `created_at`, `updated_at`, `name`) VALUES
+(1, 41, NULL, 'sádasd', 'áda', 0, NULL, NULL, 'sdasda'),
+(2, 41, NULL, 'nguyenhoan', '123123123', 5, NULL, NULL, '1'),
+(3, 41, NULL, 'qưeqweqweq', 'qưeqweq', 0, NULL, NULL, 'ưeqweqwe'),
+(4, 41, NULL, 'ádasdasd', 'ádasda', 4, NULL, NULL, 'ádasd'),
+(5, 43, NULL, '3123123', '123123', 3, NULL, NULL, '123123'),
+(6, 43, NULL, '12123123', '1233123', 5, NULL, NULL, '1212'),
+(7, 52, 84, 'asdasd', 'asdasd', 4, NULL, NULL, 'asdasd');
 
 -- --------------------------------------------------------
 
@@ -594,7 +702,7 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `customers_ibfk_1` (`id_user`);
 
 --
 -- Chỉ mục cho bảng `image`
@@ -654,8 +762,8 @@ ALTER TABLE `product_customization`
 --
 ALTER TABLE `product_reviews`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_product` (`id_product`),
-  ADD KEY `id_order` (`id_order`);
+  ADD KEY `id_product` (`product_id`),
+  ADD KEY `product_reviews_ibfk_2` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `role`
@@ -697,7 +805,7 @@ ALTER TABLE `attribute`
 -- AUTO_INCREMENT cho bảng `attribute_customization`
 --
 ALTER TABLE `attribute_customization`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT cho bảng `banner`
@@ -727,7 +835,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT cho bảng `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT cho bảng `image`
@@ -751,13 +859,13 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT cho bảng `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -769,13 +877,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `product_customization`
 --
 ALTER TABLE `product_customization`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT cho bảng `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `role`
@@ -842,7 +950,7 @@ ALTER TABLE `comments`
 -- Các ràng buộc cho bảng `customers`
 --
 ALTER TABLE `customers`
-  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON UPDATE SET NULL;
 
 --
 -- Các ràng buộc cho bảng `image`
@@ -893,8 +1001,8 @@ ALTER TABLE `product_customization`
 -- Các ràng buộc cho bảng `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`),
-  ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`);
+  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Các ràng buộc cho bảng `slider`

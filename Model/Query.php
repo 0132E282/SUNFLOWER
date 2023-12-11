@@ -57,6 +57,7 @@ class Query extends PDOConnect
 
         return $this;
     }
+
     function is_NUll($field)
     {
         if ($this->where !== '') {
