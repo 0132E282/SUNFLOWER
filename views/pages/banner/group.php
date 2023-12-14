@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-4">
             <div class="card mb-4">
-                <h5 class="card-header">tạo nhóm banner</h5>
+                <h5 class="card-header"><?= isset($bannerGroup['id']) ? 'cập nhập nhóm banner' : 'tạo nhóm banner' ?></h5>
                 <div class="card-body">
                     <form action="?controller=banner&action=<?= isset($bannerGroup['id']) ? 'update-group&id=' . $bannerGroup['id'] : 'create-group' ?>" method="post">
                         <div class="mb-4">
@@ -25,12 +25,12 @@
         </div>
         <div class="col-8">
             <div class="card mb-4  h-100">
-                <h5 class="card-header">Danh sách danh mục</h5>
+                <h5 class="card-header">Danh sách nhóm</h5>
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>tên danh mục</th>
+                            <th>tên nhóm</th>
                             <th>mô tả</th>
                             <th></th>
                         </tr>
@@ -49,7 +49,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="?controller=banner&action=update-banner-group&id=<?= $value['id'] ?>"><i class="bx bx-edit-alt me-1"></i> chỉ sữa</a>
-                                                <a id="btn-delete-category" data-value="?controller=category&amp;action=delete_category&amp;id=26" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-category"><i class="bx bx-trash"></i>xóa</a>
+                                                <a id="btn-delete-category" data-value="?controller=banner&action=delete-banner-group&id=<?= $value['id'] ?>" class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-group-banner"><i class="bx bx-trash"></i>xóa</a>
                                             </div>
                                         </div>
                                     </td>
@@ -66,3 +66,4 @@
         </div>
     </div>
 </div>
+<?php View('components/modal/modalLink', ['id' => 'delete-group-banner', 'title' => 'xóa nhóm banner', 'content' => 'bạn chắc muốn xóa nó không']) ?>

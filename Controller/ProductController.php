@@ -9,9 +9,10 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'] . '_' . $_SE
 // nó là một class nên sử dụng new
 // ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui
 $query = new Query();
-session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
+$current_user = session_get('current_user');
 switch ($action) {
     case 'index_get':
+        middleware(['authMiddleware', 'roleMiddleware:GET_PRODUCTS']);
         $orderby = [
             ['name' => 'ngày tạo', 'value' => 'created_at',],
             ['name' => 'theo giá', 'value' => 'price',],
@@ -20,29 +21,50 @@ switch ($action) {
             ['name' => 'số sản phẩm đã bán', 'value' => 'count_buy',],
             ['name' => 'số sản phẩm', 'value' => 'quantity',],
             ['name' => 'số bình luật', 'value' => 'count_comments',],
+            ['name' => 'danh mục', 'value' => 'category_id',],
         ];
+        // lấy tất cả danh mục đã có sản phẩm
+        $categoryList = $query->table('category')->select('category.*')->join('products', 'id', 'category_id')->groupBy('category.id')->all();
+        $filter = array_map(function ($category) {
+            return ['name' => $category['name'], 'value' => $category['id']];
+        }, $categoryList);
+
+        // thống kê sản phẩm
         $statistical_products = $query->table('products')->select([
             'count(id)' => 'total_products',
             'sum(count_buy)' => 'total_sold',
             'sum(price * quantity)' => 'total_pice',
             'sum( quantity)' => 'total_warehouse',
         ])->first();
-        $product_list = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id')->orderBy('products.created_at')->all();
+        // lấy tất cả sản phẩm
+        $productsQuery = $query->table('products')->select(['users.id' => 'user_id', 'users.name' => 'user_name', 'category.name' => 'category_name', 'products.*'])->join('users', 'user_id')->join('category', 'category_id');
+        if (!empty($_GET['search'])) {
+            // lấy tất cả sản phẩm theo like (tính năng search)
+            $productsQuery  = $productsQuery->where('products.name', 'like', '%' . $_GET['search'] . '%');
+        }
+        if (!empty($_GET['filter']) && $_GET['filter'] != 'all') {
+            $productsQuery  = $productsQuery->where('products.category_id', '=', $_GET['filter']);
+        }
+        // phân trang san phẩm , xấp sếp sản phẩm
+        $product_list = $productsQuery->orderBy('products.' . ($_GET['order'] ?? 'created_at'), $_GET['direction'] ?? 'DESC')->paginate(25);
         View(
             ['layout' => 'layouts/adminLayout', 'content' => 'pages/products/table'],
             [
                 'products' => $product_list,
+                'statistical_products' => $statistical_products,
                 'orderby' => $orderby,
-                'statistical_products' => $statistical_products
+                'filter' => $filter
             ]
         );
         break;
     case 'create_get':
+        middleware(['authMiddleware', 'roleMiddleware:POST_PRODUCTS']);
         $categoryList =  $query->table('category')->select()->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/form'], ['categoryList' => $categoryList]);
         break;
     case 'create_post':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:POST_PRODUCTS']);
             $req = validateFormProducts();
             $product = $query->table('products')->insert([
                 'name' => $req['name-product'],
@@ -73,6 +95,7 @@ switch ($action) {
         }
         break;
     case 'update_get':
+        middleware(['authMiddleware', 'roleMiddleware:PUT_PRODUCTS']);
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($product)) {
             $product['images'] = $query->table('image')->select()->where('product_id', '=', $product['id'])->all();
@@ -82,6 +105,8 @@ switch ($action) {
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/form'], ['categoryList' => $categoryList, 'product' => $product]);
         break;
     case 'update_post':
+        middleware(['authMiddleware', 'roleMiddleware:PUT_PRODUCTS']);
+
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
         $req = validateFormProducts();
         if (is_array($product)) {
@@ -113,6 +138,8 @@ switch ($action) {
         }
         break;
     case 'delete_get':
+        middleware(['authMiddleware', 'roleMiddleware:DELETE_PRODUCTS']);
+
         $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($product)) {
             $query->table('products')->where('id', '=', $product['id'])->delete();

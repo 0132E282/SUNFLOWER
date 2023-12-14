@@ -32,6 +32,7 @@
     })
     modalLink.addEventListener('shown.bs.modal', () => {
         const btnModalLink = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#<?= $id ?>"].active');
+        console.log(btnModalLink.dataset.value);
         modalLink.querySelector('#clickBtn').href = btnModalLink.dataset.value;
     })
 </script>

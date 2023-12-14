@@ -9,18 +9,22 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'] . '_' . $_SE
 // sử dụng thư viện query
 // nó là một class nên sử dụng new
 // ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui4
-session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
+$current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
+        middleware(['authMiddleware', 'roleMiddleware:GET_STATUS']);
         $statusList = $query->table('status')->select()->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/status'], ['statusList' => $statusList]);
         break;
     case 'create_get':
+        middleware(['authMiddleware', 'roleMiddleware:POST_STATUS']);
+
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/formStatus']);
         break;
     case 'create_post':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:POST_STATUS']);
             $req = validateFormStatus();
             if (isset($req['is_default'])) {
                 $dataDefault =  $query->table('status')->where('is_default', '=', 1)->update(['is_default' => 0]);
@@ -41,11 +45,15 @@ switch ($action) {
         }
         break;
     case 'update_get':
+        middleware(['authMiddleware', 'roleMiddleware:PUT_STATUS']);
+
         $statusDetail = $query->table('status')->select()->where('id', '=', $_GET['id'])->first();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/order/formStatus'], ['statusDetail' => $statusDetail]);
         break;
     case 'update_post':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:PUT_STATUS']);
+
             $req = validateFormStatus();
             $statusDetail = $query->table('status')->select()->where('id', '=', $_GET['id'])->first();
             if (!empty($statusDetail) && count($statusDetail) > 0) {
@@ -62,6 +70,26 @@ switch ($action) {
                     'is_paid' => $req['is_paid'] ?? 0,
                 ]);
                 back(['success' => 'tạo trạng thái thành công']);
+            }
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
+        }
+        break;
+    case 'delete_get':
+        try {
+            middleware(['authMiddleware', 'roleMiddleware:DELETE_STATUS']);
+
+            $statusDetail = $query->table('status')->select()->where('id', '=', $_GET['id'])->first();
+            if (!empty($statusDetail) && count($statusDetail) > 0) {
+                $orderStatus = $query->table('status')->select()->join('orders', 'id', 'status_id')->where('status.id', '=', $_GET['id'])->all();
+                if (empty($orderStatus)) {
+                    $query->table('status')->where('id', '=', $statusDetail['id'])->delete();
+                    back(['success' => 'tạo trạng thái thành công']);
+                } else {
+                    throw new Exception('trạng thái đang được sử dụng');
+                }
+            } else {
+                throw new Exception('trạng thái không được tìm thấy');
             }
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);

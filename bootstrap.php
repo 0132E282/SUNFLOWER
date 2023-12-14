@@ -1,5 +1,6 @@
 <?php
 // config require
+require_once './Middleware/Middleware.php';
 require_once './Request/Request.php';
 require_once './Model/Query.php';
 require_once './store/index.php';

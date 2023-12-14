@@ -4,7 +4,7 @@
         <form class="row g-3 bg-while" action="<?= empty($_GET['id']) ? '?controller=users&action=create_user' : '?controller=users&action=update_user&id=' . $_GET['id'] ?>" method="POST" enctype="multipart/form-data">
             <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                    <img src="<?= $user['photo_url'] ?? 'public/assets/img/avatars/5166769102803e3d2df578980e76017c.png' ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                    <img src="<?= $user['photo_url'] ?? 'public/assets/iconImages/user.png' ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
                     <div class="button-wrapper">
                         <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>

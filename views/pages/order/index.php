@@ -28,6 +28,7 @@
             <?php endforeach ?>
         </div>
     </div>
+    <?php View('components/filterTable', ['orderby' => $orderBy]) ?>
     <div class="card">
         <div class="card-header d-flex  align-items-center justify-content-between  ">
             <h5><a href="?controller=order">quẩn lý đơn hàng</a></h5>
@@ -49,9 +50,9 @@
                 </thead>
                 <tbody class="table-border-bottom-0">
                     <?php if (isset($orderList) && count($orderList) > 0) : ?>
-                        <?php foreach ($orderList as $key => $order) : ?>
+                        <?php foreach ($orderList['data'] as $key => $order) : ?>
                             <tr>
-                                <td>#<?= $order['id'] ?></td>
+                                <td>#<?= $order['order_code'] ?></td>
                                 <td><a href="?controller=order&action=detail&id=<?= $order['id'] ?>"><?= $order['customer_name'] ?></a></td>
                                 <td><?= $order['customer_phone_number'] ?></td>
                                 <td><?= number_format($order['total']) ?> đ</td>
@@ -68,7 +69,11 @@
                         </tr>
                     <?php endif ?>
                 </tbody>
+
             </table>
+            <div class="py-3 px-2">
+                <?php View('components/paginate', ['page' => $orderList['page']]) ?>
+            </div>
         </div>
 
     </div>

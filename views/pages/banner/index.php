@@ -1,4 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
+    <?php View('components/alerts') ?>
     <div class="card">
         <h5 class="card-header">banner</h5>
         <table class="table table-hover table-striped">

@@ -12,7 +12,12 @@ session_exists('current_user') ? $current_user = session_get('current_user') :  
 $query = new Query();
 switch ($action) {
     case 'index_get':
-
+        $statistical_orders = $query->table('orders')->select(
+            [
+                'sum(order_item.price * order_item.quantity)' => 'revenue',
+                'sum(order_item.quantity)' => 'total_product_sold'
+            ]
+        )->join('order_item', 'id', 'order_id')->where('orders.is_paid', '=', 1)->first();
 
         $statistical_products = $query->table('products')->select([
             'sum(quantity)' => 'total_warehouse',
@@ -25,6 +30,7 @@ switch ($action) {
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/site/dashboard'], [
             'statistical_products' => $statistical_products,
             'statistical_user' => $statistical_user,
+            'statistical_orders' => $statistical_orders
         ]);
         break;
     case 'statistical_orders_get':
@@ -65,7 +71,8 @@ switch ($action) {
             'created_at', 'sum(price * quantity)' => 'total'
         ])->groupBy('MONTH(created_at)')->all();
         $detail = [];
-        for ($i = 0; $i < 12; ++$i) {
+        $currentDate = new DateTime();
+        for ($i = $currentDate->sub(new DateInterval('P6M'))->format('m') - 1; $i < 12; ++$i) {
             $moth = $i + 1;
             $index = array_search($moth, array_column($statisticalOrderAllMonth, 'month'));
             if (isset($index) && $index !== false) {

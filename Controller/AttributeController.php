@@ -14,6 +14,7 @@ session_exists('current_user') ? $current_user = session_get('current_user') :  
 $query = new Query();
 switch ($action) {
     case 'index_get':
+        middleware(['authMiddleware', 'roleMiddleware:GET_ATTRIBUTE_PRODUCTS']);
         $attributeList = $query->table('attribute')->select()->orderBy('created_at')->all();
         if (!empty($_GET['id'])) {
             $detailAttribute = $query->table('attribute')->select()->where('id', '=', $_GET['id'])->first();
@@ -33,6 +34,7 @@ switch ($action) {
         );
         break;
     case 'create_post':
+        middleware(['authMiddleware', 'roleMiddleware:POST_ATTRIBUTE_PRODUCTS']);
         $req = validateAttribute();
         $attribute = $query->table('attribute')->insert([
             'name' => $req['name'],
@@ -48,6 +50,8 @@ switch ($action) {
         }
         break;
     case 'update_post':
+        middleware(['authMiddleware', 'roleMiddleware:PUT_ATTRIBUTE_PRODUCTS']);
+
         $req = validateAttribute();
         $attribute = $query->table('attribute')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($attribute)) {
@@ -64,6 +68,8 @@ switch ($action) {
 
         break;
     case 'delete_get':
+        middleware(['authMiddleware', 'roleMiddleware:DELETE_ATTRIBUTE_PRODUCTS']);
+
         $attribute = $query->table('attribute')->select()->where('id', '=', $_GET['id'])->first();
         if (is_array($attribute)) {
             $attributeChill = $query->table('attribute')->select()->where('parent_id', '=', $attribute['id'])->all();

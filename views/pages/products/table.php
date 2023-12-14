@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
-                            <img src="public/assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded">
+                            <img src="public/assets/iconImages/box.png" alt="chart success" class="rounded">
                         </div>
                         <div class="dropdown">
                             <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
-                            <img src="public/assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded">
+                            <img src="public/assets/iconImages/purchasing.png" alt="chart success" class="rounded">
                         </div>
                         <div class="dropdown">
                             <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
-                            <img src="public/assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded">
+                            <img src="public/assets/iconImages/profits.png" alt="chart success" class="rounded">
                         </div>
                         <div class="dropdown">
                             <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -81,7 +81,7 @@
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
-                            <img src="public/assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded">
+                            <img src="public/assets/iconImages/products.png" alt="chart success" class="rounded">
                         </div>
                         <div class="dropdown">
                             <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,52 +103,15 @@
             </div>
         </div>
     </div>
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <?php if (isset($orderby)) : ?>
-                    <div class="col-3">
-                        <div class="row">
-                            <label for="html5-text-input" class="col-md-2 col-form-label" style="width: max-content;">xấp sếp </label>
-                            <div class="col-md-8">
-                                <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
-                                    <?php foreach ($orderby as $value) : ?>
-                                        <option value="<?= $value['value'] ?>" <?= isset($_POST['order']) && $value['value'] == $_POST['order'] ? 'selected' : "" ?>><?= $value['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="row">
-                            <label for="html5-text-input" class="col-md-2 col-form-label" style="width: max-content;">theo</label>
-                            <div class="col-md-8">
-                                <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
-                                    <option value="DESC">DESC (tăng dần)</option>
-                                    <option value="ASC">ASC (giảm dần)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif ?>
-                <div class="col-3">
-                    <div class="row">
-                        <label for="html5-text-input" class="col-md-2 col-form-label">Text</label>
-                        <div class="col-md-10">
-                            <select id="defaultSelect" class="form-select" fdprocessedid="8k2ey4">
-                                <option>Default select</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php View('components/filterTable', [
+        'orderby' => $orderby,
+        'filter' => $filter
+    ]) ?>
     <div class="card">
-        <h5 class="card-header">Tài khoản người dùng</h5>
+        <div class="card-header justify-content-between d-flex align-items-center">
+            <h5>Quản lý sản phẩm</h5>
+            <span>tổng </span>
+        </div>
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
@@ -165,7 +128,7 @@
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                <?php foreach ($products as $key => $value) : ?>
+                <?php foreach ($products['data'] as $key => $value) : ?>
                     <tr>
                         <td><?= ++$key ?></td>
                         <td>
@@ -195,6 +158,9 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+        <div class="py-3 px-2">
+            <?php View('components/paginate', ['page' => $products['page']]) ?>
+        </div>
     </div>
 </div>
 <?php View('components/modal/modalLink', ['id' => 'delete-product', 'title' => 'xóa banner', 'content' => 'bạn chắc muốn xóa nó không']) ?>
@@ -206,5 +172,5 @@
             document.querySelector('.btn-show-modal.active')?.classList.remove('active');
             e.currentTarget.classList.add('active');
         }
-    })
+    });
 </script>

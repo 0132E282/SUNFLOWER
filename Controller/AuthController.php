@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Request/validateAuth.php';
 // kiểm tra có biến action không nếu có thì loại bỏ khoản trắng hai đầu , biến chuổi hoa thành chuổi thường ;
 // còn nếu không có mặt định là index;
 
@@ -16,6 +16,7 @@ switch ($action) {
         break;
     case 'login':
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $req = validateAuth();
             $username = $_POST['username'];
             $user = $query->table('users')->select(['role.name' => 'role_name', 'users.*'])->join('role', 'role_id', 'id')->where('username', '=', $username)->first();
             if ($user && password_verify($_POST['password'], $user['password']) && $user['locked'] == 0) {
@@ -39,6 +40,9 @@ switch ($action) {
             session_remove('current_user');
             redirect('index.php?controller=auth');
         }
+        break;
+    case 'login_user':
+
         break;
     default:
         echo 'không có file';

@@ -14,7 +14,7 @@
                                     <div class="col-5">
                                         <div class="d-flex justify-content-center align-items-center flex-column  h-100">
                                             <label class="position-relative" for="slider-images" style="cursor: pointer;" tabindex="0" data-bs-toggle="modal" data-bs-target="#manager-file">
-                                                <img src="<?= $slider['images'] ?? '' ?>" class="img-fluid" alt="...">
+                                                <img src="<?= $slider['images'] ?? (old('slider-images') != '' ? old('slider-images') :  'public/assets/iconImages/th.jpeg') ?>" class="img-fluid" alt="...">
                                                 <input class="input-images-slider" name="slider-images" value="<?= !empty($slider['images']) && json_encode($slider['images']) ?? old('slider-images') ?>" type="text" hidden id="slider-images">
                                             </label>
                                             <?php if (!empty($error['slider-images'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['slider-images']['message'] ?></p> <?php endif ?>

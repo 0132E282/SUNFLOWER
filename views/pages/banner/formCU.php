@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header d-flex  align-items-center justify-content-between ">
-                    <h5>tạo banner sản phẩm</h5>
+                    <h5><?= isset($banner['id']) ? 'cập nhập banner' : 'tạo banner sản phẩm' ?> </h5>
                 </div>
                 <div class="card-body">
                     <form action="?controller=banner&action=<?= isset($banner['id']) ? 'update&id=' . $banner['id'] : 'create' ?>" method="POST">
@@ -14,7 +14,7 @@
                                     <div class="col-5">
                                         <div class="d-flex justify-content-center flex-column  align-items-center  h-100">
                                             <label class="position-relative" for="banner-images" style="cursor: pointer;" tabindex="0" data-bs-toggle="modal" data-bs-target="#manager-file">
-                                                <img src="<?= $banner['images'] ?? old('banner-images') ?>" class="img-fluid" alt="...">
+                                                <img src="<?= $banner['images'] ?? (old('banner-images') != '' ? old('banner-images') :  'public/assets/iconImages/th.jpeg') ?>" class="img-fluid" alt="...">
                                                 <input class="input-images-banner" name="banner-images" value="<?= $banner['images'] ?? old('banner-images')  ?>" type="text" hidden id="banner-images">
                                             </label>
                                             <?php if (!empty($error['banner-images'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['banner-images']['message'] ?></p> <?php endif ?>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button w-100" class="btn btn-primary" fdprocessedid="9wkysc">tạo nhóm banner</button>
+                        <button type="button w-100" class="btn btn-primary" fdprocessedid="9wkysc"><?= isset($banner['id']) ? 'cập nhập ' : 'tạo banner ' ?> </button>
                     </form>
                 </div>
             </div>

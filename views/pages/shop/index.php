@@ -7,7 +7,7 @@
 
         <div class="row isotope-grid">
             <?php if (!empty($products) && count($products) > 0) : ?>
-                <?php foreach ($products as $value) : ?>
+                <?php foreach ($products['data'] as $value) : ?>
                     <?php View('components/product/product-cart', $value) ?>
                 <?php endforeach ?>
             <?php endif ?>
@@ -15,7 +15,7 @@
 
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <?php View('components/pagintion', ['page' => $page]); ?>
+            <?php View('components/paginate', ['page' => $products['page']]); ?>
         </div>
     </div>
 </div>

@@ -8,19 +8,22 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'] . '_' . $_SE
 // sử dụng thư viện query
 // nó là một class nên sử dụng new
 // ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui4
-session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
+$current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
+        middleware(['authMiddleware', 'roleMiddleware:GET_MENUS']);
         $menusList = $query->table('menus')->select(['users.name' => "user_name", 'menus.*'])->join('users', 'user_id')->orderBy('created_at')->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/menus/index'], ['menusList' => $menusList]);
         break;
     case 'create_get':
+        middleware(['authMiddleware', 'roleMiddleware:POST_MENUS']);
         $menusList = $query->table('menus')->select()->orderBy('created_at')->all();
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/menus/formCU'], ['menusList' => $menusList]);
         break;
     case 'create_post':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:POST_MENUS']);
             $req = validateFormMenus();
             $menus =  $query->table('menus')->insert([
                 'name' => $req['name'],
@@ -36,6 +39,7 @@ switch ($action) {
         break;
     case 'update_get':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:PUT_MENUS']);
             $menu = $query->table('menus')->select()->where('id', '=', $_GET['id'])->first();
             if (count($menu) > 0) {
                 $menusList = $query->table('menus')->select()->orderBy('created_at')->all();
@@ -50,6 +54,8 @@ switch ($action) {
         break;
     case 'update_post':
         try {
+            middleware(['authMiddleware', 'roleMiddleware:PUT_MENUS']);
+
             $req = validateFormMenus();
             $menu = $query->table('menus')->select()->where('id', '=', $_GET['id'])->first();
             if (count($menu) > 0) {
@@ -68,6 +74,7 @@ switch ($action) {
     case 'delete_get':
 
         try {
+            middleware(['authMiddleware', 'roleMiddleware:DELETE_MENUS']);
             $menu = $query->table('menus')->select()->where('id', '=', $_GET['id'])->first();
             if (isset($menu['id'])) {
                 $query->table('menus')->where('id', '=',  $menu['id'])->delete();
@@ -80,5 +87,6 @@ switch ($action) {
         }
         break;
     default:
-        echo 'không có file';
+        View('error/404');
+        break;
 }

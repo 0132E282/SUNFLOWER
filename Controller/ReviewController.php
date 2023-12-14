@@ -13,7 +13,11 @@ $query = new Query();
 switch ($action) {
     case 'index_get':
         session_exists('current_user') ?? redirect('?controller=auth');
-
+        $reviewProduct = $query->table('product_reviews')->select(['products.name' => 'product_name', 'product_reviews.*'])->join('products', 'product_id')->paginate(25);
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/ProductReview'], ['reviewProduct' => $reviewProduct]);
+        break;
+    case 'detail_get':
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/detailProductReview']);
         break;
     case 'create_post':
         try {

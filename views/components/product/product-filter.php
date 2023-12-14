@@ -3,7 +3,8 @@ $query = new Query();
 
 $attr = $query->table('attribute')->select()->where('parent_id', '=', 0)->all();
 
-$attr['children'] = getChillAttr($attr);
+$attr = getChillAttr($attr);
+
 
 function getChillAttr($attr)
 {
@@ -12,7 +13,7 @@ function getChillAttr($attr)
     foreach ($attr as $key => $value) {
         $attrChill = $query->table('attribute')->select()->where('parent_id', '=', $value['id'])->all();
         if (count($attrChill) > 0) {
-            array_push($arr, [$value, getChillAttr($attrChill)]);
+            array_push($arr, [...$value, 'chill' => getChillAttr($attrChill)]);
         } else {
             array_push($arr, $value);
         }
@@ -20,7 +21,7 @@ function getChillAttr($attr)
     return $arr;
 }
 
-print_r($attr);
+
 
 ?>
 
@@ -63,13 +64,13 @@ print_r($attr);
 
 <!-- Filter -->
 <div class="dis-none panel-filter w-full p-t-10">
-    <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-        <div class="filter-col1 p-r-15 p-b-27">
+    <div class="row flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+        <div class="col-3 p-r-15 p-b-27">
             <div class="mtext-102 cl2 p-b-15">
                 sắp xếp
             </div>
 
-            <ul>
+            <ul class="p-0 ">
                 <li class="p-b-6">
                     <a href="<?= currentRouter([...$_GET, 'order' => 'created_at', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
                         sản phẩm mới
@@ -97,12 +98,12 @@ print_r($attr);
             </ul>
         </div>
 
-        <div class="filter-col2 p-r-15 p-b-27">
+        <div class="col-3 p-r-15 p-b-27">
             <div class="mtext-102 cl2 p-b-15">
                 Theo giá
             </div>
 
-            <ul>
+            <ul class="p-0 ">
                 <li class="p-b-6">
                     <a href="<?= currentRouter([...$_GET, 'price' => '0']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
                         Tất cả
@@ -137,10 +138,25 @@ print_r($attr);
         </div>
         <?php if (isset($attr) && count($attr) > 0) : ?>
             <?php foreach ($attr as $value) : ?>
-                <div class="filter-col3 p-r-15 p-b-27">
+                <div class="col-3 p-r-15 p-b-27">
                     <div class="mtext-102 cl2 p-b-15">
-                        <?php print_r($value['name'])  ?>
+                        <?= $value['name'] ?>
                     </div>
+                    <ul class="p-0 ">
+                        <?php foreach ($value['chill'] as $key => $value) : ?>
+                            <li class="p-b-6">
+                                <?php if ($value['type'] == 'color') : ?>
+                                    <span class="fs-15 lh-12 m-r-6" style="color: <?= $value['value'] ?>;">
+                                        <i class="zmdi zmdi-circle"></i>
+                                    </span>
+                                <?php endif; ?>
+
+                                <a href="<?= currentRouter([...$_GET, $value['type'] => $value['value']]) ?>" class="filter-link stext-106 trans-04">
+                                    <?= $value['name'] ?>
+                                </a>
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
 
                 </div>
             <?php endforeach ?>

@@ -6,6 +6,7 @@ class Query extends PDOConnect
     private $sql = '';
     private $table = '';
     private $where = '';
+    private $duplicate = '';
     // select input ['id', 'name' => 'name1' , 'description] => elector id , name1 , description form database,
     // cớ thể dùng chuổi để select
     // default lấy tất cả 
@@ -29,6 +30,7 @@ class Query extends PDOConnect
         $this->sql = "SELECT $columnName FROM $this->table " .  $this->sql;
         return $this;
     }
+
     // tên column name
     function table($table)
     {
@@ -57,7 +59,17 @@ class Query extends PDOConnect
 
         return $this;
     }
+    function whereNotIn($field, $data = [])
+    {
+        if ($this->where !== '') {
+            $this->sql  .= " AND $field NOT IN (" . implode(',', $data) . ")";
+        } else {
+            $this->where .= " WHERE $field NOT IN (" . implode(',', $data) . ")";
+            $this->sql .= $this->where;
+        }
 
+        return $this;
+    }
     function is_NUll($field)
     {
         if ($this->where !== '') {
@@ -99,7 +111,7 @@ class Query extends PDOConnect
             }
         }
 
-        $sql = "INSERT INTO $this->table (" . substr($column, 0, -1) . ") VALUES (" . substr($valueCol, 0, -1) . ")";
+        $sql = "INSERT INTO $this->table (" . substr($column, 0, -1) . ") VALUES (" . substr($valueCol, 0, -1) . ") " . $this->where;
         $id = $this->execute($sql);
         return $this->select()->where('id', '=', $id)->first();
     }
@@ -111,6 +123,23 @@ class Query extends PDOConnect
         }
         $sql = " UPDATE $this->table SET " . substr($valueCol, 0, -1) . " " . $this->sql;
         $this->execute($sql);
+    }
+    function duplicate($data)
+    {
+        $valueCol = '';
+        foreach ($data as $key => $value) {
+            $valueCol .= is_numeric($value) || gettype($value) == 'integer' ? " $key = $value ," : "$key = '$value' ,";
+        }
+        $this->duplicate = " ON DUPLICATE KEY UPDATE " . substr($valueCol, 0, -1);
+        return $this;
+    }
+    function paginate($item)
+    {
+        $offsetItem = $item * !empty($_GET['page']) ? $_GET['page'] - 1 :  0;
+        $data['data'] = $this->limit($item)->offset($offsetItem)->all();
+        $data['page'] =   $this->select(['ROUND(count(*) / ' . $item . ')' => 'total_pages'])->first();
+        $data['page']['current_page'] = !empty($_GET['page']) && $_GET['page'] != 0 ? $_GET['page'] : 1;
+        return $data;
     }
     function orderBy($column, $direction = 'DESC')
     {

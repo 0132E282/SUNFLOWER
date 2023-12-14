@@ -12,8 +12,7 @@ $current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        $limit  = 25;
-        $offset_item = $limit * ($_GET['page'] - 1);
+
         $category = $query->table('category')->select()->where('parent_id', '=', $_GET['category'] ?? 0)->all();
         $categoryChill = getCategoryChill($category);
         if (count($categoryChill) > 0) {
@@ -37,11 +36,10 @@ switch ($action) {
                 $productsQuery = $productsQuery->where('price', '<=', $price[1]);
             }
         }
-        $products = $productsQuery->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC')->limit($limit)->offset($offset_item)->all();
+        $products = $productsQuery->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC')->paginate(25);
 
-        $page = $query->select(['ROUND( count(products.id) / ' . $limit . ') ' => 'total_pages'])->table('products')->first();
-        $page['current_page'] = $_GET['page'];
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products, 'page' => $page]);
+
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products]);
         break;
     case 'cart_get':
         View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart']);

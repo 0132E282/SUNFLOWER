@@ -50,7 +50,7 @@ $menuList = [
         'children' => [
             [
                 'name' => 'tất cả',
-                'url' => '?controller=order',
+                'url' => '?controller=order&page=1',
                 'icon' => 'tf-icons bx bx-home-circle',
             ],
             [
@@ -70,7 +70,7 @@ $menuList = [
         'children' => [
             [
                 'name' => 'tất cả',
-                'url' => '?controller=product',
+                'url' => '?controller=product&page=1',
                 'icon' => 'bx bx-package',
             ],
             [
@@ -91,6 +91,11 @@ $menuList = [
             [
                 'name' => 'thuộc tính',
                 'url' => '?controller=attribute',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'đánh giá người dùng',
+                'url' => '?controller=review',
                 'icon' => 'tf-icons bx bx-home-circle',
             ]
         ]
@@ -121,6 +126,16 @@ $menuList = [
             [
                 'name' => 'tạo tài khoản',
                 'url' => '?controller=users&action=create',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'phân quyền',
+                'url' => '?controller=role',
+                'icon' => 'tf-icons bx bx-home-circle',
+            ],
+            [
+                'name' => 'tạo phân quyền',
+                'url' => '?controller=role&action=create',
                 'icon' => 'tf-icons bx bx-home-circle',
             ]
         ]

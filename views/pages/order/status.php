@@ -1,6 +1,6 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="w-100">
-    </div>
+    <?php View('components/alerts') ?>
+
     <div class="row mb-5">
         <div class="col-md-12">
             <div class="card mb-4  h-100">
@@ -36,7 +36,7 @@
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="?controller=status&action=update&id=<?= $status['id'] ?>"><i class="bx bx-edit-alt me-1"></i> sữa</a>
-                                                <a data-value="?controller=status&action=delete&id=<?= $status['id'] ?>" class="dropdown-item btn-delete-attr" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-attribute"><i class="bx bx-trash"></i>xóa</a>
+                                                <a data-value="?controller=status&action=delete&id=<?= $status['id'] ?>" class="dropdown-item btn-delete-attr" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-status"><i class="bx bx-trash"></i>xóa</a>
                                             </div>
                                         </div>
                                     </td>
@@ -50,3 +50,4 @@
         </div>
     </div>
 </div>
+<?php View('components/modal/modalLink', ['id' => 'delete-status', 'title' => 'xóa trạng thái', 'content' => 'bạn chắc muốn xóa nó không']) ?>
