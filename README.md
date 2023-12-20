@@ -27,6 +27,8 @@ TK 9704 0000 0000 0018
 OTP : OTP
 \\
 ![image](https://github.com/0132E282/SUNFLOWER/assets/93367209/9acfc46e-4da8-4ccc-b3d1-9a616bab4a13)
+![image](https://github.com/0132E282/SUNFLOWER/assets/93367209/8db266a5-a860-4632-b3c1-67280b65e891)
+
 ### đăng nhập
 ?controller=auth&action=login_user
 ![image](https://github.com/0132E282/SUNFLOWER/assets/93367209/4e694fb9-fdf2-49e4-918a-9b6703bec45b)
