@@ -87,7 +87,7 @@
                         <?php if (!empty($error['note'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['note']['message'] ?></p> <?php endif ?>
                     </div>
                     <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" type="submit">
-                        Submit
+                        đặt hàng
                     </button>
                 </div>
 

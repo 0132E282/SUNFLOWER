@@ -31,7 +31,7 @@
 													</div>
 												</a>
 											</td>
-											<td class="column-2"><?= $value['name']  ?></td>
+											<td class="column-2"><?= $value['name'] . ' ' . join('-', array_column($value['attr'], 'name')) ?></td>
 											<td class="column-3"><?= number_format($value['price']) ?> đ</td>
 											<td class="column-4">
 												<div class="wrap-num-product flex-w m-l-auto m-r-0">

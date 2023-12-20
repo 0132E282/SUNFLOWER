@@ -14,7 +14,7 @@ $cart = $_SESSION['product_cart'] ?? [];
             </a>
             <div class="header-cart-item-txt p-t-8">
                 <a href="?controller=shop&action=detail&id=<?= $cart['product_id'] ?>" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                    <?= $cart['name'] ?>
+                    <?= $cart['name'] . ' ' . join('-', array_column($cart['attr'], 'name'))  ?>
                 </a>
 
                 <span class="header-cart-item-info">
