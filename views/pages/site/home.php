@@ -6,16 +6,15 @@
 
 
 <!-- Product -->
+
 <section class="bg0 p-t-23 p-b-140">
     <div class="container">
+        <?php View('components/product/product-carousel', ['title' => 'sản phẩm mua nhiều nhất', 'products' => $productLike]) ?>
+        <?php View('components/product/product-carousel', ['title' => 'sản phẩm xem nhiều nhất', 'products' => $productView]) ?>
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 TỔNG QUAN SẢN PHẨM
             </h3>
-        </div>
-
-        <div class="flex-w flex-sb-m p-b-52">
-            <?php View('components/product/product-filter', ['category' => $category]) ?>
         </div>
 
         <div class="row isotope-grid">

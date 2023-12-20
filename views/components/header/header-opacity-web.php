@@ -52,17 +52,18 @@ function renderChildMenu($parent_id)
         <div class="wrap-menu-desktop">
             <nav class="limiter-menu-desktop container">
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
-                    <img src="public/assets/images/icons/logo-01.png" alt="IMG-LOGO">
+                <a href="" class="logo d-flex  align-align-items-center justify-content-start " style="width: 40px; height: 30px;">
+                    <img src="public/logo.png" alt="IMG-LOGO" class="w-100 h-100 ">
+                    <p class="text-uppercase fw-bold m-0 ms-2" style="color: #333333;">SUNFLOWER</p>
                 </a>
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
-                    <ul class="main-menu">
+                    <ul class="main-menu ">
                         <?php if (!empty($menu) && count($menu) > 0) : ?>
                             <?php foreach ($menu as $value) : ?>
                                 <!-- 'active-menu' -->
                                 <li class="">
-                                    <a href="<?= $value['url'] ?>"><?= $value['name'] ?></a>
+                                    <a style="text-decoration:none;" href="<?= $value['url'] ?>"><?= $value['name'] ?></a>
                                     <?= renderChildMenu($value['id']) ?>
                                 </li>
                             <?php endforeach ?>
@@ -86,6 +87,10 @@ function renderChildMenu($parent_id)
                     <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+                        <i class="zmdi zmdi-account-circle"></i>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -111,6 +116,7 @@ function renderChildMenu($parent_id)
             <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
                 <i class="zmdi zmdi-favorite-outline"></i>
             </a>
+
         </div>
 
         <!-- Button show menu -->

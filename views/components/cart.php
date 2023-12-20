@@ -1,7 +1,3 @@
-<?php
-$cart = session_get('product_cart');
-?>
-
 <div class="wrap-header-cart js-panel-cart">
     <div class="s-full js-hide-cart"></div>
 
@@ -16,29 +12,11 @@ $cart = session_get('product_cart');
             </div>
         </div>
 
-        <div class="header-cart-content flex-w js-pscroll">
-            <ul class="header-cart-wrapitem w-full">
-                <?php if (!empty($cart) && count($cart) > 0) : ?>
-                    <?php foreach ($cart as $cart) : ?>
-                        <li class="header-cart-item flex-w flex-t m-b-12">
-                            <div class="header-cart-item-img">
-                                <img src="<?= $cart['images'] ?>" alt="IMG">
-                            </div>
+        <div class="header-cart-content flex-w js-pscroll ">
 
-                            <div class="header-cart-item-txt p-t-8">
-                                <a href="?controller=shop&action=detail&id=<?= $cart['product_id'] ?>" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                                    <?= $cart['name'] ?>
-                                </a>
+            <ul class="header-cart-wrapitem w-full" id="cart">
 
-                                <span class="header-cart-item-info">
-                                    <?= $cart['quantity'] ?> x <?= $cart['price'] ?>
-                                </span>
-                            </div>
-                        </li>
-                    <?php endforeach ?>
-                <?php endif ?>
             </ul>
-
             <div class="w-full">
                 <div class="header-cart-total w-full p-tb-40">
 

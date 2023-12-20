@@ -22,7 +22,17 @@ switch ($action) {
         if (count($idCategory) > 0) {
             $products = $query->table('products')->select()->whereIn('category_id', $idCategory)->orderBy('created_at')->limit(14)->all();
         }
-        View(['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/home'], ['category' => $category, 'products' => $products ?? []]);
+        $productView = $query->table('products')->select()->orderBy('count_views', 'DESC')->limit(12)->all();
+        $productLike =  $query->table('products')->select()->orderBy('count_likes', 'DESC')->limit(12)->all();
+        View(
+            ['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/home'],
+            [
+                'category' => $category,
+                'products' => $products ?? [],
+                'productView' => $productView,
+                'productLike' => $productLike
+            ]
+        );
         break;
     case 'about_get':
         View(['layout' => 'layouts/webLayoutHeaderOpacity', 'content' => 'pages/site/about']);

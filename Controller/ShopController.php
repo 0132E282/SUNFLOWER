@@ -12,7 +12,9 @@ $current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
-
+        $descriptionWeb = [
+            'title' => 'shop',
+        ];
         $category = $query->table('category')->select()->where('parent_id', '=', $_GET['category'] ?? 0)->all();
         $categoryChill = getCategoryChill($category);
         if (count($categoryChill) > 0) {
@@ -39,10 +41,15 @@ switch ($action) {
         $products = $productsQuery->orderBy($_GET['order'] ?? 'created_at', $_GET['direction'] ?? 'DESC')->paginate(25);
 
 
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], ['category' => $category, 'products' => $products]);
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/index'], [
+            'category' => $category,
+            'products' => $products,
+            'descriptionWeb' => $descriptionWeb
+        ]);
         break;
     case 'cart_get':
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart']);
+        $cart = session_get('product_cart');
+        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart'], ['cart' => $cart]);
         break;
     case 'detail_get':
         try {
@@ -71,72 +78,96 @@ switch ($action) {
                         ->all();
                 }
             }
-            View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/detail'], ['product' => $product, 'attr' => $attr, 'productReviews' => $productReviews, 'similarProducts' => $similarProducts]);
+            $descriptionWeb = [
+                'title' => $product['name']
+            ];
+            View(
+                ['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/detail'],
+                [
+                    'product' => $product,
+                    'attr' => $attr,
+                    'productReviews' => $productReviews,
+                    'similarProducts' => $similarProducts,
+                    'descriptionWeb' => $descriptionWeb
+                ]
+            );
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);
         }
         break;
     case 'add-cart_post':
         try {
-            $cart = session_get('product_cart');
-            $product = $query->table('attribute_customization')
-                ->select(
-                    [
-                        'products.feature_image' => 'feature_image',
-                        'products.id' => 'product_id',
-                        'products.category_id' => 'category_id',
-                        'discount' => 'discount',
-                        'products.name' => 'name',
-                        'product_customization.id' => 'customization_id',
-                        'product_customization.price' => 'customization_price',
-                        'products.price' => 'products_price',
-                    ]
-                )
-                ->join('product_customization', 'customization_id')
-                ->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')
-                ->where('product_customization.product_id', '=', $_GET['id'])
-                ->whereIn('attribute_id', [...$_POST['attr']])
-                ->groupBy('product_customization.id')
-                ->having('count(product_customization.id)', '=', count($_POST['attr']))
-                ->first();
-            $product['attributes'] = $query->table('attribute')->select()->whereIn('id', $_POST['attr'])->all();
-            if (!empty($product) && count($product) > 0) {
-                $coderProduct = $_GET['id'] . $product['customization_id'];
-                $productItem = [
-                    'id' => $coderProduct,
-                    'product_id' => $product['product_id'],
-                    'customization_id' => $product['customization_id'],
-                    'name' =>  $product['name'],
-                    'quantity' =>  $_POST['num-product'] ?? 1,
-                    'price' => $product['customization_price'] ?? $product['products_price'],
-                    'images' => $product['feature_image'],
-                    'attr' => count($product['attributes']) > 0 ? array_map(function ($attr) {
-                        return ['name' => $attr['name'], 'id' => $attr['id']];
-                    }, $product['attributes']) : [],
-                ];
+            if (!empty($_POST['attr']) && count($_POST['attr']) > 0) {
+                $cart = session_get('product_cart');
+                $product = $query->table('attribute_customization')
+                    ->select(
+                        [
+                            'products.feature_image' => 'feature_image',
+                            'products.id' => 'product_id',
+                            'products.category_id' => 'category_id',
+                            'discount' => 'discount',
+                            'products.name' => 'name',
+                            'product_customization.id' => 'customization_id',
+                            'product_customization.price' => 'customization_price',
+                            'products.price' => 'products_price',
+                        ]
+                    )
+                    ->join('product_customization', 'customization_id')
+                    ->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')
+                    ->where('product_customization.product_id', '=', $_GET['id'])
+                    ->whereIn('attribute_id', [...$_POST['attr']])
+                    ->groupBy('product_customization.id')
+                    ->having('count(product_customization.id)', '=', count($_POST['attr']))
+                    ->first();
+                $product['attributes'] = $query->table('attribute')->select()->whereIn('id', $_POST['attr'])->all();
+                if (!empty($product) && count($product) > 0) {
+                    $coderProduct = $_GET['id'] . $product['customization_id'];
+                    $productItem = [
+                        'id' => $coderProduct,
+                        'product_id' => $product['product_id'],
+                        'customization_id' => $product['customization_id'],
+                        'name' =>  $product['name'],
+                        'quantity' =>  $_POST['num-product'] ?? 1,
+                        'price' => $product['customization_price'] ?? $product['products_price'],
+                        'images' => $product['feature_image'],
+                        'attr' => count($product['attributes']) > 0 ? array_map(function ($attr) {
+                            return ['name' => $attr['name'], 'id' => $attr['id']];
+                        }, $product['attributes']) : [],
+                    ];
 
-                if (isset($cart[$coderProduct])) {
-                    $cart[$coderProduct]['quantity'] +=  $_POST['num-product'] ?? 1;
+                    if (isset($cart[$coderProduct])) {
+                        $cart[$coderProduct]['quantity'] +=  $_POST['num-product'] ?? 1;
+                    } else {
+                        $cart[$coderProduct] = $productItem;
+                    }
+
+                    session_push('product_cart', $cart);
+                    print_r(json_encode(session_get('product_cart')));
                 } else {
-                    $cart[$coderProduct] = $productItem;
+                    throw new Exception('xin lỗi sản phẩm bạn chọn chúng không tìm thấy');
                 }
-
-                session_push('product_cart', $cart);
-                print_r(json_encode(session_get('product_cart')));
+            } else {
+                throw new Exception('thất bại !');
             }
+        } catch (Exception $e) {
+            http_response_code(400);
+            print_r('error: ' . $e->getMessage());
+        }
+        break;
+    case 'delete-cart_get':
+        try {
+            $cart = session_get('product_cart');
+            if (isset($cart[$_GET['id']])) {
+                unset($cart[$_GET['id']]);
+            }
+            session_push('product_cart', $cart);
+            back(['success' => 'xóa thành công']);
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);
         }
         break;
-    case 'delete':
-        $cart = session_get('product_cart');
-        if (isset($cart['id'])) {
-            unset($cart[$_GET['id']]);
-        }
-        session_push('product_cart', $cart);
-        break;
     case 'products_cart_get':
-        $cart = session_get('product_cart');
+
         print_r(json_encode(array_values($cart)));
         break;
     default:

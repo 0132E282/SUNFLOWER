@@ -64,6 +64,7 @@ switch ($action) {
                     'images' => $req['banner-images'] ?? $banner['images'],
                     'banner_group_id' => $_POST['banner-group'] ?? $banner['banner_group_id'],
                     'url' => $_POST['banner-path'] ?? $banner['url'],
+                    'sub_title' => $req['sub_title'],
                 ]);
                 back(['success' => 'banner cập nhập thành công']);
             } else {

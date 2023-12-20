@@ -26,7 +26,8 @@ class PDOConnect
             $stml->execute($sql_args);
             return $stml;
         } catch (PDOException $e) {
-            echo $e->getMessage() . "\n $sql";
+            http_response_code($e->getCode());
+            trigger_error($e->getMessage() . "\n $sql", E_USER_ERROR);
             die;
         }
     }

@@ -1,34 +1,54 @@
     <!-- Footer -->
+    <?php
+    $query = new Query();
+
+    $categoryList = $query->table('category')->select()->where('parent_id', '=', 0)->all();
+
+    ?>
     <footer class="bg3 p-t-75 p-b-32">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 col-lg-3 p-b-50">
                     <h4 class="stext-301 cl0 p-b-30">
-                        Categories
+                        danh mục
+                    </h4>
+                    <?php foreach ($categoryList  as $value) : ?>
+                        <li class="p-b-10">
+                            <a href="?controller=shop&page=1&category=<?= $value['id'] ?>" class="stext-107 cl7 hov-cl1 trans-04">
+                                <?= $value['name'] ?>
+                            </a>
+                        </li>
+
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        trợ giúp
                     </h4>
 
-                    <ul>
+                    <ul class="p-0">
                         <li class="p-b-10">
                             <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Women
+                                Theo dõi thứ tự
                             </a>
                         </li>
 
                         <li class="p-b-10">
                             <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Men
+                                chính sách hoàn trả
                             </a>
                         </li>
 
                         <li class="p-b-10">
                             <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Shoes
+                                Đang chuyển hàng
                             </a>
                         </li>
 
                         <li class="p-b-10">
                             <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Watches
+                                câu hỏi thường gập
                             </a>
                         </li>
                     </ul>
@@ -36,43 +56,11 @@
 
                 <div class="col-sm-6 col-lg-3 p-b-50">
                     <h4 class="stext-301 cl0 p-b-30">
-                        Help
-                    </h4>
-
-                    <ul>
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Track Order
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Returns
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Shipping
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                FAQs
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-sm-6 col-lg-3 p-b-50">
-                    <h4 class="stext-301 cl0 p-b-30">
-                        GET IN TOUCH
+                        liên hện
                     </h4>
 
                     <p class="stext-107 cl7 size-201">
-                        Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+                        Có câu hỏi nào không? Hãy cho chúng tôi biết tại cửa hàng tại tầng 8, 379 Hudson St, New York, NY 10018 hoặc gọi cho chúng tôi theo số (+1) 96 716 6879
                     </p>
 
                     <div class="p-t-27">

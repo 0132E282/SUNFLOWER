@@ -13,12 +13,21 @@ $current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/checkout']);
+        try {
+            $productCart = session_get('product_cart');
+            if (!empty($productCart) && count($productCart) > 0) {
+                View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/checkout']);
+            } else {
+                throw new Exception('không có sản phẩm ');
+            }
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
+        }
         break;
     case 'create_post':
-        $req = validateFormCheckout();
         $productCart = session_get('product_cart');
         if (!empty($productCart) && count($productCart) > 0) {
+            $req = validateFormCheckout();
             $customers = $query->table('customers')->insert([
                 'name' =>  $req['name'],
                 'phone_number' =>  $req['phone-number'],

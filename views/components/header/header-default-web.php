@@ -2,7 +2,7 @@
 $query = new Query();
 $menu = $query->table('menus')->select('*')->where('parent_id', '=', 0)->all();
 $cart = session_get('product_cart');
-
+$current_user = session_get('current_user');
 function renderChildMenu($parent_id)
 {
     global $query;
@@ -18,6 +18,7 @@ function renderChildMenu($parent_id)
     }
 }
 ?>
+
 <!-- Header -->
 <header class="header-v4">
     <!-- Header desktop -->
@@ -53,8 +54,9 @@ function renderChildMenu($parent_id)
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
-                    <img src="public/assets/images/icons/logo-01.png" alt="IMG-LOGO">
+                <a href="" class="logo d-flex  align-align-items-center justify-content-start " style="text-decoration:none;">
+                    <img src="public/logo.png" alt="IMG-LOGO">
+                    <p class="text-uppercase fw-bold m-0 ms-2" style="color: #333333;">SUNFLOWER</p>
                 </a>
 
                 <!-- Menu desktop -->
@@ -64,7 +66,7 @@ function renderChildMenu($parent_id)
                             <?php foreach ($menu as $value) : ?>
                                 <!-- 'active-menu' -->
                                 <li class="">
-                                    <a href="<?= $value['url'] ?>"><?= $value['name'] ?></a>
+                                    <a href="<?= $value['url'] ?>" style="text-decoration:none;"><?= $value['name'] ?></a>
                                     <?= renderChildMenu($value['id']) ?>
                                 </li>
                             <?php endforeach ?>
@@ -88,6 +90,26 @@ function renderChildMenu($parent_id)
                     <a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-11 account ">
+                        <div class="d-flex align-items-center  ">
+                            <i class="zmdi zmdi-account-circle"></i>
+                            <span style="font-size: 15px; margin-left: 10px;"> <?= $current_user['name'] ?? '' ?></span>
+                        </div>
+
+                        <ul class="sub-menu" style="top:calc(100% + 10px); left: 0;">
+                            <?php if (!empty($current_user['id'])) : ?>
+                                <li><a href="?controller=shop&amp;page=1&amp;category=26">điểm : 0</a>
+                                </li>
+                                <li><a href="?controller=shop&amp;page=1&amp;category=26">tài khoản</a>
+                                </li>
+                                <li><a href="?controller=auth&action=logout">đăng xuất</a>
+                                </li>
+                            <?php else : ?>
+                                <li><a href="?controller=auth&action=login_user">đăng nhập</a>
+                                </li>
+                            <?php endif ?>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -113,6 +135,10 @@ function renderChildMenu($parent_id)
             <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
                 <i class="zmdi zmdi-favorite-outline"></i>
             </a>
+            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+                <i class="zmdi zmdi-account-circle"></i>
+
+            </div>
         </div>
 
         <!-- Button show menu -->

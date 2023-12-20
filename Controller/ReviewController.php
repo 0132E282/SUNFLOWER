@@ -12,27 +12,41 @@ $current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
-        session_exists('current_user') ?? redirect('?controller=auth');
+        middleware(['authMiddleware']);
+
         $reviewProduct = $query->table('product_reviews')->select(['products.name' => 'product_name', 'product_reviews.*'])->join('products', 'product_id')->paginate(25);
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/ProductReview'], ['reviewProduct' => $reviewProduct]);
         break;
     case 'detail_get':
-        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/detailProductReview']);
+        middleware(['authMiddleware']);
+        $review = $query->table('product_reviews')->select()->where('id', '=', $_GET['id'])->all();
+        View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/detailProductReview'], ['review' => $review]);
         break;
     case 'create_post':
         try {
-            $req = validateProductReview();
-            $query->table('product_reviews')->insert([
-                'name' => $req['name'],
-                'product_id' => $_GET['id'],
-                'user_id' =>   $current_user['id'] ?? NULL,
-                'email' => $req['email'],
-                'scores' => $req['rating'],
-                'text' => $req['review']
-            ]);
-            back(['success' => 'tạo thành công']);
+            if (!empty($_POST['email']) && !empty($_POST['review'])) {
+                $review =  $query->table('product_reviews')->insert([
+                    'name' => $_POST['name'],
+                    'product_id' => $_GET['id'],
+                    'user_id' =>   $current_user['id'] ?? NULL,
+                    'email' => $_POST['email'],
+                    'scores' => $_POST['rating'],
+                    'text' => $_POST['review']
+                ]);
+                if (empty($review)) {
+                    throw new Exception('bình luận không có');
+                }
+            } else {
+                throw new Exception('bạn đang thiếu các trường');
+            }
         } catch (Exception $e) {
+            http_response_code($e->getCode());
+            print_r($e->getMessage());
         }
+        break;
+    case 'show_preview_get':
+        $productReviews = $query->table('product_reviews')->select()->where('product_id', '=', $_GET['id'])->all();
+        View('components/review-product', ['product_reviews' => $productReviews]);
         break;
     default:
         echo 'không có file';

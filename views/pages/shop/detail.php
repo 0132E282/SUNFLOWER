@@ -4,26 +4,6 @@
     }
 </style>
 
-<!-- breadcrumb -->
-<div class="container">
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Home
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Men
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
-            Lightweight Jacket
-        </span>
-    </div>
-</div>
-
-
 <!-- Product Detail -->
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
@@ -40,7 +20,6 @@
                                     <div class="item-slick3" data-thumb="<?= $value['image_url'] ?>">
                                         <div class="wrap-pic-w pos-relative">
                                             <img src="<?= $value['image_url'] ?>" alt="IMG-PRODUCT">
-
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="<?= $value['image_url'] ?>">
                                                 <i class="fa fa-expand"></i>
                                             </a>
@@ -60,16 +39,17 @@
                     </h4>
 
                     <span class="mtext-106 cl2">
-                        <?= !empty($product['discount']) && $product['discount'] > 0 ? number_format($product['discount']) :  number_format($product['price']) ?>đ
+                        <?php if ($product['discount'] > 0) : ?>
+                            <?= number_format($product['discount'])  ?> đ
+                            <del><?= number_format($product['price']) ?> đ </del>
+                        <?php else : ?>
+                            <?= number_format($product['price'])  ?> đ
+                        <?php endif; ?>
                     </span>
-
-                    <p class="stext-102 cl3 p-t-23">
-                        Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.
-                    </p>
 
                     <!--  -->
                     <div class="p-t-33">
-                        <form action="?controller=shop&action=add-cart&id=<?= $product['id'] ?>" class="form-cart" method="post">
+                        <form action="?controller=shop&action=add-cart&id=<?= $product['id'] ?>" class="form-cart" method="post" name="review-product">
                             <?php if (!empty($attr) && count($attr) > 0) : ?>
                                 <?php foreach ($attr as $value) : ?>
                                     <div class="flex-w flex-r-m p-b-10">
@@ -79,7 +59,7 @@
                                         <div class="size-204 respon6-next">
                                             <div class="rs1-select2 bor8 bg0">
                                                 <select class="js-select2" name="attr[]">
-                                                    <option value="">Choose an option</option>
+                                                    <option value=""> <?= $value['value'] ?></option>
                                                     <?php foreach ($value['children'] as $value) : ?>
                                                         <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                                                     <?php endforeach ?>
@@ -97,7 +77,7 @@
                                             <i class="fs-16 zmdi zmdi-minus"></i>
                                         </div>
 
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1" max="<?= $product['quantity'] ?? 0 ?>">
 
                                         <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                             <i class="fs-16 zmdi zmdi-plus"></i>
@@ -228,93 +208,63 @@
                     <div class="tab-pane fade" id="reviews" role="tabpanel">
                         <div class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-                                <div class="p-b-30 m-lr-15-sm">
+                                <div class="p-b-30 m-lr-15-sm review-product">
                                     <!-- Review -->
-                                    <?php if (!empty($productReviews) && count($productReviews) > 0) : ?>
-                                        <?php foreach ($productReviews as $key => $value) : ?>
-                                            <div class="flex-w flex-t p-b-68">
-                                                <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                                                    <img src="public/assets/images/avatar-01.jpg" alt="AVATAR">
-                                                </div>
 
-                                                <div class="size-207">
-                                                    <div class="flex-w flex-sb-m p-b-17">
-                                                        <span class="mtext-107 cl2 p-r-20">
-                                                            <?= $value['name'] ?>
-                                                        </span>
-
-                                                        <span class="fs-18 cl11">
-                                                            <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                                                <?php if ($i <= $value['scores']) : ?>
-                                                                    <i class="zmdi zmdi-star"></i>
-                                                                <?php else : ?>
-                                                                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                                <?php endif; ?>
-                                                            <?php endfor ?>
-                                                        </span>
-                                                    </div>
-
-                                                    <p class="stext-102 cl6">
-                                                        <?= $value['text'] ?>
-                                                    </p>
-                                                </div>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
-                                            </div>
-
-                                            <!-- Add review -->
-                                            <form action="?controller=review&action=create&id=<?= $product['id'] ?>" class="w-full" method="post">
-                                                <h5 class="mtext-108 cl2 p-b-7">
-                                                    đánh giá sản phẩm
-                                                </h5>
-
-                                                <p class="stext-102 cl6">
-                                                    Địa chỉ email của bạn sẽ không được công bố. Các trường bắt buộc được đánh dấu *
-                                                </p>
-
-                                                <div class="flex-w flex-m p-t-50 p-b-23">
-                                                    <span class="stext-102 cl3 m-r-16">
-                                                        Đánh giá của bạn
-                                                    </span>
-
-                                                    <span class="wrap-rating fs-18 cl11 pointer">
-                                                        <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                        <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                        <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                        <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                        <i class="item-rating pointer zmdi zmdi-star-outline"></i>
-                                                        <input class="dis-none" type="number" name="rating">
-                                                    </span>
-                                                </div>
-
-                                                <div class="row p-b-25">
-                                                    <div class="col-12 p-b-5">
-                                                        <label class="stext-102 cl3" for="review">Your review</label>
-                                                        <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
-                                                    </div>
-
-                                                    <div class="col-sm-6 p-b-5">
-                                                        <label class="stext-102 cl3" for="name">Name</label>
-                                                        <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
-                                                    </div>
-
-                                                    <div class="col-sm-6 p-b-5">
-                                                        <label class="stext-102 cl3" for="email">Email</label>
-                                                        <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="email" type="text" name="email">
-                                                    </div>
-                                                </div>
-
-                                                <button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-                                                    Submit
-                                                </button>
-                                            </form>
                                 </div>
+                                <!-- Add review -->
+                                <form action="?controller=review&action=create&id=<?= $product['id'] ?>" class="w-full" method="post" onsubmit="handleSubmitReivewProduct(event)">
+                                    <h5 class="mtext-108 cl2 p-b-7">
+                                        đánh giá sản phẩm
+                                    </h5>
+
+                                    <p class="stext-102 cl6">
+                                        Địa chỉ email của bạn sẽ không được công bố. Các trường bắt buộc được đánh dấu *
+                                    </p>
+
+                                    <div class="flex-w flex-m p-t-50 p-b-23">
+                                        <span class="stext-102 cl3 m-r-16">
+                                            Đánh giá của bạn
+                                        </span>
+
+                                        <span class="wrap-rating fs-18 cl11 pointer">
+                                            <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                            <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                            <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                            <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                            <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                            <input class="dis-none" type="number" name="rating">
+                                        </span>
+                                    </div>
+
+                                    <div class="row p-b-25">
+                                        <div class="col-12 p-b-5">
+                                            <label class="stext-102 cl3" for="review">Your review</label>
+                                            <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
+                                        </div>
+
+                                        <div class="col-sm-6 p-b-5">
+                                            <label class="stext-102 cl3" for="name">Name</label>
+                                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
+                                        </div>
+
+                                        <div class="col-sm-6 p-b-5">
+                                            <label class="stext-102 cl3" for="email">Email</label>
+                                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="email" type="text" name="email">
+                                        </div>
+                                    </div>
+
+                                    <button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
+                                        đánh giá
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
@@ -350,3 +300,37 @@
         <?php endif ?>
     </div>
 </section>
+<script>
+    const xhttpl = new XMLHttpRequest();
+
+    function handleSubmitReivewProduct(e) {
+        e.preventDefault();
+        let data = '';
+        const dataForm = new FormData(e.currentTarget);
+        dataForm.forEach(function(dataf, key) {
+            data += key + '=' + dataf + "&";
+        });
+        xhttpl.open(e.currentTarget.method, e.currentTarget.action);
+        xhttpl.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttpl.onload = function() {
+            loadPrivewProduct(<?= $_GET['id'] ?>);
+            swal("Bình luận", "thêm thành công", "success");
+            e.querySelectorAll('input').forEach(function(element) {
+                element.value = '';
+            })
+        }
+        xhttpl.onerror = function() {
+            swal("Bình luận", "thêm thất bại", "erorr");
+        }
+        xhttpl.send(data);
+    }
+    window.onload = loadPrivewProduct(<?= $_GET['id'] ?>);
+
+    function loadPrivewProduct(id) {
+        xhttpl.open('GET', '?controller=review&action=show_preview&id=' + id);
+        xhttpl.onload = function() {
+            document.querySelector('.review-product').innerHTML = this.responseText;
+        }
+        xhttpl.send();
+    }
+</script>

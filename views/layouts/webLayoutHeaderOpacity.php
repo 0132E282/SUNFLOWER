@@ -34,10 +34,13 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="public/assets/css-web/util.css">
     <link rel="stylesheet" type="text/css" href="public/assets/css-web/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <!--===============================================================================================-->
 </head>
 
-<body class="animsition">
+<body class="animsition" onload="handleLoadCart()">
 
     <!-- Header -->
     <?php View('components/header/header-default-web', $data) ?>
@@ -59,7 +62,7 @@
             <i class="zmdi zmdi-chevron-up"></i>
         </span>
     </div>
-    <?php View('components/modal/modal-web', $data) ?>
+    <?php View('components/modal/modal-detail-products', $data) ?>
 
 
     <!--===============================================================================================-->
@@ -162,7 +165,16 @@
     </script>
     <!--===============================================================================================-->
     <script src="public/assets/js-web/main.js"></script>
-
+    <script>
+        function handleLoadCart() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.querySelector('#cart').innerHTML = this.responseText;
+            };
+            xhttp.open('GET', 'http://localhost/php/SUNFLOWER/views/components/cartList.php');
+            xhttp.send();
+        }
+    </script>
 </body>
 
 </html>

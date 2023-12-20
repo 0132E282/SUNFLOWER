@@ -4,8 +4,8 @@
         <div class="block2-pic hov-img0">
             <img src="<?= $feature_image ?>" alt="IMG-PRODUCT">
 
-            <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                Quick View
+            <a href="?controller=shop&action=detail&id=<?= $id ?> " class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                xem thêm
             </a>
         </div>
 
@@ -16,7 +16,12 @@
                 </a>
 
                 <span class="stext-105 cl3">
-                    <?= number_format($price)  ?> đ
+                    <?php if ($discount > 0) : ?>
+                        <?= number_format($discount)  ?> đ
+                        <del><?= number_format($price) ?> đ </del>
+                    <?php else : ?>
+                        <?= number_format($price)  ?> đ
+                    <?php endif; ?>
                 </span>
             </div>
 

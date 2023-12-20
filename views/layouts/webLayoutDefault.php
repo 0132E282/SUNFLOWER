@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Home</title>
+    <title><?= $descriptionWeb['title'] ?? '' ?></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -36,9 +36,12 @@
     <link rel="stylesheet" type="text/css" href="public/assets/css-web/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!--===============================================================================================-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
 </head>
 
-<body class="animsition">
+<body class="animsition" onload="handleLoadCart()">
 
     <!-- Header -->
     <?php View('components/header/header-default-web', $data) ?>
@@ -60,7 +63,7 @@
             <i class="zmdi zmdi-chevron-up"></i>
         </span>
     </div>
-    <?php View('components/modal/modal-web', $data) ?>
+    <?php View('components/modal/modal-detail-products', $data) ?>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
@@ -131,7 +134,6 @@
 
             $(this).on('click', function() {
                 swal(nameProduct, "is added to wishlist !", "success");
-
                 $(this).addClass('js-addedwish-detail');
                 $(this).off('click');
             });
@@ -148,7 +150,11 @@
                     url: $(this).attr('action'),
                     data: $(this).serializeArray(),
                     success: function(data) {
-                        swal(nameProduct, "is added to cart !", "success");
+                        swal(nameProduct, "thêm thành công", "success");
+                        handleLoadCart();
+                    },
+                    error: function() {
+                        swal(nameProduct, 'thêm thất bại', 'error');
                     }
                 })
             });
@@ -170,6 +176,17 @@
                 ps.update();
             })
         });
+    </script>
+    <script>
+        function handleLoadCart() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.querySelector('#cart').innerHTML = this.responseText;
+                document.querySelector('.js-show-cart').setAttribute('data-notify', document.querySelectorAll('.header-cart-item').length);
+            };
+            xhttp.open('GET', 'http://localhost/php/SUNFLOWER/views/components/cartList.php');
+            xhttp.send();
+        }
     </script>
     <!--===============================================================================================-->
     <script src="public/assets/js-web/main.js"></script>

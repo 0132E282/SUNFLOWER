@@ -220,8 +220,11 @@
     });
 
     $('.btn-num-product-up').on('click', function(){
-        var numProduct = Number($(this).prev().val());
-        $(this).prev().val(numProduct + 1);
+        if( $(this).prev().val() < $(this).prev().attr('max') ){
+            var numProduct = Number($(this).prev().val());
+            $(this).prev().val(numProduct + 1);
+        }
+
     });
 
     /*==================================================================

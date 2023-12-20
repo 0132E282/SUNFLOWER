@@ -72,26 +72,26 @@ function getChillAttr($attr)
 
             <ul class="p-0 ">
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'order' => 'created_at', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'created_at', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['order']) && $_GET['order'] ==  'created_at' && $_GET['direction'] == 'DESC' ? 'filter-link-active' : ''  ?> ">
                         sản phẩm mới
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'order' => 'count_views', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'count_views', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['order']) && $_GET['order'] ==  'count_views' && $_GET['direction'] == 'DESC' ? 'filter-link-active' : ''  ?> ">
                         phổ biến
                     </a>
                 </li>
 
 
                 <li class="p-b-6">
-                    <a href=" <?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'ASC']) ?>" class="filter-link stext-106 trans-04">
+                    <a href=" <?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'ASC']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['order']) &&  $_GET['order'] ==  'price' && $_GET['direction'] == 'ASC' ? 'filter-link-active' : ''  ?> ">
                         giá từ thấp đến cao
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'order' => 'price', 'direction' => 'DESC']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['order']) &&  $_GET['order'] ==  'price' && $_GET['direction'] == 'DESC' ? 'filter-link-active' : ''  ?> ">
                         giá từ cao đếp thấp
                     </a>
                 </li>
@@ -105,31 +105,31 @@ function getChillAttr($attr)
 
             <ul class="p-0 ">
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'price' => '0']) ?>" class="filter-link stext-106 trans-04 filter-link-active">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '0']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['price']) &&  $_GET['price'] ==  '0'  ? 'filter-link-active' : ''  ?>">
                         Tất cả
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'price' => '0-500000']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '0-500000']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['price']) &&  $_GET['price'] ==  '0-500000'  ? 'filter-link-active' : ''  ?>">
                         0 - 500k
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'price' => '500000-1000000']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '500000-1000000']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['price']) &&  $_GET['price'] ==  '500000-1000000'  ? 'filter-link-active' : ''  ?>">
                         500k - 1tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'price' => '1000000-2000000']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '1000000-2000000']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['price']) &&  $_GET['price'] ==  '1000000-2000000'  ? 'filter-link-active' : ''  ?>">
                         1tr - 2 tr
                     </a>
                 </li>
 
                 <li class="p-b-6">
-                    <a href="<?= currentRouter([...$_GET, 'price' => '2000000']) ?>" class="filter-link stext-106 trans-04">
+                    <a href="<?= currentRouter([...$_GET, 'price' => '2000000']) ?>" class="filter-link stext-106 trans-04 <?= !empty($_GET['price']) &&  $_GET['price'] ==  '2000000'  ? 'filter-link-active' : ''  ?>">
                         2tr >
                     </a>
                 </li>
