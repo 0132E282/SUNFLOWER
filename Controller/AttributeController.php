@@ -10,7 +10,7 @@ $action = !empty($_GET['action']) ? strtolower(trim($_GET['action'] . '_' . $_SE
 // sử dụng thư viện query
 // nó là một class nên sử dụng new
 // ! thư viện nầy chư có đầy đủ các chức năng nên thiếu cái gì thì thêm vào hoạt alo tui4
-session_exists('current_user') ? $current_user = session_get('current_user') :  redirect('?controller=auth');
+$current_user = session_get('current_user');
 $query = new Query();
 switch ($action) {
     case 'index_get':
@@ -80,7 +80,6 @@ switch ($action) {
                 back(['success' => 'xóa thành công']);
             }
         }
-
         break;
     case 'customization_get':
         $attr_list = renderParentAttributeChill($query->table('attribute')->select()->where('parent_id', '=', 0)->all(), $query);
@@ -101,6 +100,31 @@ switch ($action) {
             'productDetail' => $productDetail ?? [],
             'customizationList' => $productsCustomizationList
         ]);
+        break;
+    case 'attributes_products_get':
+        $attr = $query->table('attribute')->select()->where('parent_id', '=', 0)->all();
+        if (!empty($_GET['attr'])) {
+            $productAttr =
+                $query
+                ->table('attribute_customization')
+                ->select()
+                ->join('attribute', 'attribute_id')
+                ->join('product_customization', 'customization_id')
+                ->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')
+                ->whereIn('attribute_id', explode(',', $_GET['attr']))
+                ->where('products.id', '=', $_GET['id'])
+                ->all();
+            $productAttr =
+                $query
+                ->table('attribute_customization')
+                ->select()
+                ->join('attribute', 'attribute_id')
+                ->join('product_customization', 'customization_id')
+                ->where('attribute_id', '!=', $_GET['attr'])
+                ->whereIn('customization_id', array_column($productAttr, 'customization_id'))
+                ->all();
+        }
+        print_r(json_encode($productAttr));
         break;
     case 'create_customization_post':
         try {
@@ -128,8 +152,32 @@ switch ($action) {
             back(['error' => $e->getMessage()]);
         }
         break;
+    case 'details_customer':
+        $details_customer = $query->table('attribute_customization')
+            ->select(
+                [
+                    'products.feature_image' => 'feature_image',
+                    'products.id' => 'product_id',
+                    'products.category_id' => 'category_id',
+                    'discount' => 'discount',
+                    'products.name' => 'name',
+                    'product_customization.id' => 'customization_id',
+                    'product_customization.price' => 'customization_price',
+                    'products.price' => 'products_price',
+                ]
+            )
+            ->join('product_customization', 'customization_id')
+            ->join('products', 'product_id', 'id', 'inner', 'product_customization', 'products')
+            ->where('product_customization.product_id', '=', $_GET['id'])
+            ->whereIn('attribute_id', explode(',', $_POST['attr']))
+            ->groupBy('product_customization.id')
+            ->having('count(product_customization.id)', '=', count(explode(',', $_POST['attr'])))
+            ->first();
+        print_r(json_encode($details_customer));
+        break;
     default:
         echo 'không có file';
+        break;
 }
 function renderParentAttribute($dataAttribute, $query, $render = [])
 {

@@ -38,7 +38,7 @@
                         <?= $product['name'] ?>
                     </h4>
 
-                    <span class="mtext-106 cl2">
+                    <span class="mtext-106 cl2 price-product-detail">
                         <?php if ($product['discount'] > 0) : ?>
                             <?= number_format($product['discount'])  ?> đ
                             <del><?= number_format($product['price']) ?> đ </del>
@@ -50,26 +50,9 @@
                     <!--  -->
                     <div class="p-t-33">
                         <form action="?controller=shop&action=add-cart&id=<?= $product['id'] ?>" class="form-cart" method="post" name="review-product">
-                            <?php if (!empty($attr) && count($attr) > 0) : ?>
-                                <?php foreach ($attr as $value) : ?>
-                                    <div class="flex-w flex-r-m p-b-10">
-                                        <div class="size-203 flex-c-m respon6">
-                                            <?= $value['name'] ?>
-                                        </div>
-                                        <div class="size-204 respon6-next">
-                                            <div class="rs1-select2 bor8 bg0">
-                                                <select class="js-select2" name="attr[]">
-                                                    <option value=""> <?= $value['value'] ?></option>
-                                                    <?php foreach ($value['children'] as $value) : ?>
-                                                        <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
-                                                    <?php endforeach ?>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach ?>
-                            <?php endif ?>
+                            <div class="attr">
+                                <?php View('components/attribute', ['attribute' => $attr]); ?>
+                            </div>
                             <div class="flex-w flex-r-m p-b-10">
                                 <div class="size-204 flex-w flex-m respon6-next">
                                     <div class="wrap-num-product flex-w m-r-20 m-tb-10">
@@ -324,7 +307,11 @@
         }
         xhttpl.send(data);
     }
-    window.onload = loadPrivewProduct(<?= $_GET['id'] ?>);
+
+
+    window.onload = function() {
+        loadPrivewProduct(<?= $_GET['id'] ?>);
+    };
 
     function loadPrivewProduct(id) {
         xhttpl.open('GET', '?controller=review&action=show_preview&id=' + id);

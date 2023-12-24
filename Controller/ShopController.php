@@ -51,6 +51,10 @@ switch ($action) {
         $cart = session_get('product_cart');
         View(['layout' => 'layouts/webLayoutDefault', 'content' => 'pages/shop/cart'], ['cart' => $cart]);
         break;
+    case 'cart_header_get':
+        $cart = session_get('product_cart');
+        View('components/cartList', ['cart' => $cart]);
+        break;
     case 'detail_get':
         try {
             $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
@@ -110,6 +114,7 @@ switch ($action) {
                             'product_customization.id' => 'customization_id',
                             'product_customization.price' => 'customization_price',
                             'products.price' => 'products_price',
+                            'product_customization.*'
                         ]
                     )
                     ->join('product_customization', 'customization_id')
@@ -120,7 +125,9 @@ switch ($action) {
                     ->having('count(product_customization.id)', '=', count($_POST['attr']))
                     ->first();
                 $product['attributes'] = $query->table('attribute')->select()->whereIn('id', $_POST['attr'])->all();
+
                 if (!empty($product) && count($product) > 0) {
+                    if ($product['quantity'] < $_POST['num-product']) throw  new Exception('số lương sản phẩm không vượt quá' . $product['quantity']);
                     $coderProduct = $_GET['id'] . $product['customization_id'];
                     $productItem = [
                         'id' => $coderProduct,
@@ -144,10 +151,15 @@ switch ($action) {
                     session_push('product_cart', $cart);
                     print_r(json_encode(session_get('product_cart')));
                 } else {
+
                     throw new Exception('xin lỗi sản phẩm bạn chọn chúng không tìm thấy');
                 }
             } else {
-                throw new Exception('thất bại !');
+                if ($product['quantity'] < $_POST['num-product']) {
+                    throw new Exception('số lượng sản phẩm không thể vượt quá ' . $product['quantity']);
+                } else {
+                    throw new Exception('thất bại !');
+                }
             }
         } catch (Exception $e) {
             http_response_code(400);

@@ -35,3 +35,24 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('load', handleLoadCart());
+
+    function handleClickDeleteCart(e) {
+        fetch(e.currentTarget.dataset.value)
+            .then(res => res.json)
+            .then(data => {
+                console.log(1)
+                handleLoadCart();
+            })
+    }
+
+    function handleLoadCart() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', '?controller=shop&action=cart_header');
+        xhttp.onload = function() {
+            document.querySelector('#cart').innerHTML = this.responseText;
+        };
+        xhttp.send();
+    }
+</script>

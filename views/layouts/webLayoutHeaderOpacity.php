@@ -40,7 +40,7 @@
     <!--===============================================================================================-->
 </head>
 
-<body class="animsition" onload="handleLoadCart()">
+<body class="animsition">
 
     <!-- Header -->
     <?php View('components/header/header-default-web', $data) ?>
@@ -165,16 +165,7 @@
     </script>
     <!--===============================================================================================-->
     <script src="public/assets/js-web/main.js"></script>
-    <script>
-        function handleLoadCart() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function() {
-                document.querySelector('#cart').innerHTML = this.responseText;
-            };
-            xhttp.open('GET', 'http://localhost/php/SUNFLOWER/views/components/cartList.php');
-            xhttp.send();
-        }
-    </script>
+
 </body>
 
 </html>
