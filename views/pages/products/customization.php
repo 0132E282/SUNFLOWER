@@ -43,8 +43,8 @@
                                 <?php if (!empty($error['product_price'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_price']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">
-                                <label for="quantity_product" class="form-label">số lượng (không vượt qua <?= $productDetail['quantity'] ?? '' ?> sản phẩm)</label>
-                                <input id="quantity_product" class="form-control" value="<?= old('product_quantity') ?>" type="text" name="product_quantity" placeholder="số lượng sản phẩm" fdprocessedid="731r6">
+                                <label for="quantity_product" class="form-label">số lượng (không vượt qua <?= $productDetail['quantity_remaining'] ?? $productDetail['quantity'] ?? '' ?> sản phẩm)</label>
+                                <input id="quantity_product" class="form-control" value="<?= old('product_quantity') ?>" type="number" min="1" max="<?= $productDetail['quantity_remaining'] ?? $productDetail['quantity']  ?? '' ?>" name="product_quantity" placeholder="số lượng sản phẩm" fdprocessedid="731r6">
                                 <?php if (!empty($error['product_quantity'])) : ?> <p class="text-danger ms-1 mt-1  mb-0"><?= $error['product_quantity']['message'] ?></p> <?php endif ?>
                             </div>
                             <div class="mb-3">

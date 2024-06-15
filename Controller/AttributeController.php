@@ -92,7 +92,13 @@ switch ($action) {
         }, $productsCustomizationList);
         $products = $query->table('products')->select()->orderBy('created_at')->all();
         if (!empty($_GET['id'])) {
-            $productDetail = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
+            $productDetail = $query->table('products')
+                ->select([
+                    '(SELECT (products.quantity - SUM(product_customization.quantity))  FROM product_customization WHERE product_id = products.id)' => 'quantity_remaining',
+                    'products.*'
+                ])
+                ->where('id', '=', $_GET['id'])
+                ->first();
         }
         View(['layout' => 'layouts/adminLayout', 'content' => 'pages/products/customization'], [
             'attr_list' => $attr_list,
@@ -129,24 +135,24 @@ switch ($action) {
     case 'create_customization_post':
         try {
             $req = validateCustomization();
-            if (!empty($req['attribute'])) {
-                $customization = $query->table('product_customization')->insert([
-                    'product_id' => $req['product'],
-                    'price' => $req['product_price'],
-                    'quantity' => $req['product_quantity'],
-                    'weight' => $req['product_weight'],
-                ]);
-                if (count($customization) > 0) {
-                    foreach ($req['attribute'] as $key => $value) {
-                        $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
-                        $query->table('attribute_customization')->insert([
-                            'customization_id' => $customization['id'],
-                            'attribute_id' => $attribute['id'],
-                            'parent_id' => $attribute['parent_id'],
-                        ]);
-                    }
-                    back(['success' => 'tạo thành công']);
+            $attribute_customization =  $query->table('attribute_customization')->select()->join('product_customization', 'customization_id')->whereIn('attribute_id', $req['attribute'])->where('product_id', '=', $req['product'])->all();
+            if (count($attribute_customization) >= count($req['attribute'])) throw new Exception('sản phẩm đã được tạo');
+            $customization = $query->table('product_customization')->insert([
+                'product_id' => $req['product'],
+                'price' => $req['product_price'],
+                'quantity' => $req['product_quantity'],
+                'weight' => $req['product_weight'],
+            ]);
+            if (count($customization) > 0) {
+                foreach ($req['attribute'] as $key => $value) {
+                    $attribute = $query->table('attribute')->select()->where('id', '=', $value)->first();
+                    $query->table('attribute_customization')->insert([
+                        'customization_id' => $customization['id'],
+                        'attribute_id' => $attribute['id'],
+                        'parent_id' => $attribute['parent_id'],
+                    ]);
                 }
+                back(['success' => 'tạo thành công']);
             }
         } catch (Exception $e) {
             back(['error' => $e->getMessage()]);

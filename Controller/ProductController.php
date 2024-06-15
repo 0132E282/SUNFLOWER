@@ -138,14 +138,24 @@ switch ($action) {
         }
         break;
     case 'delete_get':
-        middleware(['authMiddleware', 'roleMiddleware:DELETE_PRODUCTS']);
+        try {
+            middleware(['authMiddleware', 'roleMiddleware:DELETE_PRODUCTS']);
 
-        $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
-        if (is_array($product)) {
-            $query->table('products')->where('id', '=', $product['id'])->delete();
-            back(['success' => 'xóa sản phẩm thành công ' . $product['name']]);
-        } else {
-            back(['error' => 'không tìm thấy sản phẩm']);
+            $product = $query->table('products')->select()->where('id', '=', $_GET['id'])->first();
+            if (is_array($product)) {
+                $orderProduct = $query->table('products')
+                    ->select('order_item.*')
+                    ->join('product_customization', 'id', 'product_id')
+                    ->join('order_item', 'product_customization_id', 'id', 'INNER', 'order_item', 'product_customization')
+                    ->where('products.id', '=', $_GET['id'])->all();
+                if (count($orderProduct) > 0)   throw new Exception('sản phẩm đã có đơn hàng');
+                $query->table('products')->where('id', '=', $product['id'])->delete();
+                back(['success' => 'xóa sản phẩm thành công ' . $product['name']]);
+            } else {
+                back(['error' => 'không tìm thấy sản phẩm']);
+            }
+        } catch (Exception $e) {
+            back(['error' => $e->getMessage()]);
         }
         break;
     case 'detail_get':

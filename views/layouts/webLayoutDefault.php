@@ -153,8 +153,8 @@
                         swal(nameProduct, "thêm thành công", "success");
                         handleLoadCart();
                     },
-                    error: function() {
-                        swal(nameProduct, 'thêm thất bại', 'error');
+                    error: function(error) {
+                        swal(nameProduct, JSON.parse(error.responseText).message, 'error');
                     }
                 })
             });

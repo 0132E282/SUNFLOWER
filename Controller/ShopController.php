@@ -127,7 +127,7 @@ switch ($action) {
                 $product['attributes'] = $query->table('attribute')->select()->whereIn('id', $_POST['attr'])->all();
 
                 if (!empty($product) && count($product) > 0) {
-                    if ($product['quantity'] < $_POST['num-product']) throw  new Exception('số lương sản phẩm không vượt quá' . $product['quantity']);
+                    if ($_POST['num-product'] > $product['quantity']) throw  new Exception('số lượng sản phẩm không vượt quá ' . $product['quantity']);
                     $coderProduct = $_GET['id'] . $product['customization_id'];
                     $productItem = [
                         'id' => $coderProduct,
@@ -155,15 +155,11 @@ switch ($action) {
                     throw new Exception('xin lỗi sản phẩm bạn chọn chúng không tìm thấy');
                 }
             } else {
-                if ($product['quantity'] < $_POST['num-product']) {
-                    throw new Exception('số lượng sản phẩm không thể vượt quá ' . $product['quantity']);
-                } else {
-                    throw new Exception('thất bại !');
-                }
+                throw new Exception('thất bại !');
             }
         } catch (Exception $e) {
             http_response_code(400);
-            print_r('error: ' . $e->getMessage());
+            print_r(json_encode(['message' => $e->getMessage(), 'status' => 400]));
         }
         break;
     case 'delete-cart_get':
